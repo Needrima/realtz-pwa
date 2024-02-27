@@ -7,6 +7,7 @@ function App() {
     <div className='px-2 pt-5 pb-3'>
       <Routes>
         <Route path='/' element={<LandingPage />} />
+        <Route path='/landing' element={<LandingPage />} />
       </Routes>
     </div>
   );
