@@ -2,6 +2,15 @@ import React from 'react'
 import './LandingPage.scss'
 
 const LandingPage = () => {
+  if(document.readyState === 'complete'){
+    if(document.querySelector('.landing-page')) {
+      'notLoggedIn'
+    }else {
+      'loggedIn'
+    }
+  }else {
+    'unknown'
+  }
   return (
     <div className='landing-page'>
         <div className='d-flex justify-content-between align-items-center mb-5'>
