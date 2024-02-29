@@ -4,7 +4,7 @@ import './LandingPage.scss'
 const LandingPage = () => {
   return (
     <div className='landing-page'>
-        <div className='d-flex justify-content-between align-items-center mb-5'>
+        <div className='d-flex justify-content-between align-items-center mb-5' id='#logo-header'>
             <div className='fw-bold fs-2 text-muted'>Logo</div>
             <button className='btn badge text-light bg-default-dark rounded-4 px-4 py-2 fs-4'>Login</button>
         </div>
