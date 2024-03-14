@@ -1,22 +1,50 @@
-import React from 'react'
+import React, {createContext} from 'react'
 import './LandingPage.scss'
+import { useState } from 'react'
+import Page1 from '../../components/LandingPage/Page1/Page1';
+import Page2 from '../../components/LandingPage/Page2/Page2';
+import Page3 from '../../components/LandingPage/Page3/Page3';
+
+export const LandingPageContext = createContext(null);
 
 const LandingPage = () => {
+  const [state, setState] = useState({
+    screen: "1",
+  })
+  const {screen} = state;
+
+  const changeScreen = (screen) => {
+    setState(state => ({
+        ...state,
+        screen: screen,
+    }))
+  }
+
+  const renderPage = () => {
+    switch(screen) {
+      case "1":
+        return <Page1 />
+      case "2":
+        return <Page2 />
+      case "3":
+        return <Page3 />
+      default:
+        return <Page1 />
+    }
+  }
   return (
-    <div className='landing-page'>
-        <div className='d-flex justify-content-between align-items-center mb-5' id='#logo-header'>
-            <div className='fw-bold fs-2 text-muted'>Logo</div>
-            <button className='btn badge text-light bg-default-dark rounded-4 px-4 py-2 fs-4'>Login</button>
-        </div>
+    <LandingPageContext.Provider value={{
+      changeScreen
+    }}>
+      <div className='landing-page'>
+          <div className='d-flex justify-content-between align-items-center mb-5' id='#logo-header'>
+              <div className='fw-bold fs-2 text-muted'>Logo</div>
+              <button className='btn badge text-light bg-default-dark rounded-4 px-4 py-2 fs-4'>Login</button>
+          </div>
 
-        <h1 className='fw-bold mb-4'>Find the best place <br />to live <span className='text-default'>comfortably</span></h1>
-
-        <div className='mb-5 text-muted'>Lorem ipsum dolor sit amet, consectur <br /> adipiscing elit, sed.</div>
-        
-        <div className='img-background-div rounded-4 d-flex align-items-end justify-content-center pb-5'>
-          <button className='btn text-light bg-default fw-bold px-5 py-3 fs-4'>Register</button>
-        </div>
-    </div>
+          {renderPage()}
+      </div>
+    </LandingPageContext.Provider>
   )
 }
 
