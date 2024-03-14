@@ -10,7 +10,7 @@ const Page2 = () => {
 
         <div className='mb-5 text-muted'>Lorem ipsum dolor sit amet, consectur <br /> adipiscing elit, sed.</div>
 
-        <div className='bg-img-div bg-img rounded-4 d-flex flex-column align-items-center justify-content-end pb-5'>
+        <div className='bg-img-div bg-img-2 rounded-4 d-flex flex-column align-items-center justify-content-end pb-5'>
 
             <div className='d-flex mb-2'>
               <div className="border border-2 border-light me-2 px-3"></div>
