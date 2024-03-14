@@ -10,12 +10,21 @@ const Page1 = () => {
 
         <div className='mb-5 text-muted'>Lorem ipsum dolor sit amet, consectur <br /> adipiscing elit, sed.</div>
 
-        <div className='bg-img-div bg-img rounded-4 d-flex align-items-end justify-content-center pb-5'>
-            <button 
-            className='btn text-light bg-default fw-bold px-5 py-3 fs-4' 
-            onClick={() => changeScreen("2")}>
-              Next
-            </button>
+        <div className='bg-img-div bg-img rounded-4 d-flex flex-column align-items-center justify-content-end pb-5'>
+
+            <div className='d-flex mb-2'>
+              <div className="border border-2 border-primary me-2 px-3"></div>
+              <div className="border border-2 border-light me-2 px-3"></div>
+              <div className="border border-2 border-light px-3"></div>
+            </div>
+
+            <div>
+              <button 
+              className='btn text-light bg-default fw-bold px-5 py-3 fs-4' 
+              onClick={() => changeScreen("2")}>
+                Next
+              </button>
+            </div>
         </div>
     </>
   )
