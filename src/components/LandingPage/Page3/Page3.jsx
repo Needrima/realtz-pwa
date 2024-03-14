@@ -15,7 +15,7 @@ const Page3 = () => {
         <div className='bg-img-div bg-img rounded-4 d-flex flex-column align-items-center justify-content-end pb-5'>
 
             <div className='d-flex mb-2'>
-              <div className="border border-2 border-light me-2 px-3"></div>
+              <div style={{borderColor: 'green'}} className="border border-2 border-light me-2 px-3"></div>
               <div className="border border-2 border-light me-2 px-3"></div>
               <div className="border border-2 border-primary px-3"></div>
             </div>
@@ -29,7 +29,7 @@ const Page3 = () => {
 
               <button 
               className='btn text-light bg-default fw-bold px-5 py-3 fs-4' 
-              onClick={() => navigate("/login", {replace: true})}>
+              onClick={() => navigate("/signup", {replace: true})}>
                 Get Started
               </button>
             </div>
