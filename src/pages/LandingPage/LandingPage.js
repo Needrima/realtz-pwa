@@ -4,10 +4,12 @@ import { useState } from 'react'
 import Page1 from '../../components/LandingPage/Page1/Page1';
 import Page2 from '../../components/LandingPage/Page2/Page2';
 import Page3 from '../../components/LandingPage/Page3/Page3';
+import { useNavigate } from 'react-router-dom';
 
 export const LandingPageContext = createContext(null);
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   const [state, setState] = useState({
     screen: "1",
   })
@@ -39,7 +41,7 @@ const LandingPage = () => {
       <div className='landing-page'>
           <div className='d-flex justify-content-between align-items-center mb-5' id='#logo-header'>
               <div className='fw-bold fs-2 text-muted'>Logo</div>
-              <button className='btn badge text-light bg-default-dark rounded-4 px-4 py-2 fs-4'>Login</button>
+              <button className='btn badge text-light bg-default-dark rounded-4 px-4 py-2 fs-4' onClick={() => navigate("/login", {replace: true})}>Login</button>
           </div>
 
           {renderPage()}

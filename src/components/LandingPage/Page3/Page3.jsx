@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import './Page3.scss'
-import { LandingPageContext } from '../../../pages/LandingPage/LandingPage'
+import { useNavigate } from 'react-router-dom'
 
 const Page3 = () => {
-  const {changeScreen} = useContext(LandingPageContext);
+  const navigate = useNavigate()
   return (
     <>
         <h1 className='fw-bold mb-4'>Find the best place <br />to live <span className='text-default'>comfortably</span></h1>
@@ -13,7 +13,7 @@ const Page3 = () => {
         <div className='bg-img-div bg-img rounded-4 d-flex align-items-end justify-content-center pb-5'>
             <button 
             className='btn text-light bg-default fw-bold px-5 py-3 fs-4' 
-            onClick={() => changeScreen("3")}>
+            onClick={() => navigate("/login", {replace: true})}>
               Proceed
             </button>
         </div>
