@@ -15,7 +15,7 @@ const Page3 = () => {
         <div className='bg-img-div bg-img-3 rounded-4 d-flex flex-column align-items-center justify-content-end pb-5'>
 
             <div className='d-flex mb-2'>
-              <div style={{borderColor: 'green'}} className="border border-2 border-light me-2 px-3"></div>
+              <div className="border border-2 border-light me-2 px-3"></div>
               <div className="border border-2 border-light me-2 px-3"></div>
               <div className="border border-2 border-primary px-3"></div>
             </div>
