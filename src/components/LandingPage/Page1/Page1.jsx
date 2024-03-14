@@ -14,7 +14,7 @@ const Page1 = () => {
             <button 
             className='btn text-light bg-default fw-bold px-5 py-3 fs-4' 
             onClick={() => changeScreen("2")}>
-              Proceed
+              Next
             </button>
         </div>
     </>
