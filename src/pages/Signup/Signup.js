@@ -156,6 +156,7 @@ const Signup = () => {
 
             <Form.Item
               name='confirm_password'
+              dependencies={["password"]}
               rules={[
                 { required: true, message: 'Confirm password is required'},
                 ({getFieldValue}) => ({
