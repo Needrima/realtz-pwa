@@ -7,7 +7,7 @@ import phoneIcon from '../../assets/icons/call.svg'
 import passwordIcon from '../../assets/icons/password.svg'
 import { useNavigate } from 'react-router-dom'
 import OtpInput from 'react-otp-input';
-import { ALPHABET_REGEX } from '../../misc/regex'
+import { ALPHABET_REGEX, ALPHANUM_REGEX, PHONE_REGEX, SYMBOLS_REGEX } from '../../misc/regex'
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -73,8 +73,19 @@ const Signup = () => {
             <Form.Item
               name='lastname'
               rules={[
-                { required: true, message: 'Lastname is required'}
+                {required: true, message: 'Lastname is required'},
+                {min: 3, message: "Lastname should be atleast 3 characters long"},
+                {whitespace: true, message: "Lastname cannot be empty"},
+                {
+                  async validator(rule, value) {
+                    if (ALPHABET_REGEX.test(value)) return Promise.resolve();
+                    return Promise.reject(new Error("Firstname must be alphabets with '-' as the only special character allowed"));
+                  },
+                  validateTrigger: "onChange",
+                },
+                
               ]}
+              hasFeedback
             >
               <Input
                 prefix={<img src={userIcon} />}
@@ -86,9 +97,11 @@ const Signup = () => {
             <Form.Item
               name='email'
               rules={[
-                { required: true, message: 'Email is required'}
+                { required: true, message: 'Email is required'},
+                {whitespace: true, message: "Email cannot be empty"},
+                {type: "email", message: 'Email is not a valid email address'},
               ]}
-              type="email"
+              hasFeedback
             >
               <Input
                 prefix={<img src={emailIcon} />}
@@ -100,8 +113,17 @@ const Signup = () => {
             <Form.Item
               name='phone_number'
               rules={[
-                { required: true, message: 'Phone number is required'}
+                { required: true, message: 'Phone number is required'},
+                {whitespace: true, message: "Phone number cannot be empty"},
+                {
+                  async validator(rule, value) {
+                    if (PHONE_REGEX.test(value)) return Promise.resolve();
+                    return Promise.reject(new Error("Phone number must be a nigerian phone number e.g 08012345678"));
+                  },
+                  validateTrigger: "onChange",
+                },
               ]}
+              hasFeedback
             >
               <Input
                 prefix={<img src={phoneIcon} />}
@@ -113,8 +135,17 @@ const Signup = () => {
             <Form.Item
                 name='password'
                 rules={[
-                  { required: true, message: 'Password is required'}
+                  { required: true, message: 'Password is required'},
+                  {whitespace: true, message: "Password cannot be empty"},
+                  {
+                    async validator(rule, value) {
+                      if (ALPHANUM_REGEX.test(value) && SYMBOLS_REGEX.test(value) && value.length >= 6) return Promise.resolve();
+                      return Promise.reject(new Error("Password must be atleast 6 characters with a combination of atleaset one lowercase, one uppercase, one number and one special character"));
+                    },
+                    validateTrigger: "onChange",
+                  },
                 ]}
+                hasFeedback
               >
               <Input.Password
                 prefix={<img src={passwordIcon} />}
