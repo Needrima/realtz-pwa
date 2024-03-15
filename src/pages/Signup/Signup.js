@@ -28,7 +28,6 @@ const Signup = () => {
   }
 
   const onFinish = (e) => {
-    e.preventDefault();
     console.log(e)
     setState(state => ({
       ...state,
