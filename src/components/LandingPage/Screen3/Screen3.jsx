@@ -1,13 +1,13 @@
-import React, { useContext } from 'react'
-import './Page3.scss'
+import React, { useContext, Fragment } from 'react'
+import './Screen3.scss'
 import { useNavigate } from 'react-router-dom'
 import { LandingPageContext } from '../../../pages/LandingPage/LandingPage'
 
-const Page3 = () => {
+const Screen3 = () => {
   const {changeScreen} = useContext(LandingPageContext);
   const navigate = useNavigate()
   return (
-    <>
+    <Fragment key={"screen3"}>
         <h1 className='fw-bold mb-4'>Find the <span className='text-default'>perfect choice</span> <br /> for your future house</h1>
 
         <div className='mb-5 text-muted'>Lorem ipsum dolor sit amet, consectur <br /> adipiscing elit, sed. page 3</div>
@@ -17,7 +17,7 @@ const Page3 = () => {
             <div className='d-flex mb-2'>
               <div className="border border-2 border-light me-2 px-3"></div>
               <div className="border border-2 border-light me-2 px-3"></div>
-              <div className="border border-2 border-primary px-3"></div>
+              <div className="step-bars-active px-3"></div>
             </div>
 
             <div>
@@ -34,8 +34,8 @@ const Page3 = () => {
               </button>
             </div>
         </div>
-    </>
+    </Fragment>
   )
 }
 
-export default Page3
+export default Screen3

@@ -1,9 +1,9 @@
 import React, {createContext} from 'react'
 import './LandingPage.scss'
 import { useState } from 'react'
-import Page1 from '../../components/LandingPage/Page1/Page1';
-import Page2 from '../../components/LandingPage/Page2/Page2';
-import Page3 from '../../components/LandingPage/Page3/Page3';
+import Screen1 from '../../components/LandingPage/Screen1/Screen1';
+import Screen2 from '../../components/LandingPage/Screen2/Screen2';
+import Screen3 from '../../components/LandingPage/Screen3/Screen3';
 import { useNavigate } from 'react-router-dom';
 
 export const LandingPageContext = createContext(null);
@@ -25,13 +25,13 @@ const LandingPage = () => {
   const renderPage = () => {
     switch(screen) {
       case "1":
-        return <Page1 />
+        return <Screen1 />
       case "2":
-        return <Page2 />
+        return <Screen2 />
       case "3":
-        return <Page3 />
+        return <Screen3 />
       default:
-        return <Page1 />
+        return <Screen1 />
     }
   }
   return (

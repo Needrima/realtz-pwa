@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
-import './Page2.scss'
+import React, { useContext, Fragment } from 'react'
+import './Screen2.scss'
 import { LandingPageContext } from '../../../pages/LandingPage/LandingPage'
 
-const Page2 = () => {
+const Screen2 = () => {
   const {changeScreen} = useContext(LandingPageContext);
   return (
-    <>
+    <Fragment key={"screen2"}>
         <h1 className='fw-bold mb-4'>Sell your property quickly <br />with <span className='text-default'>just a click</span></h1>
 
         <div className='mb-5 text-muted'>Lorem ipsum dolor sit amet, consectur <br /> adipiscing elit, sed.</div>
@@ -14,7 +14,7 @@ const Page2 = () => {
 
             <div className='d-flex mb-2'>
               <div className="border border-2 border-light me-2 px-3"></div>
-              <div className="border border-2 border-primary me-2 px-3"></div>
+              <div className="step-bars-active me-2 px-3"></div>
               <div className="border border-2 border-light px-3"></div>
             </div>
 
@@ -32,8 +32,8 @@ const Page2 = () => {
               </button>
             </div>
         </div>
-    </>
+    </Fragment>
   )
 }
 
-export default Page2
+export default Screen2
