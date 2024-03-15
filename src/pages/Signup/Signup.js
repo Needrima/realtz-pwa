@@ -7,6 +7,7 @@ import phoneIcon from '../../assets/icons/call.svg'
 import passwordIcon from '../../assets/icons/password.svg'
 import { useNavigate } from 'react-router-dom'
 import OtpInput from 'react-otp-input';
+import { ALPHABET_REGEX } from '../../misc/regex'
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -48,8 +49,19 @@ const Signup = () => {
             <Form.Item
               name='firstname'
               rules={[
-                { required: true, message: 'Firstname is required'}
+                {required: true, message: 'Firstname is required'},
+                {min: 3, message: "Firstname should be atleast 3 characters long"},
+                {whitespace: true, message: "Firstname cannot be empty"},
+                {
+                  async validator(rule, value) {
+                    if (ALPHABET_REGEX.test(value)) return Promise.resolve();
+                    return Promise.reject(new Error("Firstname must be alphabets with '-' as the only special character allowed"));
+                  },
+                  validateTrigger: "onChange",
+                },
+                
               ]}
+              hasFeedback
             >
               <Input
                 prefix={<img src={userIcon} />}
