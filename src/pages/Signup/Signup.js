@@ -7,7 +7,7 @@ import phoneIcon from '../../assets/icons/call.svg'
 import passwordIcon from '../../assets/icons/password.svg'
 import { useNavigate } from 'react-router-dom'
 import OtpInput from 'react-otp-input';
-import { ALPHABET_REGEX, ALPHANUM_REGEX, PHONE_REGEX, SYMBOLS_REGEX } from '../../misc/regex'
+import { ALPHABET_REGEX, PASSWORD_ALPHANUM_REGEX, PHONE_REGEX, PASSWORD_SYMBOLS_REGEX } from '../../misc/regex'
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -139,8 +139,8 @@ const Signup = () => {
                   {whitespace: true, message: "Password cannot be empty"},
                   {
                     async validator(rule, value) {
-                      if (ALPHANUM_REGEX.test(value) && SYMBOLS_REGEX.test(value) && value.length >= 6) return Promise.resolve();
-                      return Promise.reject(new Error("Password must be atleast 6 characters with a combination of atleaset one lowercase, one uppercase, one number and one special character"));
+                      if (PASSWORD_ALPHANUM_REGEX.test(value) && PASSWORD_SYMBOLS_REGEX.test(value) && value.length >= 6) return Promise.resolve();
+                      return Promise.reject(new Error("Password must be atleast 6 characters with atleaset 1 lowercase, 1 uppercase, 1 number and one special character"));
                     },
                     validateTrigger: "onChange",
                   },
@@ -156,6 +156,17 @@ const Signup = () => {
 
             <Form.Item
               name='confirm_password'
+              rules={[
+                { required: true, message: 'Confirm password is required'},
+                ({getFieldValue}) => ({
+                  async validator(rule, value) {
+                    if (value && getFieldValue('password') === value)return Promise.resolve();
+                    return Promise.reject(new Error("Passwords mismatch"));
+                  },
+                  validateTrigger: "onChange",
+                })
+              ]}
+              hasFeedback
             >
               <Input.Password
                 prefix={<img src={passwordIcon} />}
