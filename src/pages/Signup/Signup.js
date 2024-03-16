@@ -7,7 +7,7 @@ import phoneIcon from '../../assets/icons/call.svg'
 import passwordIcon from '../../assets/icons/password.svg'
 import { useNavigate } from 'react-router-dom'
 import OtpInput from 'react-otp-input';
-import { ALPHABET_REGEX, PASSWORD_ALPHANUM_REGEX, PHONE_REGEX, PASSWORD_SYMBOLS_REGEX } from '../../misc/regex'
+import { ALPHABET_REGEX, PHONE_REGEX, PASSWORD_SYMBOLS_REGEX, PASSWORD_UPPERCASE_REGEX, PASSWORD_LOWERCASE_REGEX, PASSWORD_NUM_REGEX } from '../../misc/regex'
 import timerIcon from '../../assets/icons/timer.svg'
 
 const Signup = () => {
@@ -140,7 +140,11 @@ const Signup = () => {
                   {whitespace: true, message: "Password cannot be empty"},
                   {
                     async validator(rule, value) {
-                      if (PASSWORD_ALPHANUM_REGEX.test(value) && PASSWORD_SYMBOLS_REGEX.test(value) && value.length >= 6) return Promise.resolve();
+                      if (PASSWORD_UPPERCASE_REGEX.test(value)
+                       && PASSWORD_LOWERCASE_REGEX.test(value)
+                       && PASSWORD_NUM_REGEX.test(value)
+                       && PASSWORD_SYMBOLS_REGEX.test(value)
+                       && value.length >= 6) return Promise.resolve();
                       return Promise.reject(new Error("Password must be atleast 6 characters with atleaset 1 lowercase, 1 uppercase, 1 number and one special character"));
                     },
                     validateTrigger: "onChange",
