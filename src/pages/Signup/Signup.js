@@ -53,8 +53,8 @@ const Signup = () => {
     }
   }
 
-  const onFinish = (e) => {
-    console.log(e)
+  const onFinish = (values) => {
+    console.log(values)
     setState(state => ({
       ...state,
       signUpFormSubmitted: true,
