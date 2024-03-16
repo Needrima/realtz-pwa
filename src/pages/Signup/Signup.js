@@ -8,6 +8,7 @@ import passwordIcon from '../../assets/icons/password.svg'
 import { useNavigate } from 'react-router-dom'
 import OtpInput from 'react-otp-input';
 import { ALPHABET_REGEX, PASSWORD_ALPHANUM_REGEX, PHONE_REGEX, PASSWORD_SYMBOLS_REGEX } from '../../misc/regex'
+import timerIcon from '../../assets/icons/timer.svg'
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -197,6 +198,12 @@ const Signup = () => {
           renderInput={(props) => <input {...props} />}
           inputStyle={"otp-input rounded border-0"}
         />
+
+        <div className='text-center mt-5'>
+          <span className='otp-countdown p-3 rounded-4'><img src={timerIcon} /> 00:19</span>
+        </div>
+
+        <div className='text-center mt-3'>Didn't receive OTP? <span className='text-primary fw-bold'>Resend OTP</span></div>
       </div>
     }
     </>
