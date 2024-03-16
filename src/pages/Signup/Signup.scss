@@ -7,8 +7,7 @@
 }
 
 .text-input:focus {
-    border: 1px solid rgba(39, 113, 255, 1) ;
-    background-color: rgba(0,0,0,0.05);
+    outline: 1px solid rgba(39, 113, 255, 1) ;
 }
 
 .otp-input {
@@ -19,7 +18,7 @@
 }
 
 .otp-input:focus {
-    border: 1px solid rgba(39, 113, 255, 1);
+    outline: 1px solid rgba(39, 113, 255, 1);
 }
 
 .otp-countdown {
