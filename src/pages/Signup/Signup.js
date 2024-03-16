@@ -12,6 +12,7 @@ import timerIcon from '../../assets/icons/timer.svg'
 import { useTimer } from 'react-timer-hook';
 
 const Signup = () => {
+  // react hooks
   const navigate = useNavigate();
 
   const [state, setState] = useState({
@@ -20,6 +21,7 @@ const Signup = () => {
   })
   const {otp, signUpFormSubmitted} = state;
 
+  // external libraries hooks
   const expiryTimestamp = new Date();
   expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 120); // two minutes timer
 
@@ -36,12 +38,7 @@ const Signup = () => {
     restart,
   } = useTimer({ expiryTimestamp, onExpire: () => console.log('timeout') });
 
-  useEffect(() => {
-    if (signUpFormSubmitted) {
-      restart(expiryTimestamp)
-    }
-  }, [signUpFormSubmitted])
-
+  // functions  
   const onInputOTP = (e) => {
     setState(state => ({
       ...state,
@@ -52,7 +49,7 @@ const Signup = () => {
       console.log("verifying email")
     }
   }
-
+  
   const onFinish = (values) => {
     console.log(values)
     setState(state => ({
@@ -60,6 +57,13 @@ const Signup = () => {
       signUpFormSubmitted: true,
     }))
   }
+
+  // useeffects
+  useEffect(() => {
+    if (signUpFormSubmitted) {
+      restart(expiryTimestamp)
+    }
+  }, [signUpFormSubmitted])
 
   return (
     <>
