@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Signup.scss'
 import {Form, Input, Button} from 'antd'
 import userIcon from '../../assets/icons/user.svg'
@@ -9,14 +9,38 @@ import { useNavigate } from 'react-router-dom'
 import OtpInput from 'react-otp-input';
 import { ALPHABET_REGEX, PHONE_REGEX, PASSWORD_SYMBOLS_REGEX, PASSWORD_UPPERCASE_REGEX, PASSWORD_LOWERCASE_REGEX, PASSWORD_NUM_REGEX } from '../../misc/regex'
 import timerIcon from '../../assets/icons/timer.svg'
+import { useTimer } from 'react-timer-hook';
 
 const Signup = () => {
   const navigate = useNavigate();
+
   const [state, setState] = useState({
     otp: '',
     signUpFormSubmitted: false,
   })
   const {otp, signUpFormSubmitted} = state;
+
+  const expiryTimestamp = new Date();
+  expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 120); // two minutes timer
+
+  const {
+    // totalSeconds,
+    seconds,
+    minutes,
+    // hours,
+    // days,
+    isRunning,
+    // start,
+    // pause,
+    // resume,
+    restart,
+  } = useTimer({ expiryTimestamp, onExpire: () => console.log('timeout') });
+
+  useEffect(() => {
+    if (signUpFormSubmitted) {
+      restart(expiryTimestamp)
+    }
+  }, [signUpFormSubmitted])
 
   const onInputOTP = (e) => {
     setState(state => ({
@@ -204,10 +228,10 @@ const Signup = () => {
         />
 
         <div className='text-center mt-5'>
-          <span className='otp-countdown p-3 rounded-4'><img src={timerIcon} /> 00:19</span>
+          <span className='otp-countdown p-3 rounded-4'><img src={timerIcon} /> {minutes}:{seconds}</span>
         </div>
 
-        <div className='text-center mt-3'>Didn't receive OTP? <span className='text-primary fw-bold'>Resend OTP</span></div>
+        <div className='text-center mt-3'>Didn't receive OTP? <span className={`text-primary fw-bold ${isRunning ? 'opacity-50 pe-none' : ''}`} onClick={() => restart(expiryTimestamp)}>Resend OTP</span></div>
       </div>
     }
     </>
