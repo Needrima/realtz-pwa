@@ -38,7 +38,7 @@ const LandingPage = () => {
     <LandingPageContext.Provider value={{
       changeScreen
     }}>
-      <div className='landing-page'>
+      <div className='landing-page px-2 pt-5 pb-3'>
           <div className='d-flex justify-content-between align-items-center mb-5' id='#logo-header'>
               <div className='fw-bold fs-2 text-muted'>Logo</div>
               <button className='btn badge text-light bg-default-dark rounded-4 px-4 py-2 fs-4' onClick={() => navigate("/login", {replace: true})}>Login</button>

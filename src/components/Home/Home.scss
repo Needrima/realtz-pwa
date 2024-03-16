@@ -1,0 +1,8 @@
+.active-tab::after {
+    content: "----";
+    color: #ffff;
+    position: absolute;
+    width: 120px;
+    top: 50%;
+    left: 0%;
+}

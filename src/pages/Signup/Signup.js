@@ -72,6 +72,10 @@ const Signup = () => {
         message.success(data?.message || 'email verified');
         navigate('/login', {replace: true})
       }catch(error){
+        setState(state => ({
+          ...state,
+          loading: false,
+        }))
         message.error(error?.response?.data?.error || 'email verification failed')
       }
     }
@@ -106,6 +110,10 @@ const Signup = () => {
       message.success(data?.message || 'signup successful');
     }catch(error){
       message.error(error?.response?.data?.error || 'signup failed')
+      setState(state => ({
+        ...state,
+        loading: false,
+      }))
     }
   }
 
@@ -132,6 +140,11 @@ const Signup = () => {
       message.success(data?.message || 'otp sent');
       restart(expiryTimestamp)
     }catch(error){
+      setState(state => ({
+        ...state,
+        loading: false,
+        otp: '',
+      }))
       message.error(error?.response?.data?.error || 'sending otp failed')
     }
   }
@@ -144,7 +157,7 @@ const Signup = () => {
   }, [signUpFormSubmitted])
 
   return (
-    <>
+    <div className='px-2 pt-5 pb-3'>
       {!signUpFormSubmitted 
         ? 
         <div>
@@ -318,7 +331,7 @@ const Signup = () => {
          onClick={handleResendOTP}>Resend OTP</span></div>
       </div>
     }
-    </>
+    </div>
   )
 }
 
