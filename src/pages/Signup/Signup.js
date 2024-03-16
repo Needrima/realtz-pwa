@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './Signup.scss'
-import {Form, Input, Button} from 'antd'
+import {Form, Input} from 'antd'
 import userIcon from '../../assets/icons/user.svg'
 import emailIcon from '../../assets/icons/sms.svg'
 import phoneIcon from '../../assets/icons/call.svg'
