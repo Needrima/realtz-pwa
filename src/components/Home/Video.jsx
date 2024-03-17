@@ -40,7 +40,7 @@ const Video = ({id}) => {
     }
 
     // observes video when it is out of view
-    const divRef = useRef(null);
+    const videoDivRef = useRef(null);
     useEffect(() => {
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -50,17 +50,17 @@ const Video = ({id}) => {
             videoOutOfView:!entry.isIntersecting
           }))
         });
-      });
+      }, { threshold: 0.5 }); // 50% out of view
   
       // Start observing the div
-      if (divRef.current) {
-        observer.observe(divRef.current);
+      if (videoDivRef.current) {
+        observer.observe(videoDivRef.current);
       }
   
       // Cleanup
       return () => {
-        if (divRef.current) {
-          observer.unobserve(divRef.current);
+        if (videoDivRef.current) {
+          observer.unobserve(videoDivRef.current);
         }
       };
     }, []);
@@ -88,7 +88,7 @@ const Video = ({id}) => {
     }, [pausePlayImgVisible]); 
 
   return (
-    <div ref={divRef} className='w-100 vh-100 position-relative'>
+    <div ref={videoDivRef} className='w-100 vh-100 position-relative'>
         <video ref={videoRef} loop className='w-100 h-100 object-fit-fill' onClick={pausePlay} id={id}>
             <source src={video} type="video/mp4" />
         </video>
