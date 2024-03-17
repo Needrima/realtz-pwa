@@ -41,7 +41,7 @@ const LandingPage = () => {
         changeScreen,
       }}
     >
-      <div className="landing-page">
+      <div className="landing-page px-2 pt-5 pb-3">
         <div
           className="d-flex justify-content-between align-items-center mb-5"
           id="#logo-header"
