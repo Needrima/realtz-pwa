@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './Signup.scss'
-import {Form, Input} from 'antd'
+import {Form, Input, Spin, message} from 'antd'
 import userIcon from '../../assets/icons/user.svg'
 import emailIcon from '../../assets/icons/sms.svg'
 import phoneIcon from '../../assets/icons/call.svg'
@@ -10,6 +10,7 @@ import OtpInput from 'react-otp-input';
 import { ALPHABET_REGEX, PHONE_REGEX, PASSWORD_SYMBOLS_REGEX, PASSWORD_UPPERCASE_REGEX, PASSWORD_LOWERCASE_REGEX, PASSWORD_NUM_REGEX } from '../../misc/regex'
 import timerIcon from '../../assets/icons/timer.svg'
 import { useTimer } from 'react-timer-hook';
+import axiosInstance from '../../api/axoios'
 
 const Signup = () => {
   // react hooks
@@ -18,8 +19,11 @@ const Signup = () => {
   const [state, setState] = useState({
     otp: '',
     signUpFormSubmitted: false,
+    loading: false,
+    otp_verification_key: '',
+    email: '',
   })
-  const {otp, signUpFormSubmitted} = state;
+  const {otp, signUpFormSubmitted,loading} = state;
 
   // external libraries hooks
   const expiryTimestamp = new Date();
@@ -39,23 +43,110 @@ const Signup = () => {
   } = useTimer({ expiryTimestamp, onExpire: () => console.log('timeout') });
 
   // functions  
-  const onInputOTP = (e) => {
+  const onInputOTP = async (otp) => {
     setState(state => ({
       ...state,
-      otp: e
+      otp: otp
     }))
 
-    if (e.length === 6) {
-      console.log("verifying email")
+    if (otp.length === 6) {
+      setState(state => ({
+        ...state,
+        loading: true,
+      }))
+
+      const {otp_verification_key, email} = state;
+      const reqData = {
+        otp: otp,
+        otp_verification_key: otp_verification_key,
+        email: email,
+      }
+  
+      try {
+        const {data} = await axiosInstance.post("user/verify-email", reqData);
+  
+        setState(state => ({
+          ...state,
+          loading: false,
+        }))
+        message.success(data?.message || 'email verified');
+        navigate('/login', {replace: true})
+      }catch(error){
+        setState(state => ({
+          ...state,
+          loading: false,
+        }))
+        message.error(error?.response?.data?.error || 'email verification failed')
+      }
     }
   }
-  
-  const onFinish = (values) => {
-    console.log(values)
+
+  const onFinish = async (values) => {
     setState(state => ({
       ...state,
-      signUpFormSubmitted: true,
+      loading: true,
     }))
+
+    const reqData = {
+      user_type: "user",
+      firstname: values.firstname,
+      lastname: values.lastname,
+      email: values.email,
+      phone_number: values.phone_number,
+      password: values.password,
+      confirm_password: values.confirm_password
+    }
+
+    try {
+      const {data} = await axiosInstance.post("user/signup", reqData);
+
+      setState(state => ({
+        ...state,
+        loading: false,
+        otp_verification_key: data?.otp_verification_key,
+        signUpFormSubmitted: true,
+        email: values.email
+      }))
+      message.success(data?.message || 'signup successful');
+    }catch(error){
+      message.error(error?.response?.data?.error || 'signup failed')
+      setState(state => ({
+        ...state,
+        loading: false,
+      }))
+    }
+  }
+
+  const handleResendOTP = async () => {
+    setState(state => ({
+      ...state,
+      loading: true,
+    }))
+
+    const {email} = state;
+    const reqData = {
+      channel: "email",
+      email: email,
+    }
+
+    try {
+      const {data} = await axiosInstance.post("user/send-otp", reqData);
+
+      setState(state => ({
+        ...state,
+        loading: false,
+        otp: '',
+      }))
+      message.success(data?.message || 'otp sent');
+      restart(expiryTimestamp)
+    }catch(error){
+      setState(state => ({
+        ...state,
+        loading: false,
+        otp: '',
+      }))
+      message.error(error?.response?.data?.error || 'sending otp failed')
+    }
   }
 
   // useeffects
@@ -66,7 +157,7 @@ const Signup = () => {
   }, [signUpFormSubmitted])
 
   return (
-    <>
+    <div className='px-2 pt-5 pb-3'>
       {!signUpFormSubmitted 
         ? 
         <div>
@@ -210,13 +301,13 @@ const Signup = () => {
             </Form.Item>
 
             <div className='text-center'>
-              <button className='btn btn-primary btn-lg px-5 py-3 fw-bold'> Create Account</button>
+              <button disabled={loading} className='btn btn-primary btn-lg px-5 py-3 fw-bold'> {loading ? <Spin spinning={loading}/> : 'Create Account'}</button>
             </div>
           </Form>
 
           <div className='text-center mt-5'>Already have an account? <span className='text-primary fw-bold' onClick={() => navigate("/login")}>Login</span></div>
-      </div>
-      :
+        </div>
+        :
       <div>
         <h1 className='fw-bold mt-5 mb-3'>Enter <span className='text-primary'>code</span></h1>
 
@@ -227,7 +318,7 @@ const Signup = () => {
           onChange={onInputOTP}
           numInputs={6}
           // renderSeparator={<span>-</span>}
-          renderInput={(props) => <input {...props} />}
+          renderInput={(props) => <input {...props} disabled={loading} />}
           inputStyle={"otp-input rounded border-0"}
         />
 
@@ -235,10 +326,12 @@ const Signup = () => {
           <span className='otp-countdown p-3 rounded-4'><img src={timerIcon} /> {minutes}:{seconds}</span>
         </div>
 
-        <div className='text-center mt-3'>Didn't receive OTP? <span className={`text-primary fw-bold ${isRunning ? 'opacity-50 pe-none' : ''}`} onClick={() => restart(expiryTimestamp)}>Resend OTP</span></div>
+        <div className='text-center mt-3'>Didn't receive OTP? <span
+         className={`text-primary fw-bold ${isRunning || loading ? 'opacity-50 pe-none' : ''}`}
+         onClick={handleResendOTP}>Resend OTP</span></div>
       </div>
     }
-    </>
+    </div>
   )
 }
 
