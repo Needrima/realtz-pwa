@@ -29,11 +29,15 @@ const Product = () => {
         <Carousel 
             responsive={responsive}
             showDots={true}
-            removeArrowOnDeviceType={['mobile', 'tablet']}
+            arrows={false}
+            infinite={true}
+            beforeChange={() => {
+                // console.log(document.getElementsByTagName('video'))
+            }}
         >
-            <Video />
-            <Video />
-            <Video />
+            <Video id={"p1-v1"} />
+            <Video id={"p1-v2"} />
+            <Video id={"p1-v3"} />
         </Carousel>;
         {/* <Video />
         <Video />

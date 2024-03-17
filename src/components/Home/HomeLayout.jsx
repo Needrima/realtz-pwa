@@ -14,8 +14,8 @@ const HomeLayout = () => {
     const {tab, changeTab} = useContext(HomeContext);
   return (
     <div className='bg-dark'>
-        <Product />
-        <Product />
+        <Product id={'product-1'} />
+        <Product id={'product-2'} />
 
         <div className='position-fixed w-100 d-flex justify-content-center' style={{top: '5%'}}>
             <div onClick={() => changeTab('home')} className={`text-light me-3 fw-bold fs-3 ${tab === 'home' ? 'active-tab' : ''} position-relative`}>Home</div>

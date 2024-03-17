@@ -7,7 +7,7 @@ import commentIcon from '../../assets/icons/comment.svg'
 import shareIcon from '../../assets/icons/share-white.svg'
 import playIcon from '../../assets/icons/play.svg'
 
-const Video = () => {
+const Video = ({id}) => {
     const videoRef = useRef();
     const [state, setState] = useState({
         paused: true,
@@ -26,6 +26,7 @@ const Video = () => {
         }
     }
 
+    // observes video when it is out of view
     const divRef = useRef(null);
     useEffect(() => {
       const observer = new IntersectionObserver(entries => {
@@ -51,8 +52,10 @@ const Video = () => {
       };
     }, []);
 
+    // pauses video when it is out of view
     useEffect(() => {
         if (videoOutOfView) {
+            videoRef.current.currentTime = 0;
             videoRef.current.pause();
             setState(state => ({...state, paused: true}))
         }
@@ -69,11 +72,11 @@ const Video = () => {
     
         // Cleanup function to clear the timeout
         return () => clearTimeout(timeout);
-    }, [pausePlayImgVisible]); // Empty dependency array to run the effect only once
+    }, [pausePlayImgVisible]); 
 
   return (
     <div ref={divRef} className='w-100 vh-100 position-relative'>
-        <video ref={videoRef} loop muted className='w-100 h-100 object-fit-fill' onClick={pausePlay}>
+        <video ref={videoRef} loop muted className='w-100 h-100 object-fit-fill' onClick={pausePlay} id={id}>
             <source src={video} type="video/mp4" />
         </video>
 
