@@ -20,14 +20,15 @@ const Video = ({id}) => {
     // handle pause and play
     const pausePlay = () => {
         if (paused) {
+            setState(state => ({...state, paused: !state.paused, pausePlayImgVisible: true}))
             videoRef.current.play();
-            setState(state => ({...state, paused: !state.paused, pausePlayImgVisible: true}))
         }else {
-            videoRef.current.pause();
             setState(state => ({...state, paused: !state.paused, pausePlayImgVisible: true}))
+            videoRef.current.pause();
         }
     }
 
+    // handles mute and unmuting. need a mute icon and unmute icon 
     const muteUnmute = () => {
         if (muted) {
             videoRef.current.muted = false;
@@ -88,7 +89,7 @@ const Video = ({id}) => {
 
   return (
     <div ref={divRef} className='w-100 vh-100 position-relative'>
-        <video ref={videoRef} loop className='w-100 h-100 object-fit-fill' onClick={pausePlay} onDoubleClick={muteUnmute} id={id}>
+        <video ref={videoRef} loop className='w-100 h-100 object-fit-fill' onClick={pausePlay} id={id}>
             <source src={video} type="video/mp4" />
         </video>
 
@@ -119,7 +120,7 @@ const Video = ({id}) => {
 
         <img className={`position-absolute top-50 start-50 ${pausePlayImgVisible ? 'visible' : 'fade-in-element'} pause-play-img`}
          src={playIcon} alt="play icon" 
-         onClick={pausePlay} onDoubleClick={muteUnmute} />
+         onClick={pausePlay} />
         
         <div className='position-absolute bottom-0 text-light mb-3' style={{left: '4%'}}>
             <div className='fs-4'><span className='fs-1 fw-bold'>John Doe</span>. Nov 2nd</div>
