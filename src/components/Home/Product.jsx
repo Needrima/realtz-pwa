@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Video from './Video'
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 const Product = () => {
+    //carousel responsveness property
     const responsive = {
         // superLargeDesktop: {
         //   // the naming can be any, depends on you.
@@ -30,18 +31,18 @@ const Product = () => {
             responsive={responsive}
             showDots={true}
             arrows={false}
-            infinite={true}
             beforeChange={() => {
-                // console.log(document.getElementsByTagName('video'))
+                const videos = document.getElementsByTagName('video');
+                for (let i = 0; i < videos.length; i++){
+                    videos[i].currentTime = 0;
+                    videos[i].pause();
+                }
             }}
         >
-            <Video id={"p1-v1"} />
-            <Video id={"p1-v2"} />
-            <Video id={"p1-v3"} />
+            <Video />
+            <Video />
+            <Video />
         </Carousel>;
-        {/* <Video />
-        <Video />
-        <Video /> */}
     </>
   )
 }
