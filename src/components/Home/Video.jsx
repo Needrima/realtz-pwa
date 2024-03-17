@@ -11,11 +11,13 @@ const Video = ({id}) => {
     const videoRef = useRef();
     const [state, setState] = useState({
         paused: true,
+        muted: true,
         videoOutOfView: false,
         pausePlayImgVisible: true,
     })
-    const {paused, videoOutOfView, pausePlayImgVisible} = state;
+    const {paused, muted, videoOutOfView, pausePlayImgVisible} = state;
 
+    // handle pause and play
     const pausePlay = () => {
         if (paused) {
             videoRef.current.play();
@@ -23,6 +25,16 @@ const Video = ({id}) => {
         }else {
             videoRef.current.pause();
             setState(state => ({...state, paused: !state.paused, pausePlayImgVisible: true}))
+        }
+    }
+
+    const muteUnmute = () => {
+        if (muted) {
+            videoRef.current.muted = false;
+            setState(state => ({...state, muted: !state.muted}))
+        }else {
+            videoRef.current.muted = true;
+            setState(state => ({...state, muted: !state.muted}))
         }
     }
 
@@ -76,7 +88,7 @@ const Video = ({id}) => {
 
   return (
     <div ref={divRef} className='w-100 vh-100 position-relative'>
-        <video ref={videoRef} loop muted className='w-100 h-100 object-fit-fill' onClick={pausePlay} id={id}>
+        <video ref={videoRef} loop className='w-100 h-100 object-fit-fill' onClick={pausePlay} onDoubleClick={muteUnmute} id={id}>
             <source src={video} type="video/mp4" />
         </video>
 
@@ -107,11 +119,11 @@ const Video = ({id}) => {
 
         <img className={`position-absolute top-50 start-50 ${pausePlayImgVisible ? 'visible' : 'fade-in-element'} pause-play-img`}
          src={playIcon} alt="play icon" 
-         onClick={pausePlay} />
+         onClick={pausePlay} onDoubleClick={muteUnmute} />
         
         <div className='position-absolute bottom-0 text-light mb-3' style={{left: '4%'}}>
             <div className='fs-4'><span className='fs-1 fw-bold'>John Doe</span>. Nov 2nd</div>
-            <div className='fs-4'>4 Bedrooms Duplex #realestate #construction #design ... <u className='fw-bold'>more</u></div>
+            <div className='fs-4' style={{width: "80%"}}>4 Bedrooms Duplex #realestate #construction #design ... <u className='fw-bold'>more</u></div>
         </div>
     </div>
   )
