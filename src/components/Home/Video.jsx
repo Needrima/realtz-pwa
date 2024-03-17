@@ -37,6 +37,11 @@ const Video = () => {
                     <img className='d-block' src={profileIcon} alt="like video" />
                 </div>
             </div>
+            
+            <div className='position-absolute bottom-0 text-light' style={{left: '4%'}}>
+                <div className='fs-4'><span className='fs-1 fw-bold'>John Doe</span>. Nov 2nd</div>
+                <div className='fs-4'>4 Bedrooms Duplex #realestate #construction #design ... <u className='fw-bold'>more</u></div>
+            </div>
         </div>
   )
 }
