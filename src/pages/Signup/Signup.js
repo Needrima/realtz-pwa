@@ -329,6 +329,8 @@ const Signup = () => {
         <div className='text-center mt-3'>Didn't receive OTP? <span
          className={`text-primary fw-bold ${isRunning || loading ? 'opacity-50 pe-none' : ''}`}
          onClick={handleResendOTP}>Resend OTP</span></div>
+
+        <div className='text-center'>Proceed to <a href='/login' className='text-primary fw-bold text-decoration-none'>Login</a></div>
       </div>
     }
     </div>
