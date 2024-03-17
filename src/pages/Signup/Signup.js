@@ -18,7 +18,7 @@ const Signup = () => {
 
   const [state, setState] = useState({
     otp: '',
-    signUpFormSubmitted: true,
+    signUpFormSubmitted: false,
     loading: false,
     otp_verification_key: '',
     email: '',
