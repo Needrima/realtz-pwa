@@ -7,7 +7,7 @@ import commentIcon from '../../assets/icons/comment.svg'
 import shareIcon from '../../assets/icons/share-white.svg'
 import playIcon from '../../assets/icons/play.svg'
 
-const Video = ({id}) => {
+const Video = () => {
     const videoRef = useRef();
     const [state, setState] = useState({
         paused: true,
@@ -89,7 +89,7 @@ const Video = ({id}) => {
 
   return (
     <div ref={videoDivRef} className='w-100 vh-100 position-relative'>
-        <video ref={videoRef} loop className='w-100 h-100 object-fit-fill' onClick={pausePlay} id={id}>
+        <video ref={videoRef} loop className='w-100 vh-100 object-fit-fill' onClick={pausePlay}>
             <source src={video} type="video/mp4" />
         </video>
 
@@ -122,7 +122,7 @@ const Video = ({id}) => {
          src={playIcon} alt="play icon" 
          onClick={pausePlay} />
         
-        <div className='position-absolute bottom-0 text-light mb-3' style={{left: '4%'}}>
+        <div className='position-absolute bottom-0 text-light mb-4' style={{left: '4%'}}>
             <div className='fs-4'><span className='fs-1 fw-bold'>John Doe</span>. Nov 2nd</div>
             <div className='fs-4' style={{width: "80%"}}>4 Bedrooms Duplex #realestate #construction #design ... <u className='fw-bold'>more</u></div>
         </div>
