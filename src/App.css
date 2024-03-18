@@ -1,15 +1,31 @@
 .text-default {
-  color: #2771FF;
+  color: #2771ff;
 }
 
 .text-default-dark {
-  color: #062E7C;
+  color: #062e7c;
 }
 
 .bg-default {
-  background-color: #2771FF;
+  background-color: #2771ff;
 }
 
 .bg-default-dark {
-  background-color: #062E7C;
+  background-color: #062e7c;
+}
+
+.w-max-content {
+  width: max-content;
+}
+
+.mt-8 {
+  margin-top: 17.5rem;
+}
+
+.mt-10 {
+  margin-top: 20rem;
+}
+
+.mb-8 {
+  margin-bottom: 10rem;
 }
