@@ -1,20 +1,20 @@
 .active-tab::after {
-    content: '';
-    position: absolute;
-    width: 70%;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: #ffff;
-    transform-origin: bottom right;
-    transition: transform 0.25s ease-out;
+  content: "";
+  position: absolute;
+  width: 70%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #ffff;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
 }
 
 .fade-in-element {
-    opacity: 0;
-    transition: opacity 1s ease; /* Adjust the duration and easing function as needed */
+  opacity: 0;
+  transition: opacity 1s ease; /* Adjust the duration and easing function as needed */
 }
 
 .visible {
-    opacity: 1;
+  opacity: 1;
 }

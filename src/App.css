@@ -13,3 +13,19 @@
 .bg-default-dark {
   background-color: #062e7c;
 }
+
+.w-max-content {
+  width: max-content;
+}
+
+.mt-8 {
+  margin-top: 17.5rem;
+}
+
+.mt-10 {
+  margin-top: 20rem;
+}
+
+.mb-8 {
+  margin-bottom: 10rem;
+}
