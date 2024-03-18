@@ -6,5 +6,5 @@ const rootReducer = combineReducers({
     authReducer: authReducer,
 });
 
-const store = createStore(rootReducer);
-export default store;
+const Store = createStore(rootReducer);
+export default Store;

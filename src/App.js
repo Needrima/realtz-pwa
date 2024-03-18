@@ -1,13 +1,16 @@
 import './App.css';
-import {Routes, Route} from 'react-router-dom'
+import {Routes, Route, Navigate} from 'react-router-dom'
 import LandingPage from './pages/LandingPage/LandingPage';
 import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
 import Home from './pages/Home/Home';
 import Notification from './pages/Notification/Notification';
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
-import { useDispatch } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import { syncSession } from './redux/Actions';
+import { useEffect } from 'react';
+import Store from './redux/Store';
+
 function App() {
   const dispatch = useDispatch();
 
@@ -23,7 +26,7 @@ function App() {
 
   const handleRedirectToLogin = () => {
     if (loggedIn) {
-      return <Navigate replace={true} to="/" />;
+      return <Navigate replace={true} to="/home" />;
     } else {
       return <Login />;
     }
@@ -31,7 +34,7 @@ function App() {
 
   const handleRedirectToSignup = () => {
     if (loggedIn) {
-      return <Navigate replace={true} to="/" />;
+      return <Navigate replace={true} to="/home" />;
     } else {
       return <Signup />;
     }
@@ -39,15 +42,24 @@ function App() {
 
   const handleRedirectToForgotPassword = () => {
     if (loggedIn) {
-      return <Navigate replace={true} to="/" />;
+      return <Navigate replace={true} to="/home" />;
     } else {
       return <ForgotPassword />;
     }
   };
+
+  const handleRedirectToLandingPage = () => {
+    if (loggedIn) {
+      return <Navigate replace={true} to="/home" />;
+    } else {
+      return <LandingPage />;
+    }
+  };
+
   return (
     <div>
       <Routes>
-        <Route path='/' element={<LandingPage />} />
+        <Route path='/' element={handleRedirectToLandingPage()} />
         <Route path='/login' element={handleRedirectToLogin()} />
         <Route path='/signup' element={handleRedirectToSignup()} />
         <Route path="/forgot-password" element={handleRedirectToForgotPassword()} />
@@ -61,7 +73,7 @@ function App() {
 const AppWrapper = () => {
 
   return (
-    <Provider store={store}>
+    <Provider store={Store}>
       <App /> 
     </Provider>
   )
