@@ -78,9 +78,9 @@ const Login = () => {
           />
         </Form.Item>
 
-        <div className="d-flex justify-content-between mb-5">
+        <div className="d-flex justify-content-between mb-5 text-muted fw-bold">
           <div onClick={() => navigate("/forgot-password")}>
-            Forgot Password
+            Forgot Password?
           </div>
         </div>
 
