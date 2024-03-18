@@ -7,25 +7,39 @@ import commentIcon from '../../assets/icons/comment.svg'
 import shareIcon from '../../assets/icons/share-white.svg'
 import playIcon from '../../assets/icons/play.svg'
 
-const Video = () => {
+const Video = ({id}) => {
     const videoRef = useRef();
     const [state, setState] = useState({
         paused: true,
+        muted: true,
         videoOutOfView: false,
-        controlImgVisible: true,
+        pausePlayImgVisible: true,
     })
-    const {paused, videoOutOfView, controlImgVisible} = state;
+    const {paused, muted, videoOutOfView, pausePlayImgVisible} = state;
 
+    // handle pause and play
     const pausePlay = () => {
         if (paused) {
+            setState(state => ({...state, paused: !state.paused, pausePlayImgVisible: true}))
             videoRef.current.play();
-            setState(state => ({...state, paused: !state.paused, controlImgVisible: true}))
         }else {
+            setState(state => ({...state, paused: !state.paused, pausePlayImgVisible: true}))
             videoRef.current.pause();
-            setState(state => ({...state, paused: !state.paused, controlImgVisible: true}))
         }
     }
 
+    // handles mute and unmuting. need a mute icon and unmute icon 
+    const muteUnmute = () => {
+        if (muted) {
+            videoRef.current.muted = false;
+            setState(state => ({...state, muted: !state.muted}))
+        }else {
+            videoRef.current.muted = true;
+            setState(state => ({...state, muted: !state.muted}))
+        }
+    }
+
+    // observes video when it is out of view
     const divRef = useRef(null);
     useEffect(() => {
       const observer = new IntersectionObserver(entries => {
@@ -51,8 +65,10 @@ const Video = () => {
       };
     }, []);
 
+    // pauses video when it is out of view
     useEffect(() => {
         if (videoOutOfView) {
+            videoRef.current.currentTime = 0;
             videoRef.current.pause();
             setState(state => ({...state, paused: true}))
         }
@@ -63,17 +79,17 @@ const Video = () => {
         const timeout = setTimeout(() => {
           setState(state => ({
             ...state,
-            controlImgVisible: false,
+            pausePlayImgVisible: false,
           }))
         }, 1000); // Adjust the delay as needed
     
         // Cleanup function to clear the timeout
         return () => clearTimeout(timeout);
-    }, [controlImgVisible]); // Empty dependency array to run the effect only once
+    }, [pausePlayImgVisible]); 
 
   return (
-    <div ref={divRef} className='w-100 vh-100 position-relative mb-3'>
-        <video ref={videoRef} loop muted className='w-100 h-100 object-fit-fill' onClick={pausePlay}>
+    <div ref={divRef} className='w-100 vh-100 position-relative'>
+        <video ref={videoRef} loop className='w-100 h-100 object-fit-fill' onClick={pausePlay} id={id}>
             <source src={video} type="video/mp4" />
         </video>
 
@@ -102,14 +118,13 @@ const Video = () => {
             </div>
         </div>
 
-        <img className={`position-absolute top-50 start-50 ${controlImgVisible ? 'visible' : 'fade-in-element'} `}
+        <img className={`position-absolute top-50 start-50 ${pausePlayImgVisible ? 'visible' : 'fade-in-element'} pause-play-img`}
          src={playIcon} alt="play icon" 
-         style={{transform: 'translate(-50%, -50%)'}} 
-         />
+         onClick={pausePlay} />
         
         <div className='position-absolute bottom-0 text-light mb-3' style={{left: '4%'}}>
             <div className='fs-4'><span className='fs-1 fw-bold'>John Doe</span>. Nov 2nd</div>
-            <div className='fs-4'>4 Bedrooms Duplex #realestate #construction #design ... <u className='fw-bold'>more</u></div>
+            <div className='fs-4' style={{width: "80%"}}>4 Bedrooms Duplex #realestate #construction #design ... <u className='fw-bold'>more</u></div>
         </div>
     </div>
   )
