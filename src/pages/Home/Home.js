@@ -75,7 +75,9 @@ const Home = () => {
         homeProductsData,
         trendingProductsData,
         homeProducts, 
-        trendingProducts
+        trendingProducts,
+        getHomeProducts,
+        getTrendingProducts,
       }}
     >
       <Layout>

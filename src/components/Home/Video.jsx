@@ -1,14 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 // import video from '../../assets/videos/video.mp4'
-import profileIcon from '../../assets/icons/profile-circle.svg'
-import saveIcon from '../../assets/icons/bookmark-white.svg'
-import likeIcon from '../../assets/icons/heart-white.svg'
-import commentIcon from '../../assets/icons/comment.svg'
-import shareIcon from '../../assets/icons/share-white.svg'
 import playIcon from '../../assets/icons/play.svg'
-import { Drawer, Spin } from 'antd'
-import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
-import Comment from './Comment'
 
 const Video = ({video}) => {
     const videoRef = useRef();
@@ -93,7 +85,7 @@ const Video = ({video}) => {
 
   return (
     <div ref={videoDivRef} className='w-100 vh-100 position-relative'>
-        <video ref={videoRef} loop className='w-100 vh-100 object-fit-fill' onClick={pausePlay}>
+        <video ref={videoRef} loop className='w-100 vh-100' onClick={pausePlay}> {/*object-fit-fill*/}
             <source src={video} type="video/mp4" />
         </video>
 
