@@ -20,10 +20,11 @@ const Video = () => {
         commentsBoxOpen: false,
         commentsData: null,
         fetchingComments: false,
-        
+        nextCommentsPage: 2, // assuming initial page on load to be 1
+        previousCommmentPage: 0, // assuming initial page on load to be 1
     })
     const {paused, muted, videoOutOfView, pausePlayImgVisible, commentsBoxOpen,
-      fetchingComments, commentsData} = state;
+      fetchingComments, commentsData, nextCommentsPage} = state;
 
     // handle pause and play
     const pausePlay = () => {
@@ -82,8 +83,9 @@ const Video = () => {
         }
     },[videoOutOfView])
 
+    // playPause icon fade-in animation
     useEffect(() => {
-        // Set isVisible to true after a delay to trigger the fade-in animation
+        // set pausePlayImgVisible to false after a delay to trigger the fade-in animation
         const timeout = setTimeout(() => {
           setState(state => ({
             ...state,
@@ -95,7 +97,15 @@ const Video = () => {
         return () => clearTimeout(timeout);
     }, [pausePlayImgVisible]); 
 
-    const fetchMoreComments = () => {
+    const loadInitialComments = () => {
+      fetchMoreComments(1)
+    }
+    // load initial comments
+    useEffect(() => {
+      loadInitialComments();
+    }, [])
+
+    const fetchMoreComments = (page) => {
       if (fetchingComments) return
 
       setState(state => ({
@@ -106,15 +116,15 @@ const Video = () => {
 
     const commentsRef = useInfiniteScroll({
       // Function to fetch more items
-      next: fetchMoreComments,
+      next: () => fetchMoreComments(nextCommentsPage),
       // The number of items loaded if you use the "Y-scroll" axis ("up" and "down")
       // if you are using the "X-scroll" axis ("left" and "right") use "columnCount" instead
       // you can also use "rowCount" and "columnCount" if you use "Y-scroll" and "X-scroll" at the same time 
-      rowCount: 4,
+      rowCount: commentsData ? commentsData?.comments ? commentsData?.comments?.length : 0 : 0,
       // Whether there are more items to load
       // if marked "true" in the specified direction, it will try to load more items if the threshold is reached
       // support for all directions "up", "down", "left", "right", both individually and in all directions at the same time
-      hasMore: { down: true },
+      hasMore: { down: commentsData ? commentsData?.has_next : false },
     });
 
   return (
@@ -183,6 +193,8 @@ const Video = () => {
                 <span className='me-2'>Loading</span> <Spin spinning={fetchingComments} />
             </div>}
           </div>
+          
+          {commentsData ? !commentsData?.has_next : <div className='text-center text-primary fw-bold'>no more comments</div>}
         </Drawer>
     </div>
   )

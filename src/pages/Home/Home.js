@@ -1,13 +1,14 @@
 import Layout from "../../components/Layout";
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import HomeLayout from "../../components/Home/HomeLayout";
 
 export const HomeContext = createContext(null);
 const Home = () => {
   const [state, setState] = useState({
     tab: "home",
+    productsData: null,
   });
-  const { tab } = state;
+  const { tab, productsData } = state;
 
   const changeTab = (tab) => {
     setState((state) => ({
@@ -15,11 +16,14 @@ const Home = () => {
       tab: tab,
     }));
   };
+
+  useEffect(() => {}, [tab])
   return (
     <HomeContext.Provider
       value={{
         tab,
         changeTab,
+        productsData
       }}
     >
       <Layout>

@@ -10,23 +10,6 @@ const HomeLayout = () => {
   const fetchData = () => {
     console.log('fetching more data ...')
   }
-
-  const fetchCommentData = () => {
-    console.log("fetching more comments")
-  }
-
-  const [commentBoxOpen, setCommentBoxOpen] = useState(false)
-  const infiniteScrollRef = useRef(null);
-  const handleContentUpdate = () => {
-
-    console.log('closing drawe')
-    setCommentBoxOpen(false)
-    // Force update the infinite scroll component after Drawer content has been updated
-    if (infiniteScrollRef.current) {
-      console.log(infiniteScrollRef.current)
-      infiniteScrollRef.current.props.next();
-    }
-  };
   
   return (
     <div className='bg-dark'>
