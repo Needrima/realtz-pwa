@@ -10,7 +10,7 @@ const HomeLayout = () => {
     homeProducts, trendingProducts, getTrendingProducts, getHomeProducts} = useContext(HomeContext);
   
   return (
-    <div className='bg-dark vh-100'>
+    <div className='bg-dark h-100'>
       {tab === 'home' && <InfiniteScroll
         dataLength={homeProducts.length} //This is important field to render the next data
         hasMore={!homeProductsData ? true : homeProductsData?.has_next} 
@@ -21,7 +21,7 @@ const HomeLayout = () => {
           <Spin />
         </div>} // triggers if hasMore={true}
         endMessage={
-          <p className={`text-center fw-bold ${homeProductsData ? '' : 'product-loading-center'}`}>
+          <p className={`text-center fw-bold text-light ${homeProductsData ? '' : 'product-loading-center'}`}>
             <b>no more {tab} feeds</b>
           </p>
         } // triggers if hasMore={false}
@@ -43,7 +43,7 @@ const HomeLayout = () => {
           <Spin />
         </div>} // triggers if hasMore={true}
         endMessage={
-          <p className='text-center fw-bold'>
+          <p className={`text-center fw-bold text-light ${trendingProductsData ? '' : 'product-loading-center'}`}>
             <b>no more {tab} feeds</b>
           </p>
         } // triggers if hasMore={false}
