@@ -26,7 +26,7 @@ const Product = () => {
       };
 
   return (
-    <>
+    <div>
         <Carousel 
             responsive={responsive}
             showDots={true}
@@ -43,7 +43,7 @@ const Product = () => {
             <Video />
             <Video />
         </Carousel>;
-    </>
+    </div>
   )
 }
 

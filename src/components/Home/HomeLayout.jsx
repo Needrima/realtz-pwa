@@ -1,15 +1,32 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import './Home.scss'
 import { HomeContext } from '../../pages/Home/Home'
 import Product from './Product'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { Spin } from 'antd'
+import { Drawer, Spin } from 'antd'
 
 const HomeLayout = () => {
   const {tab, changeTab} = useContext(HomeContext);
   const fetchData = () => {
     console.log('fetching more data ...')
   }
+
+  const fetchCommentData = () => {
+    console.log("fetching more comments")
+  }
+
+  const [commentBoxOpen, setCommentBoxOpen] = useState(false)
+  const infiniteScrollRef = useRef(null);
+  const handleContentUpdate = () => {
+
+    console.log('closing drawe')
+    setCommentBoxOpen(false)
+    // Force update the infinite scroll component after Drawer content has been updated
+    if (infiniteScrollRef.current) {
+      console.log(infiniteScrollRef.current)
+      infiniteScrollRef.current.props.next();
+    }
+  };
   
   return (
     <div className='bg-dark'>
