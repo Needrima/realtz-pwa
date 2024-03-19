@@ -25,12 +25,12 @@ const Product = ({product}) => {
       previousCommmentPage: 0, // assuming initial page on load to be 1
       productLiked: product?.liked_by.includes(user.reference),
       numLikes: product?.liked_by.length,
-      productSaved: product?.saved_by.includes(user.reference)
+      productSaved: product?.saved_by.includes(user.reference),
+      numComments: product?.commented_on_by.length
   })
-  const { commentsBoxOpen, fetchingComments, commentsData, productLiked, productSaved, numLikes } = state;
+  const { commentsBoxOpen, fetchingComments, commentsData, productLiked, productSaved, numLikes, numComments } = state;
 
   const likeProduct = async () => {
-    console.log('liking product')
     setState(state => ({
       ...state,
       productLiked: true,
@@ -53,7 +53,6 @@ const Product = ({product}) => {
   }
 
   const unLikeProduct = async () => {
-    console.log('unliking product')
     setState(state => ({
       ...state,
       productLiked: false,
@@ -72,6 +71,46 @@ const Product = ({product}) => {
         ...state,
         productLiked: false,
         numLikes: state.numLikes + 1,
+      }))
+    }
+  }
+
+  const saveProduct = async () => {
+    setState(state => ({
+      ...state,
+      productSaved: true,
+    }))
+
+    try {
+      const {data} = await axiosProductInstance.get(`auth/save/${product.reference}`, {
+        headers: {
+          token: token
+        }
+      })
+    }catch(error) {
+      setState(state => ({
+        ...state,
+        productSaved: false,
+      }))
+    }
+  }
+
+  const unSaveProduct = async () => {
+    setState(state => ({
+      ...state,
+      productSaved: false,
+    }))
+
+    try {
+      const {data} = await axiosProductInstance.get(`auth/unlike/${product.reference}`, {
+        headers: {
+          token: token
+        }
+      })
+    }catch(error) {
+      setState(state => ({
+        ...state,
+        productSaved: true,
       }))
     }
   }
@@ -139,16 +178,16 @@ const Product = ({product}) => {
 
             <div className='mb-4'>
                 <img className='d-block' src={commentIcon} alt="comment on video" onClick={() => setState(state => ({...state, commentsBoxOpen: true}))} />
-                <div className='text-light text-center fw-bold'>{product?.commented_on_by.length}</div>
+                <div className='text-light text-center fw-bold'>{numComments}</div>
             </div>
 
             <div className='mb-4'>
             {productSaved ? 
-                <img className='d-block' src={saveIcon} alt="like video" /> // chage this to red like image
+                <img onClick={unSaveProduct} className='d-block' src={saveIcon} alt="save video" /> // chage this to red like image
                 : 
-                <img onClick={likeProduct} className='d-block' src={saveIcon} alt="like video" /> 
+                <img onClick={saveProduct}className='d-block' src={saveIcon} alt="save video" /> 
                 }
-                <div className='text-light text-center fw-bold'>{product?.saved_by.length}</div>
+                <div className='text-light text-center fw-bold'>{productSaved}</div>
             </div>
 
             <div className='mb-4'>
