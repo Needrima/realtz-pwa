@@ -23,7 +23,7 @@ const Signup = () => {
     otp_verification_key: '',
     email: '',
   })
-  const {otp, signUpFormSubmitted,loading} = state;
+  const {otp, signUpFormSubmitted,loading, email} = state;
 
   // external libraries hooks
   const expiryTimestamp = new Date();
@@ -184,7 +184,7 @@ const Signup = () => {
               hasFeedback
             >
               <Input
-                prefix={<img src={userIcon} />}
+                prefix={<img src={userIcon} alt='user-icon' />}
                 placeholder='Firstname'
                 className='text-input'
               />
@@ -208,7 +208,7 @@ const Signup = () => {
               hasFeedback
             >
               <Input
-                prefix={<img src={userIcon} />}
+                prefix={<img src={userIcon} alt='user icon' />}
                 placeholder='Lastname'
                 className='text-input'
               />
@@ -224,7 +224,7 @@ const Signup = () => {
               hasFeedback
             >
               <Input
-                prefix={<img src={emailIcon} />}
+                prefix={<img src={emailIcon} alt='email icon' />}
                 placeholder='Email address'
                 className='text-input'
               />
@@ -246,7 +246,7 @@ const Signup = () => {
               hasFeedback
             >
               <Input
-                prefix={<img src={phoneIcon} />}
+                prefix={<img src={phoneIcon} alt='phone icon' />}
                 placeholder='Phone number'
                 className='text-input'
               />
@@ -272,7 +272,7 @@ const Signup = () => {
                 hasFeedback
               >
               <Input.Password
-                prefix={<img src={passwordIcon} />}
+                prefix={<img src={passwordIcon} alt='password icon' />}
                 placeholder='Password'
                 className='text-input'
               />
@@ -294,7 +294,7 @@ const Signup = () => {
               hasFeedback
             >
               <Input.Password
-                prefix={<img src={passwordIcon} />}
+                prefix={<img src={passwordIcon} alt='password icon' />}
                 placeholder='Confirm password'
                 className='text-input'
               />
@@ -311,7 +311,7 @@ const Signup = () => {
       <div>
         <h1 className='fw-bold mt-5 mb-3'>Enter <span className='text-primary'>code</span></h1>
 
-        <div className='mb-3 mb-5 text-muted'>Enter 6 digit OTP sent to <br /> <span className='text-primary fw-bold'>johndoe@gmail.com</span></div>
+        <div className='mb-3 mb-5 text-muted'>Enter 6 digit OTP sent to <br /> <span className='text-primary fw-bold'>{email}</span></div>
 
         <OtpInput
           value={otp}
@@ -323,7 +323,7 @@ const Signup = () => {
         />
 
         <div className='text-center mt-5'>
-          <span className='otp-countdown p-3 rounded-4'><img src={timerIcon} /> {minutes}:{seconds}</span>
+          <span className='otp-countdown p-3 rounded-4'><img src={timerIcon} alt='timer icon' /> {minutes}:{seconds}</span>
         </div>
 
         <div className='text-center mt-3'>Didn't receive OTP? <span

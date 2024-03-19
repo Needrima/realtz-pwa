@@ -68,7 +68,7 @@ const Login = () => {
           ]}
         >
           <Input
-            prefix={<img src={emailIcon} />}
+            prefix={<img src={emailIcon} alt="email icon" />}
             placeholder="Email address"
             className="text-input"
           />
@@ -82,7 +82,7 @@ const Login = () => {
           ]}
         >
           <Input.Password
-            prefix={<img src={passwordIcon} />}
+            prefix={<img src={passwordIcon} alt="password icon" />}
             placeholder="Password"
             className="text-input"
           />

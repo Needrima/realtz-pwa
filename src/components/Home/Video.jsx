@@ -100,21 +100,21 @@ const Video = () => {
             </div>
 
             <div className='mb-4'>
-                <img className='d-block' src={commentIcon} alt="like video" />
+                <img className='d-block' src={commentIcon} alt="comment on video" />
                 <div className='text-light text-center fw-bold'>596</div>
             </div>
 
             <div className='mb-4'>
-                <img className='d-block' src={saveIcon} alt="like video" />
+                <img className='d-block' src={saveIcon} alt="save video" />
                 <div className='text-light text-center fw-bold'>200</div>
             </div>
 
             <div className='mb-4'>
-                <img className='d-block' src={shareIcon} alt="like video" />
+                <img className='d-block' src={shareIcon} alt="share video" />
             </div>
 
             <div className='mb-4'>
-                <img className='d-block' src={profileIcon} alt="like video" />
+                <img className='d-block' src={profileIcon} alt="view owners profile" />
             </div>
         </div>
 
