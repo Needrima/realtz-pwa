@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import video from '../../assets/videos/video.mp4'
+// import video from '../../assets/videos/video.mp4'
 import profileIcon from '../../assets/icons/profile-circle.svg'
 import saveIcon from '../../assets/icons/bookmark-white.svg'
 import likeIcon from '../../assets/icons/heart-white.svg'
@@ -10,21 +10,15 @@ import { Drawer, Spin } from 'antd'
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import Comment from './Comment'
 
-const Video = () => {
+const Video = ({video}) => {
     const videoRef = useRef();
     const [state, setState] = useState({
         paused: true,
         muted: true,
         videoOutOfView: false,
         pausePlayImgVisible: true,
-        commentsBoxOpen: false,
-        commentsData: null,
-        fetchingComments: false,
-        nextCommentsPage: 2, // assuming initial page on load to be 1
-        previousCommmentPage: 0, // assuming initial page on load to be 1
     })
-    const {paused, muted, videoOutOfView, pausePlayImgVisible, commentsBoxOpen,
-      fetchingComments, commentsData, nextCommentsPage} = state;
+    const {paused, muted, videoOutOfView, pausePlayImgVisible } = state;
 
     // handle pause and play
     const pausePlay = () => {
@@ -97,105 +91,15 @@ const Video = () => {
         return () => clearTimeout(timeout);
     }, [pausePlayImgVisible]); 
 
-    const loadInitialComments = () => {
-      fetchMoreComments(1)
-    }
-    // load initial comments
-    useEffect(() => {
-      loadInitialComments();
-    }, [])
-
-    const fetchMoreComments = (page) => {
-      if (fetchingComments) return
-
-      setState(state => ({
-        ...state,
-        fetchingComments: true
-      }))
-    }
-
-    const commentsRef = useInfiniteScroll({
-      // Function to fetch more items
-      next: () => fetchMoreComments(nextCommentsPage),
-      // The number of items loaded if you use the "Y-scroll" axis ("up" and "down")
-      // if you are using the "X-scroll" axis ("left" and "right") use "columnCount" instead
-      // you can also use "rowCount" and "columnCount" if you use "Y-scroll" and "X-scroll" at the same time 
-      rowCount: commentsData ? commentsData?.comments ? commentsData?.comments?.length : 0 : 0,
-      // Whether there are more items to load
-      // if marked "true" in the specified direction, it will try to load more items if the threshold is reached
-      // support for all directions "up", "down", "left", "right", both individually and in all directions at the same time
-      hasMore: { down: commentsData ? commentsData?.has_next : false },
-    });
-
   return (
     <div ref={videoDivRef} className='w-100 vh-100 position-relative'>
         <video ref={videoRef} loop className='w-100 vh-100 object-fit-fill' onClick={pausePlay}>
             <source src={video} type="video/mp4" />
         </video>
 
-        <div className='position-absolute bottom-0 mb-5' style={{right: '10%'}}>
-            <div className='mb-4'>
-                <img className='d-block' src={likeIcon} alt="like video" />
-                <div className='text-light text-center fw-bold'>1k</div>
-            </div>
-
-            <div className='mb-4'>
-                <img className='d-block' src={commentIcon} alt="comment on video" onClick={() => setState(state => ({...state, commentsBoxOpen: true}))} />
-                <div className='text-light text-center fw-bold'>596</div>
-            </div>
-
-            <div className='mb-4'>
-                <img className='d-block' src={saveIcon} alt="save video" />
-                <div className='text-light text-center fw-bold'>200</div>
-            </div>
-
-            <div className='mb-4'>
-                <img className='d-block' src={shareIcon} alt="share video" />
-            </div>
-
-            <div className='mb-4'>
-                <img className='d-block' src={profileIcon} alt="view owners profile" />
-            </div>
-        </div>
-
         <img className={`position-absolute top-50 start-50 ${pausePlayImgVisible ? 'visible' : 'fade-in-element'} pause-play-img`}
          src={playIcon} alt="play icon" 
          onClick={pausePlay} />
-        
-        <div className='position-absolute bottom-0 text-light mb-4' style={{left: '4%'}}>
-            <div className='fs-4'><span className='fs-1 fw-bold'>John Doe</span>. Nov 2nd</div>
-            <div className='fs-4' style={{width: "80%"}}>4 Bedrooms Duplex #realestate #construction #design ... <u className='fw-bold'>more</u></div>
-        </div>
-
-        <Drawer
-          open={commentsBoxOpen}
-          title={<div className='text-primary fw-bold'>Comments</div>}
-          // footer={} // react node 
-          closable={true}
-          placement='bottom'
-          height={'50%'}
-          onClose={() => setState(state => ({...state, commentsBoxOpen: false}))}
-        >
-          <div 
-            ref={commentsRef} 
-            style={{
-              height: '100%',
-              overflowY: 'auto',
-            }}
-          >
-
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-
-            {fetchingComments && <div className='text-center text-primary fw-bold'>
-                <span className='me-2'>Loading</span> <Spin spinning={fetchingComments} />
-            </div>}
-          </div>
-          
-          {commentsData ? !commentsData?.has_next : <div className='text-center text-primary fw-bold'>no more comments</div>}
-        </Drawer>
     </div>
   )
 }

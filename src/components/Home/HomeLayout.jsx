@@ -15,6 +15,7 @@ const HomeLayout = () => {
     <div className='bg-dark vh-100'>
       {tab === 'home' && <InfiniteScroll
         dataLength={homeProducts.length} //This is important field to render the next data
+        hasMore={!homeProductsData ? true : homeProductsData?.has_next} 
         next={fetchData} // triggers if hasMore={true}
         loader={
         <div className={`mb-3 d-flex align-items-center ${homeProductsData ? '' : 'product-loading-center'}`}>
@@ -22,7 +23,7 @@ const HomeLayout = () => {
           <Spin />
         </div>} // triggers if hasMore={true}
         endMessage={
-          <p className={`text-center text-light fw-bold ${homeProductsData ? '' : 'product-loading-center'}`}>
+          <p className={`text-center fw-bold ${homeProductsData ? '' : 'product-loading-center'}`}>
             <b>no more {tab} feeds</b>
           </p>
         } // triggers if hasMore={false}
@@ -44,8 +45,8 @@ const HomeLayout = () => {
           <Spin />
         </div>} // triggers if hasMore={true}
         endMessage={
-          <p className='text-center text-light fw-bold'>
-            <b>No more {tab} feeds</b>
+          <p className='text-center fw-bold'>
+            <b>no more {tab} feeds</b>
           </p>
         } // triggers if hasMore={false}
         // below props only if you need pull down functionality
