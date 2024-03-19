@@ -7,14 +7,15 @@ import saveIcon from '../../assets/icons/bookmark-white.svg'
 import likeIcon from '../../assets/icons/heart-white.svg'
 import commentIcon from '../../assets/icons/comment.svg'
 import shareIcon from '../../assets/icons/share-white.svg'
-import { Drawer, Spin } from 'antd'
+import { Drawer, Spin, message } from 'antd'
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import Comment from './Comment'
 import { useSelector } from 'react-redux';
+import { axiosProductInstance } from '../../api/axoios';
 
 const Product = ({product}) => {
   console.log(product)
-  const {user} = useSelector(state => state.authReducer)
+  const {user, token} = useSelector(state => state.authReducer)
   console.log(user)
   const [state, setState] = useState({
       commentsBoxOpen: false,
@@ -23,12 +24,56 @@ const Product = ({product}) => {
       nextCommentsPage: 2, // assuming initial page on load to be 1
       previousCommmentPage: 0, // assuming initial page on load to be 1
       productLiked: product?.liked_by.includes(user.reference),
+      numLikes: product?.liked_by.length,
       productSaved: product?.saved_by.includes(user.reference)
   })
-  const { commentsBoxOpen, fetchingComments, commentsData, productLiked, productSaved} = state;
+  const { commentsBoxOpen, fetchingComments, commentsData, productLiked, productSaved, numLikes } = state;
 
-  const likeProduct = () => {
+  const likeProduct = async () => {
     console.log('liking product')
+    setState(state => ({
+      ...state,
+      productLiked: true,
+      numLikes: state.numLikes + 1,
+    }))
+
+    try {
+      const {data} = await axiosProductInstance.get(`auth/like/${product.reference}`, {
+        headers: {
+          token: token
+        }
+      })
+    }catch(error) {
+      setState(state => ({
+        ...state,
+        productLiked: false,
+        numLikes: state.numLikes + 1,
+      }))
+    }
+  }
+
+  const unLikeProduct = async () => {
+    console.log('unliking product')
+    setState(state => ({
+      ...state,
+      productLiked: false,
+      numLikes: state.numLikes - 1,
+    }))
+
+    try {
+      const {data} = await axiosProductInstance.get(`auth/unlike/${product.reference}`, {
+        headers: {
+          token: token
+        }
+      })
+    }catch(error) {
+      console.log(error)
+      setState(state => ({
+        ...state,
+        productLiked: false,
+        numLikes: state.numLikes + 1,
+      }))
+    }
   }
 
   // const commentsRef = useInfiniteScroll({
@@ -85,11 +130,11 @@ const Product = ({product}) => {
         <div className='position-absolute bottom-0 mb-5' style={{right: '10%'}}>
             <div className='mb-4'>
                 {productLiked ? 
-                <img className='d-block' src={likeIcon} alt="like video" /> // chage this to red like image
+                <img onClick={unLikeProduct} className='d-block' src={likeIcon} alt="like video" /> // chage this to red like image
                 : 
                 <img onClick={likeProduct} className='d-block' src={likeIcon} alt="like video" /> 
                 }
-                <div className='text-light text-center fw-bold'>{product?.liked_by.length}</div>
+                <div className='text-light text-center fw-bold'>{numLikes}</div>
             </div>
 
             <div className='mb-4'>
