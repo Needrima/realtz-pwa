@@ -1,14 +1,19 @@
 import Layout from "../../components/Layout";
 import React, { createContext, useEffect, useState } from "react";
 import HomeLayout from "../../components/Home/HomeLayout";
+import { Spin } from "antd";
+import { LoadingOutlined } from '@ant-design/icons';
 
 export const HomeContext = createContext(null);
 const Home = () => {
   const [state, setState] = useState({
     tab: "home",
-    productsData: null,
+    homeProductsData: null,
+    homeProducts: [],
+    trendingProductsData: null,
+    trendingProducts: []
   });
-  const { tab, productsData } = state;
+  const { tab, homeProductsData, trendingProductsData, homeProducts, trendingProducts } = state;
 
   const changeTab = (tab) => {
     setState((state) => ({
@@ -17,17 +22,23 @@ const Home = () => {
     }));
   };
 
-  useEffect(() => {}, [tab])
+  useEffect(() => {
+    
+  }, [tab])
+
   return (
     <HomeContext.Provider
       value={{
         tab,
         changeTab,
-        productsData
+        homeProductsData,
+        trendingProductsData,
+        homeProducts, 
+        trendingProducts
       }}
     >
       <Layout>
-        <HomeLayout />
+          <HomeLayout />
       </Layout>
     </HomeContext.Provider>
   );

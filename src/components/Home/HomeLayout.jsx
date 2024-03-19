@@ -6,19 +6,40 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { Drawer, Spin } from 'antd'
 
 const HomeLayout = () => {
-  const {tab, changeTab} = useContext(HomeContext);
+  const {tab, changeTab, homeProductsData, trendingProductsData, homeProducts, trendingProducts} = useContext(HomeContext);
   const fetchData = () => {
     console.log('fetching more data ...')
   }
   
   return (
-    <div className='bg-dark'>
-      <InfiniteScroll
-        dataLength={2} //This is important field to render the next data
-        hasMore={true} 
+    <div className='bg-dark vh-100'>
+      {tab === 'home' && <InfiniteScroll
+        dataLength={homeProducts.length} //This is important field to render the next data
         next={fetchData} // triggers if hasMore={true}
         loader={
-        <div className='mb-3 d-flex justify-content-center align-items-center'>
+        <div className={`mb-3 d-flex align-items-center ${homeProductsData ? '' : 'product-loading-center'}`}>
+          <div className='text-light fw-bold fs-3 me-3'>Loading</div>
+          <Spin />
+        </div>} // triggers if hasMore={true}
+        endMessage={
+          <p className={`text-center text-light fw-bold ${homeProductsData ? '' : 'product-loading-center'}`}>
+            <b>No more {tab} feeds</b>
+          </p>
+        } // triggers if hasMore={false}
+        // below props only if you need pull down functionality
+        refreshFunction={() => window.location.reload()}
+        pullDownToRefresh
+        pullDownToRefreshThreshold={50}
+      >
+        {homeProducts && homeProducts.length !== 0 && homeProducts.map((product, index) => <Product key={index} product={product} />)}
+      </InfiniteScroll>}
+
+      {tab === 'trending' && <InfiniteScroll
+        dataLength={trendingProducts.length} //This is important field to render the next data
+        hasMore={!trendingProductsData ? true : trendingProductsData?.has_next} 
+        next={fetchData} // triggers if hasMore={true}
+        loader={
+        <div className={`mb-3 d-flex align-items-center ${trendingProductsData ? '' : 'product-loading-center'}`}>
           <div className='text-light fw-bold fs-3 me-3'>Loading</div>
           <Spin />
         </div>} // triggers if hasMore={true}
@@ -29,18 +50,11 @@ const HomeLayout = () => {
         } // triggers if hasMore={false}
         // below props only if you need pull down functionality
         refreshFunction={() => window.location.reload()}
-        // pullDownToRefresh
-        // pullDownToRefreshThreshold={50}
-        // pullDownToRefreshContent={
-        //   <h3 className='text-center text-light fw-bold'>&#8595; Pull down to refresh</h3>
-        // }
-        // releaseToRefreshContent={
-        //   <h3 className='text-center text-light fw-bold'>&#8593; Release to refresh</h3>
-        // }
+        pullDownToRefresh
+        pullDownToRefreshThreshold={50}
       >
-        <Product />
-        <Product />
-      </InfiniteScroll>
+      {trendingProducts && trendingProducts.length !== 0 && trendingProducts.map((product, index) => <Product key={index} product={product} />)}
+      </InfiniteScroll>}
 
       <div
         className="position-fixed w-100 d-flex justify-content-center"

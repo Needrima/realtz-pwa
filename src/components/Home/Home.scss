@@ -14,6 +14,13 @@
     transform: translate(-50%, -50%);
 }
 
+.product-loading-center {
+  left: 50%;
+  bottom: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+}
+
 .fade-in-element {
   opacity: 0;
   transition: opacity 1s ease; /* Adjust the duration and easing function as needed */
@@ -23,6 +30,6 @@
     opacity: 1;
 }
 
-.ant-spin .ant-spin-dot-item {
+.ant-spin .ant-spin-dot .ant-spin-dot-item {
     background-color: #ffff; /* Change to the desired color */
 }
