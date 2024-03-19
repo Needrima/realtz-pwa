@@ -23,7 +23,7 @@ const HomeLayout = () => {
         </div>} // triggers if hasMore={true}
         endMessage={
           <p className={`text-center text-light fw-bold ${homeProductsData ? '' : 'product-loading-center'}`}>
-            <b>No more {tab} feeds</b>
+            <b>no more {tab} feeds</b>
           </p>
         } // triggers if hasMore={false}
         // below props only if you need pull down functionality

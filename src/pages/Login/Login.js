@@ -5,7 +5,7 @@ import emailIcon from "../../assets/icons/sms.svg";
 import passwordIcon from "../../assets/icons/password.svg";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/Actions";
-import axiosInstance from "../../api/axoios";
+import { axiosUserInstance } from "../../api/axoios";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Login = () => {
     }
 
     try {
-      const {data} = await axiosInstance.post("user/login", reqData);
+      const {data} = await axiosUserInstance.post("login", reqData);
       console.log(data);
       const loginData = {
         token: data?.token,

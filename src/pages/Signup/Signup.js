@@ -10,7 +10,7 @@ import OtpInput from 'react-otp-input';
 import { ALPHABET_REGEX, PHONE_REGEX, PASSWORD_SYMBOLS_REGEX, PASSWORD_UPPERCASE_REGEX, PASSWORD_LOWERCASE_REGEX, PASSWORD_NUM_REGEX } from '../../misc/regex'
 import timerIcon from '../../assets/icons/timer.svg'
 import { useTimer } from 'react-timer-hook';
-import axiosInstance from '../../api/axoios'
+import {axiosUserInstance} from '../../api/axoios'
 
 const Signup = () => {
   // react hooks
@@ -63,7 +63,7 @@ const Signup = () => {
       }
   
       try {
-        const {data} = await axiosInstance.post("user/verify-email", reqData);
+        const {data} = await axiosUserInstance.post("user/verify-email", reqData);
   
         setState(state => ({
           ...state,
@@ -98,7 +98,7 @@ const Signup = () => {
     }
 
     try {
-      const {data} = await axiosInstance.post("user/signup", reqData);
+      const {data} = await axiosUserInstance.post("signup", reqData);
 
       setState(state => ({
         ...state,
@@ -130,7 +130,7 @@ const Signup = () => {
     }
 
     try {
-      const {data} = await axiosInstance.post("user/send-otp", reqData);
+      const {data} = await axiosUserInstance.post("send-otp", reqData);
 
       setState(state => ({
         ...state,
