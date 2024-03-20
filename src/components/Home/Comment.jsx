@@ -1,8 +1,9 @@
 import { Drawer, Spin } from 'antd';
 import React, { useState } from 'react'
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
+import TimeConverter from '../../misc/TimeConverter';
 
-const Comment = () => {
+const Comment = ({comment}) => {
   const [state, setState] = useState({
     repliesBoxOpen: false,
     repliesData: null,
@@ -36,11 +37,11 @@ const Comment = () => {
   return (
     <>
       <div className='mb-3'>
-        <div className='mb-2'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, excepturi eum laboriosam quisquam iusto unde debitis aliquam aperiam quae adipisci? Nostrum cumque, ab porro ipsa asperiores corrupti! Similique, ratione cupiditate? <span className='text-primary fw-bold text-decoration-underline' onClick={() => setState({...state, repliesBoxOpen: true})}>reply</span></div>
+        <div className='mb-2'>{comment?.comment}<span className='text-primary fw-bold text-decoration-underline' onClick={() => setState({...state, repliesBoxOpen: true})}>reply</span></div>
         
         <div className='d-flex justify-content-between text-primary fw-bold'>
-          <div>Oyebode Amirdeen</div>
-          <div>9:20, 24 Feb</div>
+          <div>{comment?.commenter}</div>
+          <div>{TimeConverter(comment?.updated_on)}</div>
         </div>
       </div>
 

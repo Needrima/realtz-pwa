@@ -14,21 +14,18 @@ import { useSelector } from 'react-redux';
 import { axiosProductInstance } from '../../api/axoios';
 
 const Product = ({product}) => {
-  console.log(product)
   const {user, token} = useSelector(state => state.authReducer)
-  console.log(user)
   const [state, setState] = useState({
       commentsBoxOpen: false,
       commentsData: null,
+      comments: [],
       fetchingComments: false,
-      nextCommentsPage: 2, // assuming initial page on load to be 1
-      previousCommmentPage: 0, // assuming initial page on load to be 1
       productLiked: product?.liked_by.includes(user.reference),
       numLikes: product?.liked_by.length,
       productSaved: product?.saved_by.includes(user.reference),
       numComments: product?.commented_on_by.length
   })
-  const { commentsBoxOpen, fetchingComments, commentsData, productLiked, productSaved, numLikes, numComments } = state;
+  const { commentsBoxOpen, fetchingComments, commentsData, comments, productLiked, productSaved, numLikes, numComments } = state;
 
   const likeProduct = async () => {
     setState(state => ({
@@ -87,6 +84,7 @@ const Product = ({product}) => {
           token: token
         }
       })
+      message.success(data?.message)
     }catch(error) {
       setState(state => ({
         ...state,
@@ -102,11 +100,12 @@ const Product = ({product}) => {
     }))
 
     try {
-      const {data} = await axiosProductInstance.get(`auth/unlike/${product.reference}`, {
+      const {data} = await axiosProductInstance.get(`auth/unsave/${product.reference}`, {
         headers: {
           token: token
         }
       })
+      message.success(data?.message)
     }catch(error) {
       setState(state => ({
         ...state,
@@ -115,18 +114,53 @@ const Product = ({product}) => {
     }
   }
 
-  // const commentsRef = useInfiniteScroll({
-  //   // Function to fetch more items
-  //   next: () => fetchMoreComments(nextCommentsPage),
-  //   // The number of items loaded if you use the "Y-scroll" axis ("up" and "down")
-  //   // if you are using the "X-scroll" axis ("left" and "right") use "columnCount" instead
-  //   // you can also use "rowCount" and "columnCount" if you use "Y-scroll" and "X-scroll" at the same time 
-  //   rowCount: commentsData ? commentsData?.comments ? commentsData?.comments?.length : 0 : 0,
-  //   // Whether there are more items to load
-  //   // if marked "true" in the specified direction, it will try to load more items if the threshold is reached
-  //   // support for all directions "up", "down", "left", "right", both individually and in all directions at the same time
-  //   hasMore: { down: commentsData ? commentsData?.has_next : false },
-  // });
+  const getProductComments = async (page) => {
+    console.log('fetching comments')
+    setState(state => ({
+      ...state,
+      fetchingComments: true,
+    }))
+    try {
+      const {data} = await axiosProductInstance.get(`auth/get-product-comments/${product?.reference}/15/${page}`, {
+        headers: {
+          token: token
+        }
+      })
+      console.log(data);
+      setState(state => ({
+        ...state,
+        fetchingComments: false,
+        commentsData: data,
+        comments: [...state.comments, ...data?.comments]
+      }))
+    }catch(error) {
+      console.log(error)
+      setState(state => ({
+        ...state,
+        fetchingComments: false,
+      }))
+    }
+  }
+
+  const openComments = () => {
+    setState(state => ({
+      ...state, commentsBoxOpen: true
+    }))
+    getProductComments(1);
+  }
+
+  const commentsRef = useInfiniteScroll({
+    // Function to fetch more items
+    next: () => getProductComments(commentsData?.next_page),
+    // The number of items loaded if you use the "Y-scroll" axis ("up" and "down")
+    // if you are using the "X-scroll" axis ("left" and "right") use "columnCount" instead
+    // you can also use "rowCount" and "columnCount" if you use "Y-scroll" and "X-scroll" at the same time 
+    rowCount: commentsData ? commentsData?.comments ? commentsData?.comments?.length : 0 : 0,
+    // Whether there are more items to load
+    // if marked "true" in the specified direction, it will try to load more items if the threshold is reached
+    // support for all directions "up", "down", "left", "right", both individually and in all directions at the same time
+    hasMore: { down: !commentsData ? true : commentsData?.has_next },
+  });
 
   //carousel responsveness property
   const responsive = {
@@ -177,7 +211,7 @@ const Product = ({product}) => {
             </div>
 
             <div className='mb-4'>
-                <img className='d-block' src={commentIcon} alt="comment on video" onClick={() => setState(state => ({...state, commentsBoxOpen: true}))} />
+                <img className='d-block' src={commentIcon} alt="comment on video" onClick={openComments} />
                 <div className='text-light text-center fw-bold'>{numComments}</div>
             </div>
 
@@ -214,24 +248,25 @@ const Product = ({product}) => {
           onClose={() => setState(state => ({...state, commentsBoxOpen: false}))}
         >
           <div 
-            // ref={commentsRef} 
+            ref={commentsRef} 
             style={{
               height: '100%',
               overflowY: 'auto',
             }}
-          >
-
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-
-            {fetchingComments && <div className='text-center text-primary fw-bold'>
-                <span className='me-2'>Loading</span> <Spin spinning={fetchingComments} />
-            </div>}
+          > 
+            {comments && comments?.length !== 0 ? 
+            comments.map((comment, index) => <Comment key={index} value={comment} />)
+            :
+            <div className='fw-bold text-center text-primary mt-5'>no comments yet</div>
+            }
           </div>
+          {fetchingComments && 
+            <div className='text-center text-primary fw-bold'>
+                <span className='me-2'>Loading</span> <Spin spinning={fetchingComments} />
+            </div>
+          }
           
-          {commentsData ? !commentsData?.has_next : <div className='text-center text-primary fw-bold'>no more comments</div>}
+          {commentsData && !commentsData?.has_next && <div className='text-center text-primary fw-bold'>no more comments</div>}
         </Drawer>
     </div>
   )

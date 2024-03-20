@@ -31,7 +31,6 @@ const Home = () => {
           token: token
         }
       })
-      console.log(data)
 
       setState(state => ({
         ...state,
@@ -50,7 +49,6 @@ const Home = () => {
           token: token
         }
       })
-      console.log(data)
 
       setState(state => ({
         ...state,
