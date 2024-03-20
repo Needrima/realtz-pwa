@@ -12,6 +12,7 @@ import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import Comment from './Comment'
 import { useSelector } from 'react-redux';
 import { axiosProductInstance } from '../../api/axoios';
+import { TextArea } from 'antd-mobile'
 
 const Product = ({product}) => {
   const {user, token} = useSelector(state => state.authReducer)
@@ -243,11 +244,28 @@ const Product = ({product}) => {
         <Drawer
           open={commentsBoxOpen}
           title={<div className='text-primary fw-bold'>Comments</div>}
-          footer={commentsData && !commentsData?.has_next && <div className='text-center text-primary fw-bold'>no more comments</div>} // react node 
+          footer={commentsData && !commentsData?.has_next && 
+          <>
+            <Form onFinish={addComment}>
+              <Form.Item
+                name="comment"
+              >
+                <TextArea
+                  placeholder='Enter comment ...'
+                  // value={value}
+                  // onChange={() => console.log('changigng')}
+                  className='border border-primary px-2'
+                  />
+              </Form.Item>
+            </Form>
+            <div className='text-center text-primary fw-bold'>no more comments</div>
+          </>
+          } // react node 
           closable={true}
           placement='bottom'
           height={'50%'}
           onClose={() => setState(state => ({...state, commentsBoxOpen: false}))}
+          className='position-relative'
         >
           <div 
             ref={commentsRef} 
@@ -267,22 +285,6 @@ const Product = ({product}) => {
                 <span className='me-2'>Loading</span> <Spin spinning={fetchingComments} />
             </div>
           }
-
-          <Form onFinish={addComment}>
-            <Form.Item
-              name="comment"
-            >
-              <Input
-                placeholder="Enter comment"
-                className="text-input"
-                style={{width: '90%'}}
-              />
-            </Form.Item>
-              <button className="btn btn-primary fw-bold">
-                {/* {loading ? <Spin spinning={loading} /> : '>'} */}
-                {'>'}
-              </button>
-          </Form>
         </Drawer>
     </div>
   )
