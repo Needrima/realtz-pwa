@@ -27,7 +27,7 @@ const Signup = () => {
 
   // external libraries hooks
   const expiryTimestamp = new Date();
-  expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 120); // two minutes timer
+  expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 180); // three minutes timer
 
   const {
     // totalSeconds,
