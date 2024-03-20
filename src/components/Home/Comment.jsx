@@ -38,7 +38,12 @@ const Comment = ({comment}) => {
   return (
     <>
       <div className='mb-3'>
-        <div className='mb-2'>{comment?.comment}<span className='text-primary fw-bold text-decoration-underline' onClick={() => setState({...state, repliesBoxOpen: true})}>reply</span></div>
+        <div className='mb-2'>
+          {comment?.comment} 
+          <span className='text-primary fw-bold text-decoration-underline me-2' onClick={() => setState({...state, repliesBoxOpen: true})}>Reply</span>
+          <span className='text-primary fw-bold text-decoration-underline me-2'>Edit</span>
+          <span className='text-primary fw-bold text-decoration-underline'>Delete</span>
+        </div>
         
         <div className='d-flex justify-content-between text-primary fw-bold'>
           <div>{comment?.commenter}</div>
