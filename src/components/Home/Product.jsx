@@ -7,7 +7,7 @@ import saveIcon from '../../assets/icons/bookmark-white.svg'
 import likeIcon from '../../assets/icons/heart-white.svg'
 import commentIcon from '../../assets/icons/comment.svg'
 import shareIcon from '../../assets/icons/share-white.svg'
-import { Drawer, Spin, message } from 'antd'
+import { Drawer, Spin, message, Input, Form } from 'antd'
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import Comment from './Comment'
 import { useSelector } from 'react-redux';
@@ -126,7 +126,6 @@ const Product = ({product}) => {
           token: token
         }
       })
-      console.log(data);
       setState(state => ({
         ...state,
         fetchingComments: false,
@@ -134,7 +133,6 @@ const Product = ({product}) => {
         comments: [...state.comments, ...data?.comments]
       }))
     }catch(error) {
-      console.log(error)
       setState(state => ({
         ...state,
         fetchingComments: false,
@@ -147,6 +145,10 @@ const Product = ({product}) => {
       ...state, commentsBoxOpen: true
     }))
     getProductComments(1);
+  }
+
+  const addComment = () => {
+    console.log('adding comment');
   }
 
   const commentsRef = useInfiniteScroll({
@@ -241,7 +243,7 @@ const Product = ({product}) => {
         <Drawer
           open={commentsBoxOpen}
           title={<div className='text-primary fw-bold'>Comments</div>}
-          // footer={} // react node 
+          footer={commentsData && !commentsData?.has_next && <div className='text-center text-primary fw-bold'>no more comments</div>} // react node 
           closable={true}
           placement='bottom'
           height={'50%'}
@@ -265,8 +267,22 @@ const Product = ({product}) => {
                 <span className='me-2'>Loading</span> <Spin spinning={fetchingComments} />
             </div>
           }
-          
-          {commentsData && !commentsData?.has_next && <div className='text-center text-primary fw-bold'>no more comments</div>}
+
+          <Form onFinish={addComment}>
+            <Form.Item
+              name="comment"
+            >
+              <Input
+                placeholder="Enter comment"
+                className="text-input"
+                style={{width: '90%'}}
+              />
+            </Form.Item>
+              <button className="btn btn-primary fw-bold">
+                {/* {loading ? <Spin spinning={loading} /> : '>'} */}
+                {'>'}
+              </button>
+          </Form>
         </Drawer>
     </div>
   )
