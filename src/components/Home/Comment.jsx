@@ -40,7 +40,7 @@ const Comment = ({comment, deleteComment}) => {
     <>
       <div className='mb-3'>
         <div className='mb-2'>
-          {comment?.comment} 
+          <span className='me-2'>{comment?.comment}</span> 
           <span className='text-primary fw-bold text-decoration-underline me-2' onClick={() => setState({...state, repliesBoxOpen: true})}>Reply</span>
           {user?.fullname === comment?.commenter && <span className='text-primary fw-bold text-decoration-underline me-2'>Edit</span>}
           {user?.fullname === comment?.commenter && <span className='text-primary fw-bold text-decoration-underline' onClick={() => deleteComment(comment?.reference)}>Delete</span>}

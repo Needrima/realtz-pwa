@@ -16,6 +16,7 @@ import { TextArea } from 'antd-mobile'
 import TimeConverter from '../../misc/TimeConverter';
 
 const Product = ({product}) => {
+  console.log(product)
   const {user, token} = useSelector(state => state.authReducer)
   const [state, setState] = useState({
       commentsBoxOpen: false,
@@ -146,7 +147,10 @@ const Product = ({product}) => {
     setState(state => ({
       ...state, commentsBoxOpen: true
     }))
-    getProductComments(1);
+
+    if (comments.length === 0) {
+      getProductComments(1);
+    }
   }
 
   const addComment = async () => {
@@ -169,6 +173,7 @@ const Product = ({product}) => {
         addingNewComment: false,
         comments: [...state.comments, data?.added_comment],
         newComment: '',
+        numComments: state.numComments + 1,
       }))
     }catch(error) {
       message.error(error?.response?.data?.error || 'could not add comment')
@@ -188,11 +193,10 @@ const Product = ({product}) => {
         }
       })
       message.success(data?.message)
-      let newNumComments = product?.commented_on_by.filter(reference => reference !== comment_reference)
       setState(state => ({
         ...state,
         comments: state.comments.filter(comment => comment?.reference !== data?.deleted_reference),
-        numComments: newNumComments.length,
+        numComments: state.numComments - 1
       }))
     }catch(error) {
       console.log(error)
@@ -292,7 +296,7 @@ const Product = ({product}) => {
         <Drawer
           open={commentsBoxOpen}
           title={<div className='text-primary fw-bold'>Comments</div>}
-          footer={commentsData && !commentsData?.has_next && 
+          footer={
           <>
             <Form onFinish={addComment}>
               <Form.Item
@@ -312,7 +316,7 @@ const Product = ({product}) => {
               </Form.Item>
               <button disabled={addingNewComment || !newComment} type='submit' className='btn btn-primary'>{addingNewComment ? <Spin spinning={addingNewComment} />: 'Comment'}</button>
             </Form>
-            <div className='text-center text-primary fw-bold'>no more comments</div>
+            {commentsData && !commentsData?.has_next && <div className='text-center text-primary fw-bold'>no more comments</div>}
           </>
           } // react node 
           closable={true}
