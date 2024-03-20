@@ -13,6 +13,7 @@ import Comment from './Comment'
 import { useSelector } from 'react-redux';
 import { axiosProductInstance } from '../../api/axoios';
 import { TextArea } from 'antd-mobile'
+import TimeConverter from '../../misc/TimeConverter';
 
 const Product = ({product}) => {
   const {user, token} = useSelector(state => state.authReducer)
@@ -66,7 +67,6 @@ const Product = ({product}) => {
         }
       })
     }catch(error) {
-      console.log(error)
       setState(state => ({
         ...state,
         productLiked: false,
@@ -118,7 +118,6 @@ const Product = ({product}) => {
   }
 
   const getProductComments = async (page) => {
-    console.log('fetching comments')
     setState(state => ({
       ...state,
       fetchingComments: true,
@@ -129,7 +128,6 @@ const Product = ({product}) => {
           token: token
         }
       })
-      console.log(data?.comments);
       setState(state => ({
         ...state,
         fetchingComments: false,
@@ -179,6 +177,25 @@ const Product = ({product}) => {
         addingNewComment: false,
         newComment: '',
       }))
+    }
+  }
+
+  const deleteComment = async (comment_reference) => {
+    try {
+      const {data} = await axiosProductInstance.get(`/auth/delete-comment/${product?.reference}/${comment_reference}`, {
+        headers: {
+          token: token,
+        }
+      })
+      message.success(data?.message)
+      let newNumComments = product?.commented_on_by.filter(reference => reference !== comment_reference)
+      setState(state => ({
+        ...state,
+        comments: state.comments.filter(comment => comment?.reference !== data?.deleted_reference),
+        numComments: newNumComments.length,
+      }))
+    }catch(error) {
+      console.log(error)
     }
   }
 
@@ -267,7 +284,8 @@ const Product = ({product}) => {
         </div>
         
         <div className='position-absolute bottom-0 text-light mb-4' style={{left: '4%'}}>
-            <div className='fs-4'><span className='fs-1 fw-bold'>John Doe</span>. Nov 2nd</div>
+            <div className='fs-4 fw-bold'>{product?.owner}</div>
+            <div className='fs-4'>{TimeConverter(product?.created_on)}</div>
             <div className='fs-4' style={{width: "80%"}}>4 Bedrooms Duplex #realestate #construction #design ... <u className='fw-bold'>more</u></div>
         </div>
 
@@ -310,7 +328,7 @@ const Product = ({product}) => {
             }}
           > 
             {comments && comments?.length !== 0 ? 
-            comments?.map((comment, index) => <Comment key={index} comment={comment} />)
+            comments?.map((comment, index) => <Comment key={index} comment={comment} deleteComment={deleteComment} />)
             :
             <div className='fw-bold text-center text-primary mt-5'>no comments yet</div>
             }

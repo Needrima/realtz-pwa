@@ -2,9 +2,10 @@ import { Drawer, Spin } from 'antd';
 import React, { useState } from 'react'
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import TimeConverter from '../../misc/TimeConverter';
+import { useSelector } from 'react-redux';
 
-const Comment = ({comment}) => {
-  console.log(comment);
+const Comment = ({comment, deleteComment}) => {
+  const {user, token} = useSelector(state => state.authReducer)
   const [state, setState] = useState({
     repliesBoxOpen: false,
     repliesData: null,
@@ -41,8 +42,8 @@ const Comment = ({comment}) => {
         <div className='mb-2'>
           {comment?.comment} 
           <span className='text-primary fw-bold text-decoration-underline me-2' onClick={() => setState({...state, repliesBoxOpen: true})}>Reply</span>
-          <span className='text-primary fw-bold text-decoration-underline me-2'>Edit</span>
-          <span className='text-primary fw-bold text-decoration-underline'>Delete</span>
+          {user?.fullname === comment?.commenter && <span className='text-primary fw-bold text-decoration-underline me-2'>Edit</span>}
+          {user?.fullname === comment?.commenter && <span className='text-primary fw-bold text-decoration-underline' onClick={() => deleteComment(comment?.reference)}>Delete</span>}
         </div>
         
         <div className='d-flex justify-content-between text-primary fw-bold'>
