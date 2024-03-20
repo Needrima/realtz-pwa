@@ -4,6 +4,7 @@ import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import TimeConverter from '../../misc/TimeConverter';
 
 const Comment = ({comment}) => {
+  console.log(comment);
   const [state, setState] = useState({
     repliesBoxOpen: false,
     repliesData: null,
@@ -41,7 +42,7 @@ const Comment = ({comment}) => {
         
         <div className='d-flex justify-content-between text-primary fw-bold'>
           <div>{comment?.commenter}</div>
-          <div>{TimeConverter(comment?.updated_on)}</div>
+          <div>{TimeConverter(comment?.created_on)}</div>
         </div>
       </div>
 

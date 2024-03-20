@@ -24,9 +24,11 @@ const Product = ({product}) => {
       productLiked: product?.liked_by.includes(user.reference),
       numLikes: product?.liked_by.length,
       productSaved: product?.saved_by.includes(user.reference),
-      numComments: product?.commented_on_by.length
+      numComments: product?.commented_on_by.length,
+      newComment: '',
+      addingNewComment: false,
   })
-  const { commentsBoxOpen, fetchingComments, commentsData, comments, productLiked, productSaved, numLikes, numComments } = state;
+  const { commentsBoxOpen, fetchingComments, commentsData, comments, productLiked, productSaved, numLikes, numComments, newComment, addingNewComment } = state;
 
   const likeProduct = async () => {
     setState(state => ({
@@ -127,6 +129,7 @@ const Product = ({product}) => {
           token: token
         }
       })
+      console.log(data?.comments);
       setState(state => ({
         ...state,
         fetchingComments: false,
@@ -148,8 +151,35 @@ const Product = ({product}) => {
     getProductComments(1);
   }
 
-  const addComment = () => {
-    console.log('adding comment');
+  const addComment = async () => {
+    setState(state => ({
+      ...state,
+      addingNewComment: true,
+    }))
+
+    try {
+      const { data } = await axiosProductInstance.post(`/auth/add-comment/${product?.reference}`, {
+        comment: newComment
+      }, {
+        headers: {
+          token: token,
+        }
+      })
+      message.success(data?.message)
+      setState(state => ({
+        ...state,
+        addingNewComment: false,
+        comments: [...state.comments, data?.added_comment],
+        newComment: '',
+      }))
+    }catch(error) {
+      message.error(error?.response?.data?.error || 'could not add comment')
+      setState(state => ({
+        ...state,
+        addingNewComment: false,
+        newComment: '',
+      }))
+    }
   }
 
   const commentsRef = useInfiniteScroll({
@@ -252,20 +282,25 @@ const Product = ({product}) => {
               >
                 <TextArea
                   placeholder='Enter comment ...'
-                  // value={value}
-                  // onChange={() => console.log('changigng')}
-                  className='border border-primary px-2'
+                  name='comment'
+                  value={newComment}
+                  onChange={(val) => setState(state => ({
+                    ...state,
+                    newComment: val
+                  }))}
+                  disabled={addingNewComment}
+                  className='border border-primary px-2 mb-2'
                   />
               </Form.Item>
+              <button disabled={addingNewComment || !newComment} type='submit' className='btn btn-primary'>{addingNewComment ? <Spin spinning={addingNewComment} />: 'Comment'}</button>
             </Form>
             <div className='text-center text-primary fw-bold'>no more comments</div>
           </>
           } // react node 
           closable={true}
           placement='bottom'
-          height={'50%'}
+          height={'70%'}
           onClose={() => setState(state => ({...state, commentsBoxOpen: false}))}
-          className='position-relative'
         >
           <div 
             ref={commentsRef} 
@@ -275,7 +310,7 @@ const Product = ({product}) => {
             }}
           > 
             {comments && comments?.length !== 0 ? 
-            comments.map((comment, index) => <Comment key={index} value={comment} />)
+            comments?.map((comment, index) => <Comment key={index} comment={comment} />)
             :
             <div className='fw-bold text-center text-primary mt-5'>no comments yet</div>
             }
