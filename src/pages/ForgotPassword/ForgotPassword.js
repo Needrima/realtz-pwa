@@ -42,7 +42,7 @@ const ForgotPassword = () => {
 
   // OTP timer configuration
   const expiryTimestamp = new Date();
-  expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 120); // two minutes timer
+  expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 180); // three minutes timer
 
   const { seconds, minutes, isRunning, restart } = useTimer({
     expiryTimestamp,
@@ -89,7 +89,7 @@ const ForgotPassword = () => {
               hasFeedback
             >
               <Input
-                prefix={<img src={emailIcon} />}
+                prefix={<img src={emailIcon} alt="email icon" />}
                 placeholder="Email address"
                 className="text-input"
               />
@@ -132,7 +132,7 @@ const ForgotPassword = () => {
 
           <div className="text-center mt-10">
             <span className="otp-countdown p-3 rounded-4">
-              <img src={timerIcon} /> {minutes}:
+              <img src={timerIcon} alt="timer icon" /> {minutes}:
               {seconds.toLocaleString("en-US", {
                 minimumIntegerDigits: 2,
                 useGrouping: false,
