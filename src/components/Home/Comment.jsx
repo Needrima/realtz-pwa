@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import { axiosProductInstance } from '../../api/axoios';
 
 const Comment = ({comment, deleteComment}) => {
-  console.log('comment:', comment);
   const {user, token} = useSelector(state => state.authReducer)
   const [state, setState] = useState({
       repliesBoxOpen: false,
@@ -32,12 +31,12 @@ const Comment = ({comment, deleteComment}) => {
           token: token
         }
       })
-      console.log(data);
+      console.log('replies data', data?.replies);
       setState(state => ({
         ...state,
         fetchingReplies: false,
         repliesData: data, 
-        // replies: [...state.replies, ...data?.replies]
+        replies: [...state.replies, ...data?.replies]
       }))
     }catch(error) {
       setState(state => ({
@@ -71,6 +70,7 @@ const Comment = ({comment, deleteComment}) => {
           token: token,
         }
       })
+      console.log('added reply data:', data)
       message.success(data?.message)
       setState(state => ({
         ...state,
@@ -137,6 +137,7 @@ const Comment = ({comment, deleteComment}) => {
           <div>{comment?.commenter}</div>
           <div>{TimeConverter(comment?.created_on)}</div>
         </div>
+        <hr />
       </div>
 
         <Drawer
@@ -181,6 +182,7 @@ const Comment = ({comment, deleteComment}) => {
             replies?.map((reply, index) => 
             <div key={index} className='mb-3'>
               <div className='mb-2'>
+                  <div>{reply?.reply}</div> 
                   <div className='d-flex justify-content-end'>
                     {user?.fullname === reply?.replyer && <span className='text-primary fw-bold text-decoration-underline me-3'>Edit</span>}
                     {user?.fullname === reply?.replyer && <span className='text-primary fw-bold text-decoration-underline' onClick={() => deleteReply(reply?.reference)}>Delete</span>}
@@ -191,6 +193,7 @@ const Comment = ({comment, deleteComment}) => {
                 <div>{reply?.replyer}</div>
                 <div>{TimeConverter(reply?.created_on)}</div>
               </div>
+              <hr />
             </div>
             )
             :
