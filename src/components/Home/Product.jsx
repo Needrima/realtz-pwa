@@ -290,7 +290,9 @@ const Product = ({product}) => {
         <div className='position-absolute bottom-0 text-light mb-4' style={{left: '4%'}}>
             <div className='fs-4 fw-bold'>{product?.owner}</div>
             <div className='fs-4'>{TimeConverter(product?.created_on)}</div>
-            <div className='fs-4' style={{width: "80%"}}>{product?.description.slice(0, 50)} {product?.hash_tags.slice(0, 2).join(' ')} ... <u className='fw-bold'>more</u></div>
+            <div className='fs-4' style={{width: "80%"}}>
+              {product?.description.slice(0, 50)} {' '}
+              {product?.hash_tags.map(hash_tag => hash_tag.startsWith('#') ? hash_tag : '#'+hash_tag).slice(0, 2).join(' ')} ... <u className='fw-bold'>more</u></div>
         </div>
 
         <Drawer

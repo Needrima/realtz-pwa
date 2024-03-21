@@ -85,7 +85,7 @@ const Video = ({video}) => {
 
   return (
     <div ref={videoDivRef} className='w-100 vh-100 position-relative'>
-        <video ref={videoRef} loop className='w-100 vh-100' onClick={pausePlay}> {/*object-fit-fill*/}
+        <video ref={videoRef} loop className='w-100 vh-100 object-fit-fill' onClick={pausePlay}> {/*object-fit-fill*/}
             <source src={video} type="video/mp4" />
         </video>
 
