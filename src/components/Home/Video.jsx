@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-// import video from '../../assets/videos/video.mp4'
 import playIcon from '../../assets/icons/play.svg'
+import pauseIcon from '../../assets/icons/pause.svg'
 
 const Video = ({video}) => {
     const videoRef = useRef();
     const [state, setState] = useState({
-        paused: true,
+        paused: false,
         muted: true,
         videoOutOfView: false,
         pausePlayImgVisible: true,
@@ -85,13 +85,18 @@ const Video = ({video}) => {
 
   return (
     <div ref={videoDivRef} className='w-100 vh-100 position-relative'>
-        <video ref={videoRef} loop className='w-100 vh-100 object-fit-fill' onClick={pausePlay}> {/*object-fit-fill*/}
+        <video ref={videoRef} loop autoPlay muted className='w-100 vh-100 object-fit-fill' onClick={pausePlay}> {/*object-fit-fill*/}
             <source src={video} type="video/mp4" />
         </video>
 
+        {paused ? 
         <img className={`position-absolute top-50 start-50 ${pausePlayImgVisible ? 'visible' : 'fade-in-element'} pause-play-img`}
          src={playIcon} alt="play icon" 
          onClick={pausePlay} />
+        :
+        <img className={`position-absolute top-50 start-50 ${pausePlayImgVisible ? 'visible' : 'fade-in-element'} pause-play-img`}
+         src={pauseIcon} alt="pause icon" 
+         onClick={pausePlay} />}
     </div>
   )
 }

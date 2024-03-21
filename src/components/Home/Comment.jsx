@@ -31,7 +31,6 @@ const Comment = ({comment, deleteComment}) => {
           token: token
         }
       })
-      console.log('replies data', data?.replies);
       setState(state => ({
         ...state,
         fetchingReplies: false,
@@ -70,7 +69,6 @@ const Comment = ({comment, deleteComment}) => {
           token: token,
         }
       })
-      console.log('added reply data:', data)
       message.success(data?.message)
       setState(state => ({
         ...state,
