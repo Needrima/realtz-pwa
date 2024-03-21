@@ -212,7 +212,8 @@ const Product = ({product}) => {
     // Whether there are more items to load
     // if marked "true" in the specified direction, it will try to load more items if the threshold is reached
     // support for all directions "up", "down", "left", "right", both individually and in all directions at the same time
-    hasMore: { down: !commentsData ? true : commentsData?.has_next },
+    // hasMore: { down: !commentsData ? true : commentsData?.has_next },
+    hasMore: { down: commentsData ? commentsData?.has_next : false },
   });
 
   //carousel responsveness property

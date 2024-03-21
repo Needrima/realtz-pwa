@@ -33,12 +33,12 @@ const Comment = ({comment, deleteComment}) => {
         }
       })
       console.log(data);
-      // setState(state => ({
-      //   ...state,
-      //   fetchingReplies: false,
-      //   repliesData: data,
-      //   replies: [...state.replies, ...data?.replies]
-      // }))
+      setState(state => ({
+        ...state,
+        fetchingReplies: false,
+        repliesData: data, 
+        // replies: [...state.replies, ...data?.replies]
+      }))
     }catch(error) {
       setState(state => ({
         ...state,
@@ -113,11 +113,12 @@ const Comment = ({comment, deleteComment}) => {
     // The number of items loaded if you use the "Y-scroll" axis ("up" and "down")
     // if you are using the "X-scroll" axis ("left" and "right") use "columnCount" instead
     // you can also use "rowCount" and "columnCount" if you use "Y-scroll" and "X-scroll" at the same time 
-    rowCount: repliesData ? repliesData?.replies ? repliesData?.replies?.length : 0 : 0,
+    rowCount: repliesData ? repliesData?.replies ? repliesData?.replies?.length || 0 : 0 : 0,
     // Whether there are more items to load
     // if marked "true" in the specified direction, it will try to load more items if the threshold is reached
     // support for all directions "up", "down", "left", "right", both individually and in all directions at the same time
-    hasMore: { down: !repliesData ? true : repliesData?.has_next },
+    // hasMore: { down: !repliesData ? true : repliesData?.has_next },
+    hasMore: { down: repliesData ? repliesData?.has_next : false },
   });
 
   return (
@@ -159,9 +160,9 @@ const Comment = ({comment, deleteComment}) => {
                     className='border border-primary px-2 mb-2'
                     />
                 </Form.Item>
-                <button disabled={addingNewReply || !newReply} type='submit' className='btn btn-primary'>{addingNewReply ? <Spin spinning={addingNewReply} />: 'Comment'}</button>
+                <button disabled={addingNewReply || !newReply} type='submit' className='btn btn-primary'>{addingNewReply ? <Spin spinning={addingNewReply} />: 'Reply'}</button>
               </Form>
-              {repliesData && !repliesData?.has_next && <div className='text-center text-primary fw-bold'>no more comments</div>}
+              {repliesData && !repliesData?.has_next && <div className='text-center text-primary fw-bold'>no more replies</div>}
             </>
             } // react node 
           closable={true}
@@ -180,7 +181,6 @@ const Comment = ({comment, deleteComment}) => {
             replies?.map((reply, index) => 
             <div key={index} className='mb-3'>
               <div className='mb-2'>
-                <div>{reply?.replyer}</div> 
                   <div className='d-flex justify-content-end'>
                     {user?.fullname === reply?.replyer && <span className='text-primary fw-bold text-decoration-underline me-3'>Edit</span>}
                     {user?.fullname === reply?.replyer && <span className='text-primary fw-bold text-decoration-underline' onClick={() => deleteReply(reply?.reference)}>Delete</span>}
