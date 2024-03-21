@@ -16,7 +16,6 @@ import { TextArea } from 'antd-mobile'
 import TimeConverter from '../../misc/TimeConverter';
 
 const Product = ({product}) => {
-  console.log(product)
   const {user, token} = useSelector(state => state.authReducer)
   const [state, setState] = useState({
       commentsBoxOpen: false,
@@ -26,7 +25,7 @@ const Product = ({product}) => {
       productLiked: product?.liked_by.includes(user.reference),
       numLikes: product?.liked_by.length,
       productSaved: product?.saved_by.includes(user.reference),
-      numComments: product?.commented_on_by.length,
+      numComments: product?.commented_on_by?.length || 0,
       newComment: '',
       addingNewComment: false,
   })

@@ -7,13 +7,14 @@ import { useSelector } from 'react-redux';
 import { axiosProductInstance } from '../../api/axoios';
 
 const Comment = ({comment, deleteComment}) => {
+  console.log('comment:', comment);
   const {user, token} = useSelector(state => state.authReducer)
   const [state, setState] = useState({
       repliesBoxOpen: false,
       repliesData: null,
       replies: [],
       fetchingReplies: false,
-      numReplies: comment?.replied_to_by.length,
+      numReplies: comment?.replied_to_by?.length || 0,
       newReply: '',
       addingNewReply: false,
   })
