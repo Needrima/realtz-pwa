@@ -63,7 +63,7 @@ const Signup = () => {
       }
   
       try {
-        const {data} = await axiosUserInstance.post("user/verify-email", reqData);
+        const {data} = await axiosUserInstance.post("verify-email", reqData);
   
         setState(state => ({
           ...state,

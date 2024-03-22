@@ -4,7 +4,9 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import profileIcon from '../../assets/icons/profile-circle.svg'
 import saveIcon from '../../assets/icons/bookmark-white.svg'
+import saveIconSaved from '../../assets/icons/bookmark-blue.svg'
 import likeIcon from '../../assets/icons/heart-white.svg'
+import likeIconLiked from '../../assets/icons/heart-blue.svg'
 import commentIcon from '../../assets/icons/comment.svg'
 import shareIcon from '../../assets/icons/share-white.svg'
 import { Drawer, Spin, message, Input, Form } from 'antd'
@@ -25,30 +27,37 @@ const Product = ({product}) => {
       productLiked: product?.liked_by.includes(user.reference),
       numLikes: product?.liked_by.length,
       productSaved: product?.saved_by.includes(user.reference),
-      numComments: product?.commented_on_by.length,
+      numComments: product?.commented_on_by?.length || 0,
       newComment: '',
       addingNewComment: false,
+      likingProduct: false,
+      savingProduct: false,
   })
-  const { commentsBoxOpen, fetchingComments, commentsData, comments, productLiked, productSaved, numLikes, numComments, newComment, addingNewComment } = state;
+  const { commentsBoxOpen, fetchingComments, commentsData, comments, productLiked, productSaved, numLikes, numComments, newComment, addingNewComment, likingProduct, savingProduct } = state;
 
   const likeProduct = async () => {
     setState(state => ({
       ...state,
-      productLiked: true,
-      numLikes: state.numLikes + 1,
+      likingProduct: true,
     }))
-
     try {
       const {data} = await axiosProductInstance.get(`auth/like/${product.reference}`, {
         headers: {
           token: token
         }
       })
+      setState(state => ({
+        ...state,
+        productLiked: true,
+        numLikes: state.numLikes + 1,
+        likingProduct: false
+      }))  
     }catch(error) {
       setState(state => ({
         ...state,
         productLiked: false,
         numLikes: state.numLikes + 1,
+        likingProduct: false
       }))
     }
   }
@@ -56,21 +65,27 @@ const Product = ({product}) => {
   const unLikeProduct = async () => {
     setState(state => ({
       ...state,
-      productLiked: false,
-      numLikes: state.numLikes - 1,
+      likingProduct: true,
     }))
-
     try {
       const {data} = await axiosProductInstance.get(`auth/unlike/${product.reference}`, {
         headers: {
           token: token
         }
       })
+      setState(state => ({
+        ...state,
+        productLiked: false,
+        numLikes: state.numLikes - 1,
+        likingProduct: false,
+      }))
+  
     }catch(error) {
       setState(state => ({
         ...state,
         productLiked: false,
         numLikes: state.numLikes + 1,
+        likingProduct: false
       }))
     }
   }
@@ -78,20 +93,24 @@ const Product = ({product}) => {
   const saveProduct = async () => {
     setState(state => ({
       ...state,
-      productSaved: true,
+      savingProduct: true,
     }))
-
     try {
       const {data} = await axiosProductInstance.get(`auth/save/${product.reference}`, {
         headers: {
           token: token
         }
       })
-      message.success(data?.message)
+      setState(state => ({
+        ...state,
+        productSaved: true,
+        savingProduct: false,
+      }))  
     }catch(error) {
       setState(state => ({
         ...state,
         productSaved: false,
+        savingProduct: false
       }))
     }
   }
@@ -99,7 +118,7 @@ const Product = ({product}) => {
   const unSaveProduct = async () => {
     setState(state => ({
       ...state,
-      productSaved: false,
+      savingProduct: true,
     }))
 
     try {
@@ -108,11 +127,16 @@ const Product = ({product}) => {
           token: token
         }
       })
-      message.success(data?.message)
+      setState(state => ({
+        ...state,
+        productSaved: false,
+        savingProduct: false,
+      }))  
     }catch(error) {
       setState(state => ({
         ...state,
         productSaved: true,
+        savingProduct: false,
       }))
     }
   }
@@ -146,7 +170,10 @@ const Product = ({product}) => {
     setState(state => ({
       ...state, commentsBoxOpen: true
     }))
-    getProductComments(1);
+
+    if (comments.length === 0) {
+      getProductComments(1);
+    }
   }
 
   const addComment = async () => {
@@ -169,6 +196,7 @@ const Product = ({product}) => {
         addingNewComment: false,
         comments: [...state.comments, data?.added_comment],
         newComment: '',
+        numComments: state.numComments + 1,
       }))
     }catch(error) {
       message.error(error?.response?.data?.error || 'could not add comment')
@@ -188,11 +216,10 @@ const Product = ({product}) => {
         }
       })
       message.success(data?.message)
-      let newNumComments = product?.commented_on_by.filter(reference => reference !== comment_reference)
       setState(state => ({
         ...state,
         comments: state.comments.filter(comment => comment?.reference !== data?.deleted_reference),
-        numComments: newNumComments.length,
+        numComments: state.numComments - 1
       }))
     }catch(error) {
       console.log(error)
@@ -209,7 +236,8 @@ const Product = ({product}) => {
     // Whether there are more items to load
     // if marked "true" in the specified direction, it will try to load more items if the threshold is reached
     // support for all directions "up", "down", "left", "right", both individually and in all directions at the same time
-    hasMore: { down: !commentsData ? true : commentsData?.has_next },
+    // hasMore: { down: !commentsData ? true : commentsData?.has_next },
+    hasMore: { down: commentsData ? commentsData?.has_next : false },
   });
 
   //carousel responsveness property
@@ -247,13 +275,13 @@ const Product = ({product}) => {
                 }
             }}
         >
-          {product.videos.map((video, index) => <Video key={index} video={video}/>)}
+          {product.videos.map((video, index) => <Video key={index} video={video} />)}
         </Carousel>;
 
         <div className='position-absolute bottom-0 mb-5' style={{right: '10%'}}>
             <div className='mb-4'>
-                {productLiked ? 
-                <img onClick={unLikeProduct} className='d-block' src={likeIcon} alt="like video" /> // chage this to red like image
+                {likingProduct ? <Spin spinning={likingProduct} /> : productLiked ? 
+                <img onClick={unLikeProduct} className='d-block' src={likeIconLiked} alt="like video" /> // chage this to blue like image
                 : 
                 <img onClick={likeProduct} className='d-block' src={likeIcon} alt="like video" /> 
                 }
@@ -266,8 +294,8 @@ const Product = ({product}) => {
             </div>
 
             <div className='mb-4'>
-            {productSaved ? 
-                <img onClick={unSaveProduct} className='d-block' src={saveIcon} alt="save video" /> // chage this to red like image
+                {savingProduct ? <Spin spinning={savingProduct} /> : productSaved ? 
+                <img onClick={unSaveProduct} className='d-block' src={saveIconSaved} alt="save video" /> // chage this to blue like image
                 : 
                 <img onClick={saveProduct}className='d-block' src={saveIcon} alt="save video" /> 
                 }
@@ -283,16 +311,18 @@ const Product = ({product}) => {
             </div>
         </div>
         
-        <div className='position-absolute bottom-0 text-light mb-4' style={{left: '4%'}}>
+        <div className='position-absolute bottom-0 text-light mb-4' style={{left: '4%', width: '80%'}}>
             <div className='fs-4 fw-bold'>{product?.owner}</div>
             <div className='fs-4'>{TimeConverter(product?.created_on)}</div>
-            <div className='fs-4' style={{width: "80%"}}>{product?.description.slice(0, 50)} {product?.hash_tags.slice(0, 2).join(' ')} ... <u className='fw-bold'>more</u></div>
+            <div className='fs-4'>
+              {product?.description.slice(0, 50)} {' '}
+              {product?.hash_tags.map(hash_tag => hash_tag.startsWith('#') ? hash_tag : '#'+hash_tag).slice(0, 2).join(' ')} ... <u className='fw-bold'>more</u></div>
         </div>
 
         <Drawer
           open={commentsBoxOpen}
           title={<div className='text-primary fw-bold'>Comments</div>}
-          footer={commentsData && !commentsData?.has_next && 
+          footer={
           <>
             <Form onFinish={addComment}>
               <Form.Item
@@ -312,7 +342,7 @@ const Product = ({product}) => {
               </Form.Item>
               <button disabled={addingNewComment || !newComment} type='submit' className='btn btn-primary'>{addingNewComment ? <Spin spinning={addingNewComment} />: 'Comment'}</button>
             </Form>
-            <div className='text-center text-primary fw-bold'>no more comments</div>
+            {commentsData && !commentsData?.has_next && <div className='text-center text-primary fw-bold'>no more comments</div>}
           </>
           } // react node 
           closable={true}

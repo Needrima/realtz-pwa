@@ -10,7 +10,7 @@ const HomeLayout = () => {
     homeProducts, trendingProducts, getTrendingProducts, getHomeProducts} = useContext(HomeContext);
   
   return (
-    <div className='bg-dark h-100'>
+    <div className='bg-dark vh-100'>
       {tab === 'home' && <InfiniteScroll
         dataLength={homeProducts.length} //This is important field to render the next data
         hasMore={!homeProductsData ? true : homeProductsData?.has_next} 
@@ -30,6 +30,7 @@ const HomeLayout = () => {
         pullDownToRefresh
         pullDownToRefreshThreshold={50}
       >
+        {homeProducts && homeProducts.length !== 0 && homeProducts.map((product, index) => <Product key={index} product={product} />)}
         {homeProducts && homeProducts.length !== 0 && homeProducts.map((product, index) => <Product key={index} product={product} />)}
       </InfiniteScroll>}
 
