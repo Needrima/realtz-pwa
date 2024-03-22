@@ -35,6 +35,7 @@ import {
   WhatsappIcon,
 } from "react-share";
 import { useNavigate } from 'react-router-dom';
+import FormatNumber from '../../misc/NumberFormatter';
 
 const Product = ({product}) => {
   const {user, token} = useSelector(state => state.authReducer)
@@ -322,12 +323,12 @@ const Product = ({product}) => {
                 : 
                 <img onClick={likeProduct} className='d-block' src={likeIcon} alt="like video" /> 
                 }
-                <div className='text-light text-center fw-bold'>{numLikes}</div>
+                <div className='text-light text-center fw-bold'>{FormatNumber(numLikes)}</div>
             </div>
 
             <div className='mb-4'>
                 <img className='d-block' src={commentIcon} alt="comment on video" onClick={openComments} />
-                <div className='text-light text-center fw-bold'>{numComments}</div>
+                <div className='text-light text-center fw-bold'>{FormatNumber(numComments)}</div>
             </div>
 
             <div className='mb-4'>

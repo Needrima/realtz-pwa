@@ -5,6 +5,7 @@ import TimeConverter from '../../misc/TimeConverter';
 import { TextArea } from 'antd-mobile'
 import { useSelector } from 'react-redux';
 import { axiosProductInstance } from '../../api/axoios';
+import FormatNumber from '../../misc/NumberFormatter';
 
 const Comment = ({comment, deleteComment}) => {
   const {user, token} = useSelector(state => state.authReducer)
@@ -125,7 +126,7 @@ const Comment = ({comment, deleteComment}) => {
         <div className='mb-2'>
           <div>{comment?.comment}</div> 
             <div className='d-flex justify-content-end'>
-              <span className='text-primary fw-bold text-decoration-underline me-3' onClick={openReplies}>Reply.({numReplies})</span>
+              <span className='text-primary fw-bold text-decoration-underline me-3' onClick={openReplies}>Reply.({FormatNumber(numReplies)})</span>
               {user?.fullname === comment?.commenter && <span className='text-primary fw-bold text-decoration-underline me-3'>Edit</span>}
               {user?.fullname === comment?.commenter && <span className='text-primary fw-bold text-decoration-underline' onClick={() => deleteComment(comment?.reference)}>Delete</span>}
             </div>
