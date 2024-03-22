@@ -89,7 +89,7 @@ const Comment = ({comment, deleteComment}) => {
 
   const deleteReply = async (reply_reference) => {
     try {
-      const {data} = await axiosProductInstance.get(`/auth/delete-comment/${comment?.reference}/${reply_reference}`, {
+      const {data} = await axiosProductInstance.get(`/auth/delete-reply/${comment?.reference}/${reply_reference}`, {
         headers: {
           token: token,
         }
@@ -97,7 +97,7 @@ const Comment = ({comment, deleteComment}) => {
       message.success(data?.message)
       setState(state => ({
         ...state,
-        replies: state.comments.filter(reply => reply?.reference !== data?.deleted_reference),
+        replies: state.replies.filter(reply => reply?.reference !== data?.deleted_reference),
         numReplies: state.numReplies - 1
       }))
     }catch(error) {

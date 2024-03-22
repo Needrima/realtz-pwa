@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import Video from './Video'
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -9,7 +9,7 @@ import likeIcon from '../../assets/icons/heart-white.svg'
 import likeIconLiked from '../../assets/icons/heart-blue.svg'
 import commentIcon from '../../assets/icons/comment.svg'
 import shareIcon from '../../assets/icons/share-white.svg'
-import { Drawer, Spin, message, Input, Form } from 'antd'
+import { Drawer, Spin, message, Form } from 'antd'
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import Comment from './Comment'
 import { useSelector } from 'react-redux';
@@ -19,7 +19,6 @@ import TimeConverter from '../../misc/TimeConverter';
 import {
   EmailShareButton,
   FacebookShareButton,
-  FacebookMessengerShareButton,
   LinkedinShareButton,
   PinterestShareButton,
   RedditShareButton,
@@ -28,7 +27,6 @@ import {
   WhatsappShareButton,
   EmailIcon,
   FacebookIcon,
-  FacebookMessengerIcon,
   LinkedinIcon,
   PinterestIcon,
   RedditIcon,
@@ -36,9 +34,11 @@ import {
   XIcon,
   WhatsappIcon,
 } from "react-share";
+import { useNavigate } from 'react-router-dom';
 
 const Product = ({product}) => {
   const {user, token} = useSelector(state => state.authReducer)
+  const navigate = useNavigate();
   const [state, setState] = useState({
       commentsBoxOpen: false,
       shareBoxOpen: false,
@@ -247,6 +247,20 @@ const Product = ({product}) => {
     }
   }
 
+  const viewProduct = async () => {
+    if (product?.viewed_by.includes(user.reference)) return;
+    
+    try {
+      const {data} = await axiosProductInstance.get(`/auth/view/${product?.reference}`, {
+        headers: {
+          token: token,
+        }
+      })
+    }catch(error) {
+      console.log(error)
+    }
+  }
+
   const commentsRef = useInfiniteScroll({
     // Function to fetch more items
     next: () => getProductComments(commentsData?.next_page),
@@ -296,7 +310,7 @@ const Product = ({product}) => {
                 }
             }}
         >
-          {product.videos.map((video, index) => <Video key={index} video={video} />)}
+          {product.videos.map((video, index) => <Video key={index} video={video} viewProduct={viewProduct} />)}
         </Carousel>;
 
         <div className='position-absolute bottom-0 mb-5' style={{right: '10%'}}>
@@ -328,7 +342,7 @@ const Product = ({product}) => {
             </div>
 
             <div className='mb-4'>
-                <img className='d-block' src={profileIcon} alt="view owners profile" />
+                <img onClick={() => navigate(`/profile/${product?.user_reference}`)} className='d-block' src={profileIcon} alt="view owners profile" />
             </div>
         </div>
         

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import playIcon from '../../assets/icons/play.svg'
 import pauseIcon from '../../assets/icons/pause.svg'
 
-const Video = ({video}) => {
+const Video = ({video, viewProduct}) => {
     const videoRef = useRef();
     const [state, setState] = useState({
         paused: false,
