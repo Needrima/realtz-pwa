@@ -3,6 +3,9 @@ import playIcon from '../../assets/icons/play.svg'
 import pauseIcon from '../../assets/icons/pause.svg'
 
 const Video = ({video, viewProduct}) => {
+    const videoRef = useRef(null);
+    const videoDivRef = useRef(null);
+
     const [state, setState] = useState({
         paused: false,
         muted: true,
@@ -37,7 +40,6 @@ const Video = ({video, viewProduct}) => {
     }
 
     // observes video when it is 51% of view
-    const videoDivRef = useRef(null);
     useEffect(() => {
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -117,35 +119,25 @@ const Video = ({video, viewProduct}) => {
     }, [pausePlayImgVisible]); 
 
     // handles viewing product if watched for atleast 10 seconds
-    const videoRef = useRef();
-    useEffect(() => {
-      if (videoRef.current) {
-        const handlePlay = () => {
-          setState({...state, startTime: videoRef.current.currentTime, isMonitoringPlay: true})
-        }
-
-        const timeUpdate = () => {
-          // Check if the video has been playing for at least 10 seconds
-          if (isMonitoringPlay &&  videoRef.current.currentTime - startTime >= 10) {
-            // console.log('Video has been playing for at least 10 seconds');
-            viewProduct()
-            setState({...state, startTime: 0, isMonitoringPlay: false})
-          }
-        }
-
-        videoRef.current.addEventListener('play', handlePlay)
-        videoRef.current.addEventListener('timeupdate', timeUpdate);
-
-        return () => {
-          videoRef.current.removeEventListener('play', handlePlay);
-          videoRef.current.removeEventListener('timeupdate', timeUpdate);
-        };
+    const handlePlay = (event) => {
+      setState({...state, startTime: event.target.currentTime, isMonitoringPlay: true})
+    };
+  
+    const handleTimeUpdate = (event) => {
+      if (isMonitoringPlay &&  event.target.currentTime - startTime >= 10) {
+        // console.log('Video has been playing for at least 10 seconds');
+        viewProduct()
+        setState({...state, startTime: 0, isMonitoringPlay: false})
       }
-    }, [isMonitoringPlay, startTime])
+    };
 
   return (
     <div ref={videoDivRef} className='w-100 vh-100 position-relative'>
-        <video ref={videoRef} loop autoPlay muted className='w-100 vh-100 object-fit-fill' onClick={pausePlay}> {/*object-fit-fill*/}
+        <video ref={videoRef} loop autoPlay muted className='w-100 vh-100 object-fit-fill' 
+          onClick={pausePlay} 
+          onPlay={handlePlay} 
+          onTimeUpdate={handleTimeUpdate}
+        > {/*object-fit-fill*/}
             <source src={video} type="video/mp4" />
         </video>
 

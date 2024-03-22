@@ -249,6 +249,7 @@ const Product = ({product}) => {
   }
 
   const viewProduct = async () => {
+    console.log('about to trigger view product endpoint')
     if (productViewed) return;
     try {
       const {data} = await axiosProductInstance.get(`/auth/view/${product?.reference}`, {
@@ -258,7 +259,7 @@ const Product = ({product}) => {
       })
       setState(state => ({...state, productViewed: true}))
     }catch(error) {
-      console.log(error)
+      console.log(error?.response?.data?.error)
     }
   }
 
