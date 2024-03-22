@@ -3,15 +3,16 @@ import playIcon from '../../assets/icons/play.svg'
 import pauseIcon from '../../assets/icons/pause.svg'
 
 const Video = ({video, viewProduct}) => {
-    const videoRef = useRef();
     const [state, setState] = useState({
         paused: false,
         muted: true,
         outofView51: false,
         outofView49: false,
         pausePlayImgVisible: true,
+        startTime: 0,
+        isMonitoringPlay:false, 
     })
-    const {paused, muted, pausePlayImgVisible, outofView51, outofView49 } = state;
+    const {paused, muted, pausePlayImgVisible, outofView51, outofView49, startTime, isMonitoringPlay } = state;
 
     // handle pause and play
     const pausePlay = () => {
@@ -114,6 +115,33 @@ const Video = ({video, viewProduct}) => {
         // Cleanup function to clear the timeout
         return () => clearTimeout(timeout);
     }, [pausePlayImgVisible]); 
+
+    // handles viewing product if watched for atleast 10 seconds
+    const videoRef = useRef();
+    useEffect(() => {
+      if (videoRef.current) {
+        const handlePlay = () => {
+          setState({...state, startTime: videoRef.current.currentTime, isMonitoringPlay: true})
+        }
+
+        const timeUpdate = () => {
+          // Check if the video has been playing for at least 10 seconds
+          if (isMonitoringPlay &&  videoRef.current.currentTime - startTime >= 10) {
+            // console.log('Video has been playing for at least 10 seconds');
+            viewProduct()
+            setState({...state, startTime: 0, isMonitoringPlay: false})
+          }
+        }
+
+        videoRef.current.addEventListener('play', handlePlay)
+        videoRef.current.addEventListener('timeupdate', timeUpdate);
+
+        return () => {
+          videoRef.current.removeEventListener('play', handlePlay);
+          videoRef.current.removeEventListener('timeupdate', timeUpdate);
+        };
+      }
+    }, [isMonitoringPlay, startTime])
 
   return (
     <div ref={videoDivRef} className='w-100 vh-100 position-relative'>

@@ -53,8 +53,9 @@ const Product = ({product}) => {
       addingNewComment: false,
       likingProduct: false,
       savingProduct: false,
+      productViewed: product?.viewed_by.includes(user.reference),
   })
-  const { commentsBoxOpen, fetchingComments, commentsData, comments, productLiked, productSaved, numLikes, numComments, newComment, addingNewComment, likingProduct, savingProduct, shareBoxOpen } = state;
+  const { commentsBoxOpen, fetchingComments, commentsData, comments, productLiked, productSaved, numLikes, numComments, newComment, addingNewComment, likingProduct, savingProduct, shareBoxOpen, productViewed } = state;
 
   const likeProduct = async () => {
     setState(state => ({
@@ -248,14 +249,14 @@ const Product = ({product}) => {
   }
 
   const viewProduct = async () => {
-    if (product?.viewed_by.includes(user.reference)) return;
-    
+    if (productViewed) return;
     try {
       const {data} = await axiosProductInstance.get(`/auth/view/${product?.reference}`, {
         headers: {
           token: token,
         }
       })
+      setState(state => ({...state, productViewed: true}))
     }catch(error) {
       console.log(error)
     }
