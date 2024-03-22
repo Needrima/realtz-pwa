@@ -31,6 +31,7 @@ const HomeLayout = () => {
         pullDownToRefreshThreshold={50}
       >
         {homeProducts && homeProducts.length !== 0 && homeProducts.map((product, index) => <Product key={index} product={product} />)}
+        {homeProducts && homeProducts.length !== 0 && homeProducts.map((product, index) => <Product key={index} product={product} />)}
       </InfiniteScroll>}
 
       {tab === 'trending' && <InfiniteScroll

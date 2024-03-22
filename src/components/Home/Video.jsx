@@ -7,10 +7,11 @@ const Video = ({video}) => {
     const [state, setState] = useState({
         paused: false,
         muted: true,
-        videoOutOfView: false,
+        outofView51: false,
+        outofView49: false,
         pausePlayImgVisible: true,
     })
-    const {paused, muted, videoOutOfView, pausePlayImgVisible } = state;
+    const {paused, muted, pausePlayImgVisible, outofView51, outofView49 } = state;
 
     // handle pause and play
     const pausePlay = () => {
@@ -34,7 +35,7 @@ const Video = ({video}) => {
         }
     }
 
-    // observes video when it is out of view
+    // observes video when it is 51% of view
     const videoDivRef = useRef(null);
     useEffect(() => {
       const observer = new IntersectionObserver(entries => {
@@ -42,10 +43,35 @@ const Video = ({video}) => {
           // If the entry is not intersecting, the div is out of view
           setState(state => ({
             ...state,
-            videoOutOfView:!entry.isIntersecting
+            outofView51:!entry.isIntersecting
           }))
         });
-      }, { threshold: 0.5 }); // 50% out of view
+      }, { threshold: 0.51 }); // 51% out of view
+  
+      // Start observing the div
+      if (videoDivRef.current) {
+        observer.observe(videoDivRef.current);
+      }
+  
+      // Cleanup
+      return () => {
+        if (videoDivRef.current) {
+          observer.unobserve(videoDivRef.current);
+        }
+      };
+    }, []);
+
+    // observes video when it is 49% of view
+    useEffect(() => {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          // If the entry is not intersecting, the div is out of view
+          setState(state => ({
+            ...state,
+            outofView49:!entry.isIntersecting
+          }))
+        });
+      }, { threshold: 0.49 }); // 49% out of view
   
       // Start observing the div
       if (videoDivRef.current) {
@@ -62,12 +88,16 @@ const Video = ({video}) => {
 
     // pauses video when it is out of view
     useEffect(() => {
-        if (videoOutOfView) {
-            videoRef.current.currentTime = 0;
+        if (outofView49 && !paused) { // video is 49% out of view and is playing
+            // videoRef.current.currentTime = 0;
             videoRef.current.pause();
             setState(state => ({...state, paused: true}))
         }
-    },[videoOutOfView])
+        if (!outofView51 && paused) { // video is 51% in view and is not playing
+          videoRef.current.play();
+          setState(state => ({...state, paused: false}))
+        }
+    },[outofView49, outofView51])
 
     // playPause icon fade-in animation
     useEffect(() => {
