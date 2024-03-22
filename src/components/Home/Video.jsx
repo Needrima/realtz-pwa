@@ -91,11 +91,13 @@ const Video = ({video}) => {
         if (outofView49 && !paused) { // video is 49% out of view and is playing
             // videoRef.current.currentTime = 0;
             videoRef.current.pause();
-            setState(state => ({...state, paused: true}))
+            videoRef.current.muted = true;
+            setState(state => ({...state, paused: true, muted: true}))
         }
         if (!outofView51 && paused) { // video is 51% in view and is not playing
           videoRef.current.play();
-          setState(state => ({...state, paused: false}))
+          videoRef.current.muted = true;
+          setState(state => ({...state, paused: false, muted: true}))
         }
     },[outofView49, outofView51])
 

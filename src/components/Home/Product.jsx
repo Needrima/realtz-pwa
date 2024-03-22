@@ -16,11 +16,32 @@ import { useSelector } from 'react-redux';
 import { axiosProductInstance } from '../../api/axoios';
 import { TextArea } from 'antd-mobile'
 import TimeConverter from '../../misc/TimeConverter';
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  FacebookMessengerShareButton,
+  LinkedinShareButton,
+  PinterestShareButton,
+  RedditShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+  EmailIcon,
+  FacebookIcon,
+  FacebookMessengerIcon,
+  LinkedinIcon,
+  PinterestIcon,
+  RedditIcon,
+  TelegramIcon,
+  XIcon,
+  WhatsappIcon,
+} from "react-share";
 
 const Product = ({product}) => {
   const {user, token} = useSelector(state => state.authReducer)
   const [state, setState] = useState({
       commentsBoxOpen: false,
+      shareBoxOpen: false,
       commentsData: null,
       comments: [],
       fetchingComments: false,
@@ -33,7 +54,7 @@ const Product = ({product}) => {
       likingProduct: false,
       savingProduct: false,
   })
-  const { commentsBoxOpen, fetchingComments, commentsData, comments, productLiked, productSaved, numLikes, numComments, newComment, addingNewComment, likingProduct, savingProduct } = state;
+  const { commentsBoxOpen, fetchingComments, commentsData, comments, productLiked, productSaved, numLikes, numComments, newComment, addingNewComment, likingProduct, savingProduct, shareBoxOpen } = state;
 
   const likeProduct = async () => {
     setState(state => ({
@@ -303,7 +324,7 @@ const Product = ({product}) => {
             </div>
 
             <div className='mb-4'>
-                <img className='d-block' src={shareIcon} alt="share video" />
+                <img onClick={() => setState(state => ({...state, shareBoxOpen: true})) } className='d-block' src={shareIcon} alt="share video" />
             </div>
 
             <div className='mb-4'>
@@ -368,6 +389,93 @@ const Product = ({product}) => {
                 <span className='me-2'>Loading</span> <Spin spinning={fetchingComments} />
             </div>
           }
+        </Drawer>
+
+        <Drawer
+          open={shareBoxOpen}
+          title={<div className='text-primary fw-bold'>Share</div>}
+          // footer={} // react node 
+          closable={true}
+          placement='bottom'
+          height={'auto'}
+          onClose={() => setState(state => ({...state, shareBoxOpen: false}))}
+        >
+          <FacebookShareButton 
+            className='me-2 mb-2'
+            url={`${window.location.origin}/product/${product.reference}`}
+            hashtag='#realtz_app'
+          >
+            <FacebookIcon
+            round={true} />
+          </FacebookShareButton>
+
+          <EmailShareButton 
+            className='me-2 mb-2'
+            subject='Checkout this property on Realtz'
+            body='Checkout this awesome property on Realtz'
+            url={`${window.location.origin}/product/${product.reference}`}
+            >
+            <EmailIcon
+            round={true} />
+          </EmailShareButton>
+
+          <LinkedinShareButton 
+            className='me-2 mb-2'
+            url={`${window.location.origin}/product/${product.reference}`}
+            title='Checkout this property on Realtz'
+            summary={`${product.description.slice(0, 50)} ....`}
+            source={`${window.location.origin}/home`}
+            >
+            <LinkedinIcon
+            round={true} />
+          </LinkedinShareButton>
+
+          <PinterestShareButton 
+            className='me-2 mb-2'
+            url={`${window.location.origin}/product/${product.reference}`}
+            media={product.videos[0]}
+            description={`${product.description.slice(0, 50)} ....`}
+            >
+            <PinterestIcon
+            round={true} />
+          </PinterestShareButton>
+
+          <RedditShareButton 
+            className='me-2 mb-2'
+            url={`${window.location.origin}/product/${product.reference}`}
+            title='Checkout this property on Realtz'
+            >
+            <RedditIcon
+            round={true} />
+          </RedditShareButton>
+
+          <TelegramShareButton 
+          className='me-2 mb-2'
+          url={`${window.location.origin}/product/${product.reference}`}
+          title='Checkout this property on Realtz'
+          >
+            <TelegramIcon
+            round={true} />
+          </TelegramShareButton>
+
+          <TwitterShareButton 
+            className='me-2 mb-2'
+            url={`${window.location.origin}/product/${product.reference}`}
+            title='Checkout this property on Realtz'
+            hashtags={['#realz_app', '#property_rentals', '#property_shortlets']}
+          >
+            <XIcon
+            round={true} />
+          </TwitterShareButton>
+
+          <WhatsappShareButton 
+            className='me-2 mb-2'
+            url={`${window.location.origin}/product/${product.reference}`}
+            title='Checkout this property on Realtz'
+          >
+            <WhatsappIcon
+            round={true} />
+          </WhatsappShareButton>
         </Drawer>
     </div>
   )
