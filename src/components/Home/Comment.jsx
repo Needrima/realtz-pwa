@@ -2,13 +2,13 @@ import { Drawer, Spin, message, Form, Input } from 'antd';
 import React, { useState } from 'react'
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import TimeConverter from '../../misc/TimeConverter';
-import { TextArea } from 'antd-mobile'
 import { useSelector } from 'react-redux';
 import { axiosProductInstance } from '../../api/axoios';
 import FormatNumber from '../../misc/NumberFormatter';
 
 const Comment = ({comment, deleteComment, openEditCommentBox}) => {
   const {user, token} = useSelector(state => state.authReducer)
+  const [form] = Form.useForm();
   const [state, setState] = useState({
       repliesBoxOpen: false,
       repliesData: null,
@@ -78,6 +78,7 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
         newReply: '',
         numReplies: state.numReplies + 1,
       }))
+      form.setFieldsValue({ reply: '' });
     }catch(error) {
       message.error(error?.response?.data?.error || 'could not add reply')
       setState(state => ({
@@ -144,7 +145,10 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
           title={<div className='text-primary fw-bold'>Replies</div>}
           footer={
             <>
-              <Form onFinish={addReply}>
+              <Form 
+              form={form}
+              onFinish={addReply}
+              >
                 <Form.Item
                   name="reply"
                   rules={[

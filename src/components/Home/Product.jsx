@@ -14,7 +14,6 @@ import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import Comment from './Comment'
 import { useSelector } from 'react-redux';
 import { axiosProductInstance } from '../../api/axoios';
-import { TextArea } from 'antd-mobile'
 import TimeConverter from '../../misc/TimeConverter';
 import {
   EmailShareButton,
@@ -40,6 +39,7 @@ import FormatNumber from '../../misc/NumberFormatter';
 const Product = ({product}) => {
   const {user, token} = useSelector(state => state.authReducer)
   const navigate = useNavigate();
+  const [form] = Form.useForm();
   const [state, setState] = useState({
       commentsBoxOpen: false,
       shareBoxOpen: false,
@@ -50,7 +50,6 @@ const Product = ({product}) => {
       numLikes: product?.liked_by.length,
       productSaved: product?.saved_by.includes(user.reference),
       numComments: product?.commented_on_by?.length || 0,
-      newComment: '',
       addingNewComment: false,
       likingProduct: false,
       savingProduct: false,
@@ -59,7 +58,7 @@ const Product = ({product}) => {
       commentToEdit: null,
       editingComment: false
   })
-  const { commentsBoxOpen, fetchingComments, commentsData, comments, productLiked, productSaved, numLikes, numComments, newComment,
+  const { commentsBoxOpen, fetchingComments, commentsData, comments, productLiked, productSaved, numLikes, numComments,
      addingNewComment, likingProduct, savingProduct, shareBoxOpen, productViewed, editCommentBoxOpen, commentToEdit, editingComment } = state;
 
   const likeProduct = async () => {
@@ -208,7 +207,6 @@ const Product = ({product}) => {
       ...state,
       addingNewComment: true,
     }))
-    console.log(values)
 
     try {
       const { data } = await axiosProductInstance.post(`/auth/add-comment/${product?.reference}`, {
@@ -226,6 +224,7 @@ const Product = ({product}) => {
         newComment: '',
         numComments: state.numComments + 1,
       }))
+      form.setFieldsValue({ comment: '' });
     }catch(error) {
       message.error(error?.response?.data?.error || 'could not add comment')
       setState(state => ({
@@ -380,7 +379,10 @@ const Product = ({product}) => {
           title={<div className='text-primary fw-bold'>Comments</div>}
           footer={
           <>
-            <Form onFinish={addComment}>
+            <Form 
+            form={form}
+            onFinish={addComment}
+            >
               <Form.Item
                 name="comment"
                 rules={[
