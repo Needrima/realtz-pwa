@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './Signup.scss'
-import {Form, Input, Spin, message} from 'antd'
+import {Checkbox, Form, Input, Spin, message} from 'antd'
 import userIcon from '../../assets/icons/user.svg'
 import emailIcon from '../../assets/icons/sms.svg'
 import phoneIcon from '../../assets/icons/call.svg'
@@ -87,6 +87,8 @@ const Signup = () => {
       loading: true,
     }))
 
+    console.log(values);
+
     const reqData = {
       user_type: "user",
       firstname: values.firstname,
@@ -94,7 +96,8 @@ const Signup = () => {
       email: values.email,
       phone_number: values.phone_number,
       password: values.password,
-      confirm_password: values.confirm_password
+      confirm_password: values.confirm_password,
+      agreement: values.agreement
     }
 
     try {
@@ -165,7 +168,7 @@ const Signup = () => {
 
           <div className='mb-3 text-muted'>Lorem ipsum dolor sit amet, consecturadipiscing</div>
 
-          <Form onFinish={onFinish}>
+          <Form onFinish={onFinish} autoComplete='off'>
             <Form.Item
               name='firstname'
               rules={[
@@ -298,6 +301,25 @@ const Signup = () => {
                 placeholder='Confirm password'
                 className='text-input'
               />
+            </Form.Item>
+
+            <Form.Item
+              name='agreement'
+              valuePropName='checked'
+              rules={[
+                {
+                  async validator(rule, value) {
+                    value ? 
+                    Promise.resolve() :
+                    Promise.reject(new Error("You have not accepted our terms and condtions"));
+                  },
+                  validateTrigger: "onChange",
+                },
+              ]}
+            >
+              <Checkbox>
+                Agree to our <a href='/terms' className='text-primary text-decoration-none'>Terms and Conditions</a>
+              </Checkbox>
             </Form.Item>
 
             <div className='text-center'>
