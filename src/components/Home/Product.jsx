@@ -40,6 +40,7 @@ const Product = ({product}) => {
   const {user, token} = useSelector(state => state.authReducer)
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const [editForm] = Form.useForm();
   const [state, setState] = useState({
       commentsBoxOpen: false,
       shareBoxOpen: false,
@@ -254,7 +255,6 @@ const Product = ({product}) => {
   }
 
   const viewProduct = async () => {
-    console.log('about to trigger view product endpoint')
     if (productViewed) return;
     try {
       const {data} = await axiosProductInstance.get(`/auth/view/${product?.reference}`, {
@@ -269,15 +269,40 @@ const Product = ({product}) => {
   }
 
   const openEditCommentBox = (commentToEdit) => {
+    console.log(commentToEdit?.comment);
     setState(state => ({
       ...state,
       commentToEdit: commentToEdit,
       editCommentBoxOpen: true
     }))
+    editForm.setFieldValue('edited_comment', commentToEdit?.comment)
   }
 
-  const editComment = (values) => {
-    console.log('new comment:', commentToEdit)
+  const editComment = async (values) => {
+    if (values.edited_comment.trim() === commentToEdit?.comment) {
+      message.warning('no change has been made')
+      return
+    }
+    // console.log('new comment:', values.edited_comment)
+    try {
+      const {data} = await axiosProductInstance.post(`/auth/edit-comment/${commentToEdit?.reference}`, {
+        comment: values.edited_comment
+      }, {
+        headers: {
+          token: token,
+        }
+      })
+      setState(state => ({
+        ...state,
+        commentToEdit: null,
+        editCommentBoxOpen: false,
+        comments: state.comments.map(comment => comment.reference === data?.updated_comment.reference ? data?.updated_comment : comment  )
+      }))
+      editForm.setFieldValue('edited_comment', '')
+      message.success(data?.message)
+    }catch(error) {
+      console.log(error?.response?.data?.error)
+    }
   }
 
   const commentsRef = useInfiniteScroll({
@@ -334,6 +359,10 @@ const Product = ({product}) => {
 
         <div className='position-absolute bottom-0 mb-5' style={{right: '10%'}}>
             <div className='mb-4'>
+                <img onClick={() => navigate(`/profile/${product?.user_reference}`)} className='d-block' src={profileIcon} alt="view owners profile" />
+            </div>
+
+            <div className='mb-4'>
                 {likingProduct ? <Spin spinning={likingProduct} /> : productLiked ? 
                 <img onClick={unLikeProduct} className='d-block' src={likeIconLiked} alt="like video" /> // chage this to blue like image
                 : 
@@ -359,13 +388,9 @@ const Product = ({product}) => {
             <div className='mb-4'>
                 <img onClick={() => setState(state => ({...state, shareBoxOpen: true})) } className='d-block' src={shareIcon} alt="share video" />
             </div>
-
-            <div className='mb-4'>
-                <img onClick={() => navigate(`/profile/${product?.user_reference}`)} className='d-block' src={profileIcon} alt="view owners profile" />
-            </div>
         </div>
         
-        <div className='position-absolute bottom-0 text-light mb-4' style={{left: '4%', width: '80%'}}>
+        <div className='position-absolute bottom-0 text-light mb-4' style={{left: '4%', width: '75%'}}>
             <div className='fs-4 fw-bold'>{product?.owner}</div>
             <div className='fs-4'>{TimeConverter(product?.created_on)}</div>
             <div className='fs-4'>
@@ -434,31 +459,33 @@ const Product = ({product}) => {
           closable={true}
           placement='bottom'
           height={'auuto'}
-          onClose={() => setState(state => ({...state, editCommentBoxOpen: false, commentToEdit: null}))}
+          onClose={() => {
+            setState(state => ({...state, editCommentBoxOpen: false, commentToEdit: null}))
+            editForm.setFieldValue('edited_comment', '')
+          }}
         >
-          <Form onFinish={editComment}>
+          <Form 
+            form={editForm}
+            onFinish={editComment}
+          >
               <Form.Item
-                name="comment"
+                name="edited_comment"
+                rules={[
+                  {required: true, message: 'Comment cannot be empty'},
+                ]}
               >
-                {/* <TextArea
+                <Input.TextArea 
+                  rows={4}
                   placeholder='Enter comment ...'
-                  name='comment'
-                  value={commentToEdit?.comment}
-                  onChange={(val) => setState(state => ({
-                    ...state,
-                    commentToEdit: {...state.commentToEdit, comment: val}
-                  }))}
                   disabled={editingComment}
-                  className='border border-primary px-2'
-                  /> */}
-                <Input.TextArea rows={4}
-                placeholder='Enter comment ...'
-                name='comment'
-                value={commentToEdit?.comment}
-                disabled={editingComment}
+                  className='border border-primary px-2 mb-2'
                  />
               </Form.Item>
-              <button disabled={editingComment || !commentToEdit?.comment} type='submit' className='btn btn-primary'>{editingComment ? <Spin spinning={editingComment} />: 'Edit'}</button>
+              <button 
+                disabled={editingComment} 
+                type='submit'
+                className='btn btn-primary'
+              >{editingComment ? <Spin spinning={editingComment} />: 'Edit'}</button>
             </Form>
         </Drawer>
 
