@@ -2,16 +2,20 @@ import React, { useEffect, useRef, useState } from 'react'
 import playIcon from '../../assets/icons/play.svg'
 import pauseIcon from '../../assets/icons/pause.svg'
 
-const Video = ({video}) => {
-    const videoRef = useRef();
+const Video = ({video, viewProduct}) => {
+    const videoRef = useRef(null);
+    const videoDivRef = useRef(null);
+
     const [state, setState] = useState({
         paused: false,
         muted: true,
         outofView51: false,
         outofView49: false,
         pausePlayImgVisible: true,
+        startTime: 0,
+        isMonitoringPlay:false, 
     })
-    const {paused, muted, pausePlayImgVisible, outofView51, outofView49 } = state;
+    const {paused, muted, pausePlayImgVisible, outofView51, outofView49, startTime, isMonitoringPlay } = state;
 
     // handle pause and play
     const pausePlay = () => {
@@ -36,7 +40,6 @@ const Video = ({video}) => {
     }
 
     // observes video when it is 51% of view
-    const videoDivRef = useRef(null);
     useEffect(() => {
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -91,11 +94,13 @@ const Video = ({video}) => {
         if (outofView49 && !paused) { // video is 49% out of view and is playing
             // videoRef.current.currentTime = 0;
             videoRef.current.pause();
-            setState(state => ({...state, paused: true}))
+            videoRef.current.muted = true;
+            setState(state => ({...state, paused: true, muted: true}))
         }
         if (!outofView51 && paused) { // video is 51% in view and is not playing
           videoRef.current.play();
-          setState(state => ({...state, paused: false}))
+          videoRef.current.muted = true;
+          setState(state => ({...state, paused: false, muted: true}))
         }
     },[outofView49, outofView51])
 
@@ -113,9 +118,26 @@ const Video = ({video}) => {
         return () => clearTimeout(timeout);
     }, [pausePlayImgVisible]); 
 
+    // handles viewing product if watched for atleast 10 seconds
+    const handlePlay = (event) => {
+      setState({...state, startTime: event.target.currentTime, isMonitoringPlay: true})
+    };
+  
+    const handleTimeUpdate = (event) => {
+      if (isMonitoringPlay &&  event.target.currentTime - startTime >= 10) {
+        // console.log('Video has been playing for at least 10 seconds');
+        viewProduct()
+        setState({...state, startTime: 0, isMonitoringPlay: false})
+      }
+    };
+
   return (
     <div ref={videoDivRef} className='w-100 vh-100 position-relative'>
-        <video ref={videoRef} loop autoPlay muted className='w-100 vh-100 object-fit-fill' onClick={pausePlay}> {/*object-fit-fill*/}
+        <video ref={videoRef} loop autoPlay muted className='w-100 vh-100 object-fit-fill' 
+          onClick={pausePlay} 
+          onPlay={handlePlay} 
+          onTimeUpdate={handleTimeUpdate}
+        > {/*object-fit-fill*/}
             <source src={video} type="video/mp4" />
         </video>
 

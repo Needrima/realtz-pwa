@@ -1,13 +1,14 @@
-import { Drawer, Spin, message, Form } from 'antd';
+import { Drawer, Spin, message, Form, Input } from 'antd';
 import React, { useState } from 'react'
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import TimeConverter from '../../misc/TimeConverter';
-import { TextArea } from 'antd-mobile'
 import { useSelector } from 'react-redux';
 import { axiosProductInstance } from '../../api/axoios';
+import FormatNumber from '../../misc/NumberFormatter';
 
-const Comment = ({comment, deleteComment}) => {
+const Comment = ({comment, deleteComment, openEditCommentBox}) => {
   const {user, token} = useSelector(state => state.authReducer)
+  const [form] = Form.useForm();
   const [state, setState] = useState({
       repliesBoxOpen: false,
       repliesData: null,
@@ -55,7 +56,7 @@ const Comment = ({comment, deleteComment}) => {
     }
   }
 
-  const addReply = async () => {
+  const addReply = async (values) => {
     setState(state => ({
       ...state,
       addingNewReply: true,
@@ -63,7 +64,7 @@ const Comment = ({comment, deleteComment}) => {
 
     try {
       const { data } = await axiosProductInstance.post(`/auth/add-reply/${comment?.reference}`, {
-        reply: newReply
+        reply: values.reply,
       }, {
         headers: {
           token: token,
@@ -77,6 +78,7 @@ const Comment = ({comment, deleteComment}) => {
         newReply: '',
         numReplies: state.numReplies + 1,
       }))
+      form.setFieldsValue({ reply: '' });
     }catch(error) {
       message.error(error?.response?.data?.error || 'could not add reply')
       setState(state => ({
@@ -89,7 +91,7 @@ const Comment = ({comment, deleteComment}) => {
 
   const deleteReply = async (reply_reference) => {
     try {
-      const {data} = await axiosProductInstance.get(`/auth/delete-comment/${comment?.reference}/${reply_reference}`, {
+      const {data} = await axiosProductInstance.get(`/auth/delete-reply/${comment?.reference}/${reply_reference}`, {
         headers: {
           token: token,
         }
@@ -97,7 +99,7 @@ const Comment = ({comment, deleteComment}) => {
       message.success(data?.message)
       setState(state => ({
         ...state,
-        replies: state.comments.filter(reply => reply?.reference !== data?.deleted_reference),
+        replies: state.replies.filter(reply => reply?.reference !== data?.deleted_reference),
         numReplies: state.numReplies - 1
       }))
     }catch(error) {
@@ -125,8 +127,8 @@ const Comment = ({comment, deleteComment}) => {
         <div className='mb-2'>
           <div>{comment?.comment}</div> 
             <div className='d-flex justify-content-end'>
-              <span className='text-primary fw-bold text-decoration-underline me-3' onClick={openReplies}>Reply.({numReplies})</span>
-              {user?.fullname === comment?.commenter && <span className='text-primary fw-bold text-decoration-underline me-3'>Edit</span>}
+              <span className='text-primary fw-bold text-decoration-underline me-3' onClick={openReplies}>Reply.({FormatNumber(numReplies)})</span>
+              {user?.fullname === comment?.commenter && <span onClick={() => openEditCommentBox(comment)} className='text-primary fw-bold text-decoration-underline me-3'>Edit</span>}
               {user?.fullname === comment?.commenter && <span className='text-primary fw-bold text-decoration-underline' onClick={() => deleteComment(comment?.reference)}>Delete</span>}
             </div>
         </div>
@@ -143,23 +145,24 @@ const Comment = ({comment, deleteComment}) => {
           title={<div className='text-primary fw-bold'>Replies</div>}
           footer={
             <>
-              <Form onFinish={addReply}>
+              <Form 
+              form={form}
+              onFinish={addReply}
+              >
                 <Form.Item
                   name="reply"
+                  rules={[
+                    {required: true, message: 'Reply cannot be empty'},
+                  ]}
                 >
-                  <TextArea
-                    placeholder='Enter reply ...'
-                    name='reply'
-                    value={newReply}
-                    onChange={(val) => setState(state => ({
-                      ...state,
-                      newReply: val
-                    }))}
-                    disabled={addingNewReply}
-                    className='border border-primary px-2 mb-2'
-                    />
+                <Input.TextArea
+                  rows={4}
+                  placeholder='Enter reply ...'
+                  disabled={addingNewReply}
+                  className='border border-primary px-2 mb-2'
+                  />
                 </Form.Item>
-                <button disabled={addingNewReply || !newReply} type='submit' className='btn btn-primary'>{addingNewReply ? <Spin spinning={addingNewReply} />: 'Reply'}</button>
+                <button disabled={addingNewReply} type='submit' className='btn btn-primary'>{addingNewReply ? <Spin spinning={addingNewReply} />: 'Reply'}</button>
               </Form>
               {repliesData && !repliesData?.has_next && <div className='text-center text-primary fw-bold'>no more replies</div>}
             </>
