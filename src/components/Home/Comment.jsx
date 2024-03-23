@@ -9,16 +9,19 @@ import FormatNumber from '../../misc/NumberFormatter';
 const Comment = ({comment, deleteComment, openEditCommentBox}) => {
   const {user, token} = useSelector(state => state.authReducer)
   const [form] = Form.useForm();
+  const [editForm] = Form.useForm();
   const [state, setState] = useState({
       repliesBoxOpen: false,
       repliesData: null,
       replies: [],
       fetchingReplies: false,
       numReplies: comment?.replied_to_by?.length || 0,
-      newReply: '',
       addingNewReply: false,
+      editReplyBoxOpen: false,
+      replyToEdit: null,
+      editingReply: false,
   })
-  const { repliesBoxOpen, fetchingReplies, numReplies, repliesData, replies, newReply, addingNewReply } = state;
+  const { repliesBoxOpen, fetchingReplies, numReplies, repliesData, replies, addingNewReply, editReplyBoxOpen, replyToEdit, editingReply } = state;
 
 
   const getCommentReplies = async (page) => {
@@ -54,6 +57,16 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
     if (replies.length === 0) {
       getCommentReplies(1);
     }
+  }
+
+  const openEditReplyBox = (replyToEdit) => {
+    console.log(replyToEdit?.reply);
+    setState(state => ({
+      ...state,
+      replyToEdit: replyToEdit,
+      editReplyBoxOpen: true
+    }))
+    editForm.setFieldValue('edited_reply', replyToEdit?.reply)
   }
 
   const addReply = async (values) => {
@@ -107,6 +120,42 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
     }
   }
 
+  const editReply = async (values) => {
+    if (values.edited_reply.trim() === replyToEdit?.reply) {
+      message.warning('no change has been made')
+      return
+    }
+    // console.log('new reply:', values.edited_reply)
+    setState(state => ({
+      ...state,
+      editingReply: true,
+    }))
+    try {
+      const {data} = await axiosProductInstance.post(`/auth/edit-reply/${replyToEdit?.reference}`, {
+        reply: values.edited_reply
+      }, {
+        headers: {
+          token: token,
+        }
+      })
+      setState(state => ({
+        ...state,
+        replyToEdit: null,
+        editReplyBoxOpen: false,
+        replies: state.replies.map(reply => reply.reference === data?.updated_reply.reference ? data?.updated_reply : reply),
+        editingReply: false
+      }))
+      editForm.setFieldValue('edited_reply', '')
+      message.success(data?.message)
+    }catch(error) {
+      console.log(error?.response?.data?.error)
+      setState(state => ({
+        ...state,
+        editingReply: false
+      }))
+    }
+  }
+
   const repliesRef = useInfiniteScroll({
     // Function to fetch more items
     next: () => getCommentReplies(repliesData?.next_page),
@@ -140,7 +189,7 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
         <hr />
       </div>
 
-        <Drawer
+      <Drawer
           open={repliesBoxOpen}
           title={<div className='text-primary fw-bold'>Replies</div>}
           footer={
@@ -185,7 +234,7 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
               <div className='mb-2'>
                   <div>{reply?.reply}</div> 
                   <div className='d-flex justify-content-end'>
-                    {user?.fullname === reply?.replyer && <span className='text-primary fw-bold text-decoration-underline me-3'>Edit</span>}
+                    {user?.fullname === reply?.replyer && <span onClick={() => openEditReplyBox(reply)} className='text-primary fw-bold text-decoration-underline me-3'>Edit</span>}
                     {user?.fullname === reply?.replyer && <span className='text-primary fw-bold text-decoration-underline' onClick={() => deleteReply(reply?.reference)}>Delete</span>}
                   </div>
               </div>
@@ -206,6 +255,44 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
             </div>}
           </div>
       </Drawer>
+
+      {/* drawer to display edit reply */}
+      <Drawer
+          open={editReplyBoxOpen}
+          title={<div className='text-primary fw-bold'>Edit reply</div>}
+          // footer={} // react node 
+          closable={true}
+          placement='bottom'
+          height={'auto'}
+          onClose={() => {
+            setState(state => ({...state, editReplyBoxOpen: false, replyToEdit: null}))
+            editForm.setFieldValue('edited_reply', '')
+          }}
+        >
+          <Form 
+            form={editForm}
+            onFinish={editReply}
+          >
+              <Form.Item
+                name="edited_reply"
+                rules={[
+                  {required: true, message: 'Reply cannot be empty'},
+                ]}
+              >
+                <Input.TextArea 
+                  rows={4}
+                  placeholder='Enter reply ...'
+                  disabled={editingReply}
+                  className='border border-primary px-2 mb-2'
+                 />
+              </Form.Item>
+              <button 
+                disabled={editingReply} 
+                type='submit'
+                className='btn btn-primary'
+              >{editingReply ? <Spin spinning={editingReply} />: 'Edit'}</button>
+            </Form>
+        </Drawer>
     </>
   )
 }
