@@ -269,7 +269,6 @@ const Product = ({product}) => {
   }
 
   const openEditCommentBox = (commentToEdit) => {
-    console.log(commentToEdit?.comment);
     setState(state => ({
       ...state,
       commentToEdit: commentToEdit,
@@ -283,7 +282,10 @@ const Product = ({product}) => {
       message.warning('no change has been made')
       return
     }
-    // console.log('new comment:', values.edited_comment)
+    setState(state => ({
+      ...state,
+      editingComment: true,
+    }))
     try {
       const {data} = await axiosProductInstance.post(`/auth/edit-comment/${commentToEdit?.reference}`, {
         comment: values.edited_comment
@@ -296,12 +298,17 @@ const Product = ({product}) => {
         ...state,
         commentToEdit: null,
         editCommentBoxOpen: false,
-        comments: state.comments.map(comment => comment.reference === data?.updated_comment.reference ? data?.updated_comment : comment  )
+        comments: state.comments.map(comment => comment.reference === data?.updated_comment.reference ? data?.updated_comment : comment  ),
+        editingComment: false,
       }))
       editForm.setFieldValue('edited_comment', '')
       message.success(data?.message)
     }catch(error) {
       console.log(error?.response?.data?.error)
+      setState(state => ({
+        ...state,
+        editingComment: false
+      }))
     }
   }
 
@@ -458,7 +465,7 @@ const Product = ({product}) => {
           // footer={} // react node 
           closable={true}
           placement='bottom'
-          height={'auuto'}
+          height={'auto'}
           onClose={() => {
             setState(state => ({...state, editCommentBoxOpen: false, commentToEdit: null}))
             editForm.setFieldValue('edited_comment', '')
