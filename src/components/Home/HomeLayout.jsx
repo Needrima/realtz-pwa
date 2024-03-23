@@ -26,9 +26,9 @@ const HomeLayout = () => {
           </p>
         } // triggers if hasMore={false}
         // below props only if you need pull down functionality
-        refreshFunction={() => window.location.reload()}
-        pullDownToRefresh
-        pullDownToRefreshThreshold={50}
+        // refreshFunction={() => {}}
+        // pullDownToRefresh
+        // pullDownToRefreshThreshold={50}
       >
         {homeProducts && homeProducts.length !== 0 && homeProducts.map((product, index) => <Product key={index} product={product} />)}
       </InfiniteScroll>}

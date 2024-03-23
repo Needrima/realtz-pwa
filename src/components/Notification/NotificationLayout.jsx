@@ -39,7 +39,7 @@ const NotificationLayout = () => {
           </p>
         } // triggers if hasMore={false}
         // below props only if you need pull down functionality
-        refreshFunction={() => window.location.reload()}
+        // refreshFunction={() => window.location.reload()}
         // pullDownToRefresh
         // pullDownToRefreshThreshold={50}
         // pullDownToRefreshContent={

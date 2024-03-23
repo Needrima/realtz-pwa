@@ -364,7 +364,7 @@ const Product = ({product}) => {
           {product.videos.map((video, index) => <Video key={index} video={video} viewProduct={viewProduct} />)}
         </Carousel>;
 
-        <div className='position-absolute bottom-0 mb-5' style={{right: '10%'}}>
+        <div className='position-absolute' style={{right: '5%', bottom: '15%'}}>
             <div className='mb-4'>
                 <img onClick={() => navigate(`/profile/${product?.user_reference}`)} className='d-block' src={profileIcon} alt="view owners profile" />
             </div>
