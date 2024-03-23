@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import playIcon from '../../assets/icons/play.svg'
 import pauseIcon from '../../assets/icons/pause.svg'
+import muteIcon from '../../assets/icons/mute.svg'
+import unMuteIcon from '../../assets/icons/unmute.svg'
 
 const Video = ({video, viewProduct}) => {
     const videoRef = useRef(null);
@@ -149,6 +151,15 @@ const Video = ({video, viewProduct}) => {
         <img className={`position-absolute top-50 start-50 ${pausePlayImgVisible ? 'visible' : 'fade-in-element'} pause-play-img`}
          src={pauseIcon} alt="pause icon" 
          onClick={pausePlay} />}
+
+        {muted ? 
+        <img className={`position-absolute mute-unmute-img`}
+         src={unMuteIcon} alt="mute icon" 
+         onClick={muteUnmute} />
+        :
+        <img className={`position-absolute mute-unmute-img`}
+         src={muteIcon} alt="umute icon" 
+         onClick={muteUnmute} />}
     </div>
   )
 }
