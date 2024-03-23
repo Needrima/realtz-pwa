@@ -1,4 +1,4 @@
-import { Drawer, Spin, message, Form } from 'antd';
+import { Drawer, Spin, message, Form, Input } from 'antd';
 import React, { useState } from 'react'
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import TimeConverter from '../../misc/TimeConverter';
@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { axiosProductInstance } from '../../api/axoios';
 import FormatNumber from '../../misc/NumberFormatter';
 
-const Comment = ({comment, deleteComment}) => {
+const Comment = ({comment, deleteComment, openEditCommentBox}) => {
   const {user, token} = useSelector(state => state.authReducer)
   const [state, setState] = useState({
       repliesBoxOpen: false,
@@ -56,7 +56,7 @@ const Comment = ({comment, deleteComment}) => {
     }
   }
 
-  const addReply = async () => {
+  const addReply = async (values) => {
     setState(state => ({
       ...state,
       addingNewReply: true,
@@ -64,7 +64,7 @@ const Comment = ({comment, deleteComment}) => {
 
     try {
       const { data } = await axiosProductInstance.post(`/auth/add-reply/${comment?.reference}`, {
-        reply: newReply
+        reply: values.reply,
       }, {
         headers: {
           token: token,
@@ -127,7 +127,7 @@ const Comment = ({comment, deleteComment}) => {
           <div>{comment?.comment}</div> 
             <div className='d-flex justify-content-end'>
               <span className='text-primary fw-bold text-decoration-underline me-3' onClick={openReplies}>Reply.({FormatNumber(numReplies)})</span>
-              {user?.fullname === comment?.commenter && <span className='text-primary fw-bold text-decoration-underline me-3'>Edit</span>}
+              {user?.fullname === comment?.commenter && <span onClick={() => openEditCommentBox(comment)} className='text-primary fw-bold text-decoration-underline me-3'>Edit</span>}
               {user?.fullname === comment?.commenter && <span className='text-primary fw-bold text-decoration-underline' onClick={() => deleteComment(comment?.reference)}>Delete</span>}
             </div>
         </div>
@@ -147,20 +147,18 @@ const Comment = ({comment, deleteComment}) => {
               <Form onFinish={addReply}>
                 <Form.Item
                   name="reply"
+                  rules={[
+                    {required: true, message: 'Reply cannot be empty'},
+                  ]}
                 >
-                  <TextArea
-                    placeholder='Enter reply ...'
-                    name='reply'
-                    value={newReply}
-                    onChange={(val) => setState(state => ({
-                      ...state,
-                      newReply: val
-                    }))}
-                    disabled={addingNewReply}
-                    className='border border-primary px-2 mb-2'
-                    />
+                <Input.TextArea
+                  rows={4}
+                  placeholder='Enter reply ...'
+                  disabled={addingNewReply}
+                  className='border border-primary px-2 mb-2'
+                  />
                 </Form.Item>
-                <button disabled={addingNewReply || !newReply} type='submit' className='btn btn-primary'>{addingNewReply ? <Spin spinning={addingNewReply} />: 'Reply'}</button>
+                <button disabled={addingNewReply} type='submit' className='btn btn-primary'>{addingNewReply ? <Spin spinning={addingNewReply} />: 'Reply'}</button>
               </Form>
               {repliesData && !repliesData?.has_next && <div className='text-center text-primary fw-bold'>no more replies</div>}
             </>

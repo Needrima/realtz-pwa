@@ -9,7 +9,7 @@ import likeIcon from '../../assets/icons/heart-white.svg'
 import likeIconLiked from '../../assets/icons/heart-blue.svg'
 import commentIcon from '../../assets/icons/comment.svg'
 import shareIcon from '../../assets/icons/share-white.svg'
-import { Drawer, Spin, message, Form } from 'antd'
+import { Drawer, Spin, message, Form, Input } from 'antd'
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import Comment from './Comment'
 import { useSelector } from 'react-redux';
@@ -55,8 +55,12 @@ const Product = ({product}) => {
       likingProduct: false,
       savingProduct: false,
       productViewed: product?.viewed_by.includes(user.reference),
+      editCommentBoxOpen: false,
+      commentToEdit: null,
+      editingComment: false
   })
-  const { commentsBoxOpen, fetchingComments, commentsData, comments, productLiked, productSaved, numLikes, numComments, newComment, addingNewComment, likingProduct, savingProduct, shareBoxOpen, productViewed } = state;
+  const { commentsBoxOpen, fetchingComments, commentsData, comments, productLiked, productSaved, numLikes, numComments, newComment,
+     addingNewComment, likingProduct, savingProduct, shareBoxOpen, productViewed, editCommentBoxOpen, commentToEdit, editingComment } = state;
 
   const likeProduct = async () => {
     setState(state => ({
@@ -199,15 +203,16 @@ const Product = ({product}) => {
     }
   }
 
-  const addComment = async () => {
+  const addComment = async (values) => {
     setState(state => ({
       ...state,
       addingNewComment: true,
     }))
+    console.log(values)
 
     try {
       const { data } = await axiosProductInstance.post(`/auth/add-comment/${product?.reference}`, {
-        comment: newComment
+        comment: values.comment
       }, {
         headers: {
           token: token,
@@ -262,6 +267,18 @@ const Product = ({product}) => {
     }catch(error) {
       console.log(error?.response?.data?.error)
     }
+  }
+
+  const openEditCommentBox = (commentToEdit) => {
+    setState(state => ({
+      ...state,
+      commentToEdit: commentToEdit,
+      editCommentBoxOpen: true
+    }))
+  }
+
+  const editComment = (values) => {
+    console.log('new comment:', commentToEdit)
   }
 
   const commentsRef = useInfiniteScroll({
@@ -356,7 +373,8 @@ const Product = ({product}) => {
               {product?.description.slice(0, 50)} {' '}
               {product?.hash_tags.map(hash_tag => hash_tag.startsWith('#') ? hash_tag : '#'+hash_tag).slice(0, 2).join(' ')} ... <u className='fw-bold'>more</u></div>
         </div>
-
+                
+        {/* drawer to display comments */}
         <Drawer
           open={commentsBoxOpen}
           title={<div className='text-primary fw-bold'>Comments</div>}
@@ -365,20 +383,18 @@ const Product = ({product}) => {
             <Form onFinish={addComment}>
               <Form.Item
                 name="comment"
+                rules={[
+                  {required: true, message: 'Comment cannot be empty'},
+                ]}
               >
-                <TextArea
+                <Input.TextArea
+                  rows={4}
                   placeholder='Enter comment ...'
-                  name='comment'
-                  value={newComment}
-                  onChange={(val) => setState(state => ({
-                    ...state,
-                    newComment: val
-                  }))}
                   disabled={addingNewComment}
                   className='border border-primary px-2 mb-2'
                   />
               </Form.Item>
-              <button disabled={addingNewComment || !newComment} type='submit' className='btn btn-primary'>{addingNewComment ? <Spin spinning={addingNewComment} />: 'Comment'}</button>
+              <button disabled={addingNewComment} type='submit' className='btn btn-primary'>{addingNewComment ? <Spin spinning={addingNewComment} />: 'Comment'}</button>
             </Form>
             {commentsData && !commentsData?.has_next && <div className='text-center text-primary fw-bold'>no more comments</div>}
           </>
@@ -396,7 +412,7 @@ const Product = ({product}) => {
             }}
           > 
             {comments && comments?.length !== 0 ? 
-            comments?.map((comment, index) => <Comment key={index} comment={comment} deleteComment={deleteComment} />)
+            comments?.map((comment, index) => <Comment key={index} comment={comment} deleteComment={deleteComment} openEditCommentBox={openEditCommentBox} />)
             :
             <div className='fw-bold text-center text-primary mt-5'>no comments yet</div>
             }
@@ -408,6 +424,43 @@ const Product = ({product}) => {
           }
         </Drawer>
 
+        {/* drawer to display edit comment */}
+        <Drawer
+          open={editCommentBoxOpen}
+          title={<div className='text-primary fw-bold'>Edit comment</div>}
+          // footer={} // react node 
+          closable={true}
+          placement='bottom'
+          height={'auuto'}
+          onClose={() => setState(state => ({...state, editCommentBoxOpen: false, commentToEdit: null}))}
+        >
+          <Form onFinish={editComment}>
+              <Form.Item
+                name="comment"
+              >
+                {/* <TextArea
+                  placeholder='Enter comment ...'
+                  name='comment'
+                  value={commentToEdit?.comment}
+                  onChange={(val) => setState(state => ({
+                    ...state,
+                    commentToEdit: {...state.commentToEdit, comment: val}
+                  }))}
+                  disabled={editingComment}
+                  className='border border-primary px-2'
+                  /> */}
+                <Input.TextArea rows={4}
+                placeholder='Enter comment ...'
+                name='comment'
+                value={commentToEdit?.comment}
+                disabled={editingComment}
+                 />
+              </Form.Item>
+              <button disabled={editingComment || !commentToEdit?.comment} type='submit' className='btn btn-primary'>{editingComment ? <Spin spinning={editingComment} />: 'Edit'}</button>
+            </Form>
+        </Drawer>
+
+        {/* drawer to display share icons */}
         <Drawer
           open={shareBoxOpen}
           title={<div className='text-primary fw-bold'>Share</div>}
