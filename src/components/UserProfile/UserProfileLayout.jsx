@@ -299,7 +299,19 @@ const UserProfileLayout = () => {
             round={true} />
           </WhatsappShareButton>
         </Drawer>
+        
+        {/* view profile modal */}
+        <Modal 
+         title="Avatar"
+         open={imageModalIsOpen}
+         onOk={() => showImageModal(false)} 
+         onCancel={() => showImageModal(false)}
+         footer={[]}
+          >
+            <img src={userImage} alt="avatar" className='w-100 h-100' />
+        </Modal>
 
+        {/* change profile modal */}
         <Modal 
          title="Avatar"
          open={imageModalIsOpen}
