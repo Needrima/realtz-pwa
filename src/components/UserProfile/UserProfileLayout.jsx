@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import settingsIcon from '../../assets/icons/settings-icon.svg'
 import userImage from '../../assets/images/casual.jpg'
 import uploadImageIcon from '../../assets/icons/upload-image-icon.svg'
@@ -6,9 +6,31 @@ import FormatNumber from '../../misc/NumberFormatter'
 import video from '../../assets/videos/video.mp4'
 import './UserProfile.scss'
 import { useNavigate } from 'react-router-dom'
+import { Drawer, Form, Input } from 'antd'
+import { UserProfileContext } from '../../pages/UserProfile/UserProfile'
+import {
+    EmailShareButton,
+    FacebookShareButton,
+    LinkedinShareButton,
+    PinterestShareButton,
+    RedditShareButton,
+    TelegramShareButton,
+    TwitterShareButton,
+    WhatsappShareButton,
+    EmailIcon,
+    FacebookIcon,
+    LinkedinIcon,
+    PinterestIcon,
+    RedditIcon,
+    TelegramIcon,
+    XIcon,
+    WhatsappIcon,
+  } from "react-share";
+import { USERNAME_REGEX } from '../../misc/regex'
 
 const UserProfileLayout = () => {
     const navigate = useNavigate();
+    const {editProfileBoxOpen, openEditProfileBox, shareProfileBoxOpen, openShareProfileBox} = useContext(UserProfileContext);
   return (
     <div className='px-3 bg-white'>
         <div className='mt-5 d-flex justify-content-end'>
@@ -43,8 +65,8 @@ const UserProfileLayout = () => {
         <div className='mt-3 px-4 text-center bio'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro, tempore? Corrupti ullam vitae rem sapiente nihil aspernatur sequi tempora temporibus et in accusantium, veritatis facilis magni quis veniam assumenda quod deserunt fugiat illo! Corrupti, pariatur vero animi optio, nemo praesentium inventore magni, cupiditate sit voluptate incidunt qui. Ad reprehenderit eveniet laboriosam provident quisquam consequatur, quo earum! Id dolores quo, rem veniam saepe molestiae culpa numquam! Minus deserunt iusto incidunt! Modi labore tenetur placeat, sed sit harum. Laboriosam praesentium totam consequuntur ut nisi nam dolore quibusdam voluptas culpa dolor earum aliquid non maxime fugiat repudiandae, soluta omnis eaque tenetur esse distinctio?</div>
 
         <div className='mt-3 d-flex justify-content-center'>
-            <button className='btn btn-primary btn-lg me-2 fw-bold'>Edit Profile</button>
-            <button className='btn btn-primary btn-lg fw-bold'>Share Profile</button>
+            <button className='btn btn-primary btn-lg me-2 fw-bold' onClick={() => openEditProfileBox(true)}>Edit Profile</button>
+            <button className='btn btn-primary btn-lg fw-bold' onClick={() => openShareProfileBox(true)}>Share Profile</button>
         </div>
 
         <div className='mt-5'>
@@ -124,6 +146,143 @@ const UserProfileLayout = () => {
                 </div>
             </div>
         </div>
+
+        <Drawer
+          open={editProfileBoxOpen}
+          title={<div className='text-primary fw-bold'>Edit profile</div>}
+          // footer={} // react node 
+          closable={true}
+          height={'auto'}
+          onClose={() => openEditProfileBox(false)}
+        >
+            <Form 
+            // form={editForm}
+            // onFinish={editComment}
+          >
+              <Form.Item
+                name="bio"
+                label='Bio'
+              >
+                <Input.TextArea 
+                  rows={4}
+                  placeholder='Write a little about yourself'
+                //   disabled={editingComment}
+                  className='border border-primary px-2 mb-2'
+                 />
+              </Form.Item>
+              <Form.Item
+              name='username'
+              label='Username'
+              rules={[
+                {min: 3, message: "Username should be atleast 3 characters long"},
+                {whitespace: true, message: "Username cannot be empty"},
+                {
+                  async validator(rule, value) {
+                    if (USERNAME_REGEX.test(value)) return Promise.resolve();
+                    return Promise.reject(new Error("Username must be alphanumeric with '_' as the only special character allowed"));
+                  },
+                  validateTrigger: "onChange",
+                },
+                
+              ]}
+            >
+              <Input
+                placeholder='Username'
+                className='text-input'
+              />
+            </Form.Item>
+            <button 
+                // disabled={editingComment} 
+                type='submit'
+                className='btn btn-primary'
+            >Edit</button>
+          </Form>
+        </Drawer>
+
+        {/* drawer to display share icons */}
+        <Drawer
+          open={shareProfileBoxOpen}
+          title={<div className='text-primary fw-bold'>Share Profile</div>}
+          // footer={} // react node 
+          closable={true}
+          placement='bottom'
+          height={'auto'}
+          onClose={() => openShareProfileBox(false)}
+        >
+          <FacebookShareButton 
+            className='me-2 mb-2'
+            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+          >
+            <FacebookIcon
+            round={true} />
+          </FacebookShareButton>
+
+          <EmailShareButton 
+            className='me-2 mb-2'
+            subject='username on realtz'
+            body='profile bio'
+            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            >
+            <EmailIcon
+            round={true} />
+          </EmailShareButton>
+
+          <LinkedinShareButton 
+            className='me-2 mb-2'
+            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            title='username on realtz'
+            summary={`profile bio`}
+            >
+            <LinkedinIcon
+            round={true} />
+          </LinkedinShareButton>
+
+          <PinterestShareButton 
+            className='me-2 mb-2'
+            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            media={`user image`}
+            description={`profile bio`}
+            >
+            <PinterestIcon
+            round={true} />
+          </PinterestShareButton>
+
+          <RedditShareButton 
+            className='me-2 mb-2'
+            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            title='username on realtz'
+            >
+            <RedditIcon
+            round={true} />
+          </RedditShareButton>
+
+          <TelegramShareButton 
+          className='me-2 mb-2'
+          url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+          title='username on realtz'
+          >
+            <TelegramIcon
+            round={true} />
+          </TelegramShareButton>
+
+          <TwitterShareButton 
+            className='me-2 mb-2'
+            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            title='username on realtz'
+          >
+            <XIcon
+            round={true} />
+          </TwitterShareButton>
+
+          <WhatsappShareButton 
+            className='me-2 mb-2'
+            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            title='username on realtz'
+          >
+            <WhatsappIcon
+            round={true} />
+          </WhatsappShareButton>
+        </Drawer>
     </div>
   )
 }

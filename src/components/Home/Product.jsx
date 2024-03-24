@@ -493,7 +493,7 @@ const Product = ({product}) => {
                 type='submit'
                 className='btn btn-primary'
               >{editingComment ? <Spin spinning={editingComment} />: 'Edit'}</button>
-            </Form>
+          </Form>
         </Drawer>
 
         {/* drawer to display share icons */}

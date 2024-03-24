@@ -227,7 +227,7 @@ const Signup = () => {
                 {
                   async validator(rule, value) {
                     if (USERNAME_REGEX.test(value)) return Promise.resolve();
-                    return Promise.reject(new Error("Username must be alphabets with '_' as the only special character allowed"));
+                    return Promise.reject(new Error("Username must be alphanumeric with '_' as the only special character allowed"));
                   },
                   validateTrigger: "onChange",
                 },

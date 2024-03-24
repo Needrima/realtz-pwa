@@ -1,5 +1,5 @@
 export const NAME_REGEX = /^[a-zA-Z-]+$/;
-export const USERNAME_REGEX = /^[a-zA-Z_]+$/;
+export const USERNAME_REGEX = /^[a-zA-Z0-9_]+$/;
 export const PHONE_REGEX = /^0\d{10}$/
 export const PASSWORD_UPPERCASE_REGEX = /[A-Z]+/
 export const PASSWORD_LOWERCASE_REGEX = /[a-z]+/
