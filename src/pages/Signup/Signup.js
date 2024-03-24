@@ -7,7 +7,7 @@ import phoneIcon from '../../assets/icons/call.svg'
 import passwordIcon from '../../assets/icons/password.svg'
 import { useNavigate } from 'react-router-dom'
 import OtpInput from 'react-otp-input';
-import { ALPHABET_REGEX, PHONE_REGEX, PASSWORD_SYMBOLS_REGEX, PASSWORD_UPPERCASE_REGEX, PASSWORD_LOWERCASE_REGEX, PASSWORD_NUM_REGEX } from '../../misc/regex'
+import { NAME_REGEX, USERNAME_REGEX, PHONE_REGEX, PASSWORD_SYMBOLS_REGEX, PASSWORD_UPPERCASE_REGEX, PASSWORD_LOWERCASE_REGEX, PASSWORD_NUM_REGEX } from '../../misc/regex'
 import timerIcon from '../../assets/icons/timer.svg'
 import { useTimer } from 'react-timer-hook';
 import {axiosUserInstance} from '../../api/axoios'
@@ -92,6 +92,7 @@ const Signup = () => {
     const reqData = {
       user_type: "user",
       firstname: values.firstname,
+      username: values.username,
       lastname: values.lastname,
       email: values.email,
       phone_number: values.phone_number,
@@ -177,7 +178,7 @@ const Signup = () => {
                 {whitespace: true, message: "Firstname cannot be empty"},
                 {
                   async validator(rule, value) {
-                    if (ALPHABET_REGEX.test(value)) return Promise.resolve();
+                    if (NAME_REGEX.test(value)) return Promise.resolve();
                     return Promise.reject(new Error("Firstname must be alphabets with '-' as the only special character allowed"));
                   },
                   validateTrigger: "onChange",
@@ -201,8 +202,32 @@ const Signup = () => {
                 {whitespace: true, message: "Lastname cannot be empty"},
                 {
                   async validator(rule, value) {
-                    if (ALPHABET_REGEX.test(value)) return Promise.resolve();
+                    if (NAME_REGEX.test(value)) return Promise.resolve();
                     return Promise.reject(new Error("Firstname must be alphabets with '-' as the only special character allowed"));
+                  },
+                  validateTrigger: "onChange",
+                },
+                
+              ]}
+              hasFeedback
+            >
+              <Input
+                prefix={<img src={userIcon} alt='user icon' />}
+                placeholder='Lastname'
+                className='text-input'
+              />
+            </Form.Item>
+
+            <Form.Item
+              name='username'
+              rules={[
+                {required: true, message: 'Username is required'},
+                {min: 3, message: "Username should be atleast 3 characters long"},
+                {whitespace: true, message: "Username cannot be empty"},
+                {
+                  async validator(rule, value) {
+                    if (USERNAME_REGEX.test(value)) return Promise.resolve();
+                    return Promise.reject(new Error("Username must be alphanumeric with '_' as the only special character allowed"));
                   },
                   validateTrigger: "onChange",
                 },
