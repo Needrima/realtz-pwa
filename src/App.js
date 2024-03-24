@@ -10,6 +10,7 @@ import { Provider, useDispatch } from 'react-redux';
 import { syncSession } from './redux/Actions';
 import { useEffect } from 'react';
 import Store from './redux/Store';
+import UserProfile from './pages/UserProfile/UserProfile';
 
 function App() {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ function App() {
         <Route path='/signup' element={handleRedirectToSignup()} />
         <Route path="/forgot-password" element={handleRedirectToForgotPassword()} />
         <Route path='/home' element={<Home />} />
+        <Route path='/user-profile' element={<UserProfile />} />
         <Route path='/notifications' element={<Notification />} />
       </Routes>
     </div>
