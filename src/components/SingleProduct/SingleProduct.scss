@@ -1,0 +1,41 @@
+.active-tab::after {
+    content: "";
+    position: absolute;
+    width: 70%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #ffff;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+  }
+  
+  .pause-play-img {
+      transform: translate(-50%, -50%);
+  }
+  
+  .mute-unmute-img {
+    bottom: 6%;
+    right: 5.5%;
+  }
+  
+  .product-loading-center {
+    left: 50%;
+    bottom: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+  }
+  
+  .fade-in-element {
+    opacity: 0;
+    transition: opacity 1s ease; /* Adjust the duration and easing function as needed */
+  }
+  
+  .visible {
+      opacity: 1;
+  }
+  
+  .ant-spin .ant-spin-dot .ant-spin-dot-item {
+      background-color: #ffff; /* Change to the desired color */
+  }
+  
