@@ -6,7 +6,7 @@ import FormatNumber from '../../misc/NumberFormatter'
 import video from '../../assets/videos/video.mp4'
 import './UserProfile.scss'
 import { useNavigate } from 'react-router-dom'
-import { Drawer, Form, Input } from 'antd'
+import { Button, Drawer, Form, Input, Modal } from 'antd'
 import { UserProfileContext } from '../../pages/UserProfile/UserProfile'
 import {
     EmailShareButton,
@@ -30,7 +30,8 @@ import { USERNAME_REGEX } from '../../misc/regex'
 
 const UserProfileLayout = () => {
     const navigate = useNavigate();
-    const {editProfileBoxOpen, openEditProfileBox, shareProfileBoxOpen, openShareProfileBox} = useContext(UserProfileContext);
+    const {editProfileBoxOpen, openEditProfileBox, shareProfileBoxOpen, openShareProfileBox, viewImageBoxOpen, openViewImageBox,
+        imageModalIsOpen, showImageModal} = useContext(UserProfileContext);
   return (
     <div className='px-3 bg-white'>
         <div className='mt-5 d-flex justify-content-end'>
@@ -38,7 +39,7 @@ const UserProfileLayout = () => {
         </div>
 
         <div className='mt-3 d-flex justify-content-center'>
-            <div className=' position-relative'>
+            <div className='position-relative' onClick={() => openViewImageBox(true)}>
                 <img src={userImage} alt="avatar" className='rounded-circle avatar' />
                 <img src={uploadImageIcon} alt="" className='position-absolute upload-img-icon' />
             </div>
@@ -147,6 +148,21 @@ const UserProfileLayout = () => {
             </div>
         </div>
 
+        <Drawer
+         open={viewImageBoxOpen}
+        //  title={<div className='text-primary fw-bold'>Share Profile</div>}
+         // footer={} // react node 
+         placement='bottom'
+         height={'auto'}
+         closable={false}
+         onClose={() => openViewImageBox(false)}
+        >
+            <div className='text-center text-primary fw-bold fs-3' onClick={() => showImageModal(true)}>View</div>
+            <hr />
+            <div className='text-center text-primary fw-bold fs-3'>Change</div>
+        </Drawer>
+
+        {/* drawer to edit profile */}
         <Drawer
           open={editProfileBoxOpen}
           title={<div className='text-primary fw-bold'>Edit profile</div>}
@@ -283,6 +299,16 @@ const UserProfileLayout = () => {
             round={true} />
           </WhatsappShareButton>
         </Drawer>
+
+        <Modal 
+         title="Avatar"
+         open={imageModalIsOpen}
+         onOk={() => showImageModal(false)} 
+         onCancel={() => showImageModal(false)}
+         footer={[]}
+          >
+            <img src={userImage} alt="avatar" className='w-100 h-100' />
+        </Modal>
     </div>
   )
 }

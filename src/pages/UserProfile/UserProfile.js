@@ -7,8 +7,10 @@ const UserProfile = () => {
     const [state, setState] = useState({
         editProfileBoxOpen: false,
         shareProfileBoxOpen: false,
+        viewImageBoxOpen: false,
+        imageModalIsOpen: false,
     })
-    const {editProfileBoxOpen, shareProfileBoxOpen} = state;
+    const {editProfileBoxOpen, shareProfileBoxOpen, viewImageBoxOpen, imageModalIsOpen} = state;
     
     const openEditProfileBox = (show) => {
         setState(state => ({
@@ -24,12 +26,30 @@ const UserProfile = () => {
         }))
     }
 
+    const openViewImageBox = (show) => {
+        setState(state => ({
+            ...state,
+            viewImageBoxOpen: show
+        }))
+    }
+
+    const showImageModal = (show) => {
+        setState(state => ({
+            ...state,
+            imageModalIsOpen: show
+        }))
+    }
+
   return (
     <UserProfileContext.Provider value={{
         editProfileBoxOpen,
         openEditProfileBox,
         shareProfileBoxOpen,
-        openShareProfileBox
+        openShareProfileBox,
+        viewImageBoxOpen,
+        openViewImageBox,
+        imageModalIsOpen,
+        showImageModal
     }}>    
         <Layout>
             <UserProfileLayout/>
