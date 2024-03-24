@@ -227,7 +227,7 @@ const UserProfileLayout = () => {
         >
           <FacebookShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
           >
             <FacebookIcon
             round={true} />
@@ -237,7 +237,7 @@ const UserProfileLayout = () => {
             className='me-2 mb-2'
             subject='username on realtz'
             body='profile bio'
-            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
             >
             <EmailIcon
             round={true} />
@@ -245,7 +245,7 @@ const UserProfileLayout = () => {
 
           <LinkedinShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
             title='username on realtz'
             summary={`profile bio`}
             >
@@ -255,7 +255,7 @@ const UserProfileLayout = () => {
 
           <PinterestShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
             media={`user image`}
             description={`profile bio`}
             >
@@ -265,7 +265,7 @@ const UserProfileLayout = () => {
 
           <RedditShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
             title='username on realtz'
             >
             <RedditIcon
@@ -274,7 +274,7 @@ const UserProfileLayout = () => {
 
           <TelegramShareButton 
           className='me-2 mb-2'
-          url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+          url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
           title='username on realtz'
           >
             <TelegramIcon
@@ -283,7 +283,7 @@ const UserProfileLayout = () => {
 
           <TwitterShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
             title='username on realtz'
           >
             <XIcon
@@ -292,7 +292,7 @@ const UserProfileLayout = () => {
 
           <WhatsappShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
             title='username on realtz'
           >
             <WhatsappIcon
