@@ -6,7 +6,7 @@ import FormatNumber from '../../misc/NumberFormatter'
 import video from '../../assets/videos/video.mp4'
 import './UserProfile.scss'
 import { useNavigate } from 'react-router-dom'
-import { Button, Drawer, Form, Input, Modal, Rate, Upload } from 'antd'
+import { Drawer, Form, Input, Modal, Rate, Spin, Upload } from 'antd'
 import { UserProfileContext } from '../../pages/UserProfile/UserProfile'
 import {
     EmailShareButton,
@@ -27,13 +27,21 @@ import {
     WhatsappIcon,
   } from "react-share";
 import { USERNAME_REGEX } from '../../misc/regex'
+import { useSelector } from 'react-redux'
 
 const UserProfileLayout = () => {
     const navigate = useNavigate();
-    const {editProfileBoxOpen, openEditProfileBox, shareProfileBoxOpen, openShareProfileBox, viewImageBoxOpen, openViewImageBox,
+    const {user, token} = useSelector(state => state?.authReducer) 
+    const {userData, loading, editProfileBoxOpen, openEditProfileBox, shareProfileBoxOpen, openShareProfileBox, viewImageBoxOpen, openViewImageBox,
         imageModalIsOpen, showImageModal, uploadImageModalOpen, openUploadImageModal, ratingBoxIsOpen, openRatingBox} = useContext(UserProfileContext);
   return (
-    <div className='px-3 bg-white'>
+    <div className='px-3 bg-white vh-100'>
+      {loading ? 
+      <div className='text-center text-primary fw-bold product-loading-center'>
+        <span className='me-2'>Loading</span> <Spin spinning={loading} />
+      </div>
+      : 
+      <>
         <div className='mt-5 d-flex justify-content-end'>
             <img src={settingsIcon} alt="settings-icon" onClick={() => navigate('/settings')} />
         </div>
@@ -360,6 +368,7 @@ const UserProfileLayout = () => {
               </Upload>
             </div>
         </Modal>
+      </>}
     </div>
   )
 }

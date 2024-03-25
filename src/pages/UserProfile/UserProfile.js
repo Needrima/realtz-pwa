@@ -1,10 +1,18 @@
 import { Layout } from 'antd'
-import React, { createContext, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import UserProfileLayout from '../../components/UserProfile/UserProfileLayout'
+import { useParams } from 'react-router-dom';
+import { axiosUserInstance } from '../../api/axoios';
+import { useSelector } from 'react-redux';
 
 export const UserProfileContext = createContext();
 const UserProfile = () => {
+    const {token} = useSelector(state => state?.authReducer)
+    const {reference} = useParams()
+    
     const [state, setState] = useState({
+        userData: null,
+        loading: true,
         editProfileBoxOpen: false,
         shareProfileBoxOpen: false,
         viewImageBoxOpen: false,
@@ -12,7 +20,7 @@ const UserProfile = () => {
         uploadImageModalOpen: false,
         ratingBoxIsOpen: false,
     })
-    const {editProfileBoxOpen, shareProfileBoxOpen, viewImageBoxOpen, imageModalIsOpen, uploadImageModalOpen, ratingBoxIsOpen} = state;
+    const {userData, loading, editProfileBoxOpen, shareProfileBoxOpen, viewImageBoxOpen, imageModalIsOpen, uploadImageModalOpen, ratingBoxIsOpen} = state;
     
     const openEditProfileBox = (show) => {
         setState(state => ({
@@ -56,6 +64,27 @@ const UserProfile = () => {
         }))
     }
 
+    const getUser = async () => {
+        try {
+            const {data} = await axiosUserInstance.get(`auth/get-user/${reference}`, {
+                headers: {
+                    token: token,
+                }
+            })
+            setState(state => ({
+                ...state,
+                loading: false,
+                userData: data.user
+            }))
+        }catch(error) {
+            console.log(error)
+        }
+    } 
+
+    useEffect(() => {
+        getUser();
+    }, [token])
+
   return (
     <UserProfileContext.Provider value={{
         editProfileBoxOpen,
@@ -69,7 +98,9 @@ const UserProfile = () => {
         uploadImageModalOpen,
         openUploadImageModal,
         ratingBoxIsOpen,
-        openRatingBox
+        openRatingBox,
+        userData,
+        loading
     }}>    
         <Layout>
             <UserProfileLayout/>

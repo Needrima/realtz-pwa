@@ -11,18 +11,19 @@ const SingleProduct = () => {
   })
   const {product} = state;
 
-  useEffect(() => {
-    async function fetchSingleProduct() {
-      try {
-        const {data} = await axiosProductInstance.get(`${reference}`)
-        setState(state => ({
-          ...state,
-          product: data?.product,
-        }))
-      }catch(error) {
-        console.log(error)
-      }
+  const fetchSingleProduct = async () => {
+    try {
+      const {data} = await axiosProductInstance.get(`${reference}`)
+      setState(state => ({
+        ...state,
+        product: data?.product,
+      }))
+    }catch(error) {
+      console.log(error)
     }
+  }
+
+  useEffect(() => {
     fetchSingleProduct();
   }, [reference])
 

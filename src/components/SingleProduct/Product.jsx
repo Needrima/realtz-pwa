@@ -366,7 +366,7 @@ const Product = ({product}) => {
 
         <div className='position-absolute' style={{right: '5%', bottom: '15%'}}>
             <div className='mb-4'>
-                <img onClick={() => {isLoggedIn ? navigate(`/profile?reference=${product?.user_reference}`) : navigate('/login')}} className='d-block' src={profileIcon} alt="view owners profile" />
+                <img onClick={() => {isLoggedIn ? navigate(`/profile/${product?.user_reference}`) : navigate('/login')}} className='d-block' src={profileIcon} alt="view owners profile" />
             </div>
 
             <div className='mb-4'>
