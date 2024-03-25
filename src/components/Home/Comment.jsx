@@ -177,8 +177,8 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
           <div>{comment?.comment}</div> 
             <div className='d-flex justify-content-end'>
               <span className='text-primary fw-bold text-decoration-underline me-3' onClick={openReplies}>Reply.({FormatNumber(numReplies)})</span>
-              {user?.fullname === comment?.commenter && <span onClick={() => openEditCommentBox(comment)} className='text-primary fw-bold text-decoration-underline me-3'>Edit</span>}
-              {user?.fullname === comment?.commenter && <span className='text-primary fw-bold text-decoration-underline' onClick={() => deleteComment(comment?.reference)}>Delete</span>}
+              {user?.reference === comment?.commenter_reference && <span onClick={() => openEditCommentBox(comment)} className='text-primary fw-bold text-decoration-underline me-3'>Edit</span>}
+              {user?.reference === comment?.commenter_reference && <span className='text-primary fw-bold text-decoration-underline' onClick={() => deleteComment(comment?.reference)}>Delete</span>}
             </div>
         </div>
         
@@ -234,8 +234,8 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
               <div className='mb-2'>
                   <div>{reply?.reply}</div> 
                   <div className='d-flex justify-content-end'>
-                    {user?.fullname === reply?.replyer && <span onClick={() => openEditReplyBox(reply)} className='text-primary fw-bold text-decoration-underline me-3'>Edit</span>}
-                    {user?.fullname === reply?.replyer && <span className='text-primary fw-bold text-decoration-underline' onClick={() => deleteReply(reply?.reference)}>Delete</span>}
+                    {user?.reference === reply?.replyer_reference && <span onClick={() => openEditReplyBox(reply)} className='text-primary fw-bold text-decoration-underline me-3'>Edit</span>}
+                    {user?.reference === reply?.replyer_reference && <span className='text-primary fw-bold text-decoration-underline' onClick={() => deleteReply(reply?.reference)}>Delete</span>}
                   </div>
               </div>
               
