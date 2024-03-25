@@ -237,7 +237,7 @@ const Signup = () => {
             >
               <Input
                 prefix={<img src={userIcon} alt='user icon' />}
-                placeholder='Lastname'
+                placeholder='Username'
                 className='text-input'
               />
             </Form.Item>
@@ -332,14 +332,7 @@ const Signup = () => {
               name='agreement'
               valuePropName='checked'
               rules={[
-                {
-                  async validator(rule, value) {
-                    value ? 
-                    Promise.resolve() :
-                    Promise.reject(new Error("You have not accepted our terms and condtions"));
-                  },
-                  validateTrigger: "onChange",
-                },
+                {required: true, message: "You have not accepted our terms and condtions"},
               ]}
             >
               <Checkbox>

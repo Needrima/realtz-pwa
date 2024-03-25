@@ -66,7 +66,7 @@ function App() {
         <Route path='/signup' element={handleRedirectToSignup()} />
         <Route path="/forgot-password" element={handleRedirectToForgotPassword()} />
         <Route path='/home' element={<Home />} />
-        <Route path='/profile' element={<UserProfile />} />
+        <Route path='/profile/:reference' element={<UserProfile />} />
         <Route path='/product/:reference' element={<SingleProduct />} />
         <Route path='/notifications' element={<Notification />} />
       </Routes>
