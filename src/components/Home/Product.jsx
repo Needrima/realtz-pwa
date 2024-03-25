@@ -361,7 +361,7 @@ const Product = ({product}) => {
                 }
             }}
         >
-          {product.videos.map((video, index) => <Video key={index} video={video} viewProduct={viewProduct} />)}
+          {product.videos.map((video, index) => <Video key={index} video={video} viewProduct={viewProduct} productRef={product.reference} />)}
         </Carousel>;
 
         <div className='position-absolute' style={{right: '5%', bottom: '15%'}}>

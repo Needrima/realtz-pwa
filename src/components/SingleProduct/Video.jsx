@@ -19,7 +19,7 @@ const Video = ({video, viewProduct, productRef}) => {
         startTime: 0,
         isMonitoringPlay:false, 
     })
-    const {paused, muted, pausePlayImgVisible, outofView51, outofView49, startTime, isMonitoringPlay } = state;
+    const {paused, muted, pausePlayImgVisible, startTime, isMonitoringPlay } = state;
 
     // handle pause and play
     const pausePlay = () => {
@@ -51,7 +51,7 @@ const Video = ({video, viewProduct, productRef}) => {
             ...state,
             pausePlayImgVisible: false,
           }))
-        }, 1000); // Adjust the delay as needed
+        }, 1700); // Adjust the delay as needed
     
         // Cleanup function to clear the timeout
         return () => clearTimeout(timeout);
@@ -73,7 +73,7 @@ const Video = ({video, viewProduct, productRef}) => {
   return (
     <div ref={videoDivRef} className='w-100 vh-100 position-relative'>
         <video ref={videoRef} loop autoPlay muted className='w-100 vh-100 object-fit-fill' 
-          onClick={() => navigate(`/product/${productRef}`)} 
+          onClick={pausePlay}
           onPlay={handlePlay} 
           onTimeUpdate={handleTimeUpdate}
         > {/*object-fit-fill*/}

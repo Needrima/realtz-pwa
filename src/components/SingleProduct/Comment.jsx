@@ -7,7 +7,7 @@ import { axiosProductInstance } from '../../api/axoios';
 import FormatNumber from '../../misc/NumberFormatter';
 
 const Comment = ({comment, deleteComment, openEditCommentBox}) => {
-  const {user, token} = useSelector(state => state.authReducer)
+  const {user, token, isLoggedIn} = useSelector(state => state.authReducer)
   const [form] = Form.useForm();
   const [editForm] = Form.useForm();
   const [state, setState] = useState({
@@ -192,7 +192,7 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
       <Drawer
           open={repliesBoxOpen}
           title={<div className='text-primary fw-bold'>Replies</div>}
-          footer={
+          footer={isLoggedIn &&
             <>
               <Form 
               form={form}
