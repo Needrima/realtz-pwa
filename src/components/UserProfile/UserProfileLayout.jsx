@@ -34,6 +34,8 @@ const UserProfileLayout = () => {
     const {user, token} = useSelector(state => state?.authReducer) 
     const {userData, loading, editProfileBoxOpen, openEditProfileBox, shareProfileBoxOpen, openShareProfileBox, viewImageBoxOpen, openViewImageBox,
         imageModalIsOpen, showImageModal, uploadImageModalOpen, openUploadImageModal, ratingBoxIsOpen, openRatingBox} = useContext(UserProfileContext);
+    console.log('user:', user);
+    console.log('userData:', userData);
   return (
     <div className='px-3 bg-white vh-100'>
       {loading ? 
@@ -48,49 +50,58 @@ const UserProfileLayout = () => {
 
         <div className='mt-3 d-flex justify-content-center'>
             <div className='position-relative' onClick={() => openViewImageBox(true)}>
-                <img src={userImage} alt="avatar" className='rounded-circle avatar' />
-                <img src={uploadImageIcon} alt="" className='position-absolute upload-img-icon' />
+                <img src={userData?.image || userImage} alt="avatar" className='rounded-circle avatar' />
+                {user?.reference === userData?.reference && <img src={uploadImageIcon} alt="" className='position-absolute upload-img-icon' />}
             </div>
         </div>
 
-        <div className='text-primary fw-bold text-center mt-3'>Oyebode Amirdeen</div>
-        <div className='text-primary fw-bold text-center text-secondary'>@needrima</div>
-        <div className='text-primary fw-bold text-center mt-3'>
+        <div className='text-primary fw-bold text-center mt-3 text-capitalize'>{userData?.fullname}</div>
+          <div className='text-primary fw-bold text-center text-secondary'>@{userData?.username.toLowerCase()}</div>
+          {userData?.user_type === 'agent' &&
+          <div className='text-primary fw-bold text-center mt-3'>
           <Rate
-            defaultValue={4}
+            defaultValue={userData?.star_rating}
             className='text-primary me-2'
             tooltips={['Poor', 'Fair', 'Average', 'Good', 'Awesome']}
-            allowClear={false}
+            // allowClear={false}
             disabled
-            // allowHalf
-          /><i className="bi bi-plus-circle-fill" onClick={() => openRatingBox(true)} ></i> <br />
+            allowHalf
+          />
+          {user?.reference !== userData?.reference && <i className="bi bi-plus-circle-fill" onClick={() =>  openRatingBox(true)} ></i>}
+          <br />
           Avg. Rating
-        </div>
+        </div>}
 
+        {userData?.user_type === 'agent' && 
         <div className='d-flex justify-content-around mt-3'>
             <div className='text-primary text-center'>
-                <div className='fw-bold'>{FormatNumber(2500)}</div>
+                <div className='fw-bold'>{FormatNumber(userData?.num_likes)}</div>
                 <div>Likes</div>
             </div>
             <div  className='text-primary text-center'>
-                <div className='fw-bold'>{FormatNumber(25)}</div>
+                <div className='fw-bold'>{FormatNumber(userData?.num_products)}</div>
                 <div>Listings</div>
             </div>
             <div className='text-primary text-center'>
-                <div className='fw-bold'>4 / 5</div>
+                <div className='fw-bold'>{userData?.star_rating} / 5</div>
                 <div>Star rating</div>
             </div>
+        </div>}
+
+        <div className='mt-3 px-4 text-center bio'>
+          {userData?.bio || (userData?.reference === user?.reference) 
+          ? "You don't have a bio yet. Click the edit profile button to tell others a little about yourself" 
+          : `${userData?.username} has not added a bio yet` 
+          }
         </div>
 
-        <div className='mt-3 px-4 text-center bio'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro, tempore? Corrupti ullam vitae rem sapiente nihil aspernatur sequi tempora temporibus et in accusantium, veritatis facilis magni quis veniam assumenda quod deserunt fugiat illo! Corrupti, pariatur vero animi optio, nemo praesentium inventore magni, cupiditate sit voluptate incidunt qui. Ad reprehenderit eveniet laboriosam provident quisquam consequatur, quo earum! Id dolores quo, rem veniam saepe molestiae culpa numquam! Minus deserunt iusto incidunt! Modi labore tenetur placeat, sed sit harum. Laboriosam praesentium totam consequuntur ut nisi nam dolore quibusdam voluptas culpa dolor earum aliquid non maxime fugiat repudiandae, soluta omnis eaque tenetur esse distinctio?</div>
-
         <div className='mt-3 d-flex justify-content-center'>
-            <button className='btn btn-primary btn-lg me-2 fw-bold' onClick={() => openEditProfileBox(true)}>Edit Profile</button>
+            {user?.reference === userData?.reference && <button className='btn btn-primary btn-lg me-2 fw-bold' onClick={() => openEditProfileBox(true)}>Edit Profile</button>}
             <button className='btn btn-primary btn-lg fw-bold' onClick={() => openShareProfileBox(true)}>Share Profile</button>
         </div>
 
         <div className='mt-5'>
-            <div className='fw-bold fs-4'>Recent listings</div>
+            <div className='fw-bold fs-4'>{userData?.user_type === 'agent' ? 'Recent listings' : 'Liked listings'}</div>
 
             <div className='my-3 row'>
                 <div className="p-1 col-6 mb-1">
@@ -178,11 +189,15 @@ const UserProfileLayout = () => {
          onClose={() => openViewImageBox(false)}
         >
             <div className='text-center text-primary fw-bold fs-3' onClick={() => showImageModal(true)}>View</div>
-            <hr />
-            <div className='text-center text-primary fw-bold fs-3' onClick={() => openUploadImageModal(true)}>Change</div>
+            {user?.reference === userData?.reference &&
+            <>
+              <hr />
+              <div className='text-center text-primary fw-bold fs-3' onClick={() => openUploadImageModal(true)}>Change</div>
+            </>}
         </Drawer>
 
         {/* give rating drawer */}
+        {userData?.reference !== user?.reference &&
         <Drawer
          open={ratingBoxIsOpen}
          title={<div className='text-primary fw-bold'>Rate Agent</div>}
@@ -203,9 +218,10 @@ const UserProfileLayout = () => {
               disabled={true}
               />
             </div>
-        </Drawer>
+        </Drawer>}
 
         {/* drawer to edit profile */}
+        {userData?.reference === user?.reference &&
         <Drawer
           open={editProfileBoxOpen}
           title={<div className='text-primary fw-bold'>Edit profile</div>}
@@ -218,18 +234,7 @@ const UserProfileLayout = () => {
             // form={editForm}
             // onFinish={editComment}
           >
-              <Form.Item
-                name="bio"
-                label='Bio'
-              >
-                <Input.TextArea 
-                  rows={4}
-                  placeholder='Write a little about yourself'
-                //   disabled={editingComment}
-                  className='border border-primary px-2 mb-2'
-                 />
-              </Form.Item>
-              <Form.Item
+            <Form.Item
               name='username'
               label='Username'
               rules={[
@@ -250,13 +255,26 @@ const UserProfileLayout = () => {
                 className='text-input'
               />
             </Form.Item>
+
+            <Form.Item
+              name="bio"
+              label='Bio'
+            >
+              <Input.TextArea 
+                rows={4}
+                placeholder='Write a little about yourself'
+              //   disabled={editingComment}
+                className='border border-primary px-2 mb-2'
+              />
+            </Form.Item>
+              
             <button 
                 // disabled={editingComment} 
                 type='submit'
                 className='btn btn-primary'
             >Edit</button>
           </Form>
-        </Drawer>
+        </Drawer>}
 
         {/* drawer to display share icons */}
         <Drawer
@@ -270,7 +288,7 @@ const UserProfileLayout = () => {
         >
           <FacebookShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile/${userData?.reference}`}
           >
             <FacebookIcon
             round={true} />
@@ -280,7 +298,7 @@ const UserProfileLayout = () => {
             className='me-2 mb-2'
             subject='username on realtz'
             body='profile bio'
-            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile/${userData?.reference}`}
             >
             <EmailIcon
             round={true} />
@@ -288,7 +306,7 @@ const UserProfileLayout = () => {
 
           <LinkedinShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile/${userData?.reference}`}
             title='username on realtz'
             summary={`profile bio`}
             >
@@ -298,7 +316,7 @@ const UserProfileLayout = () => {
 
           <PinterestShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile/${userData?.reference}`}
             media={`user image`}
             description={`profile bio`}
             >
@@ -308,7 +326,7 @@ const UserProfileLayout = () => {
 
           <RedditShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile/${userData?.reference}`}
             title='username on realtz'
             >
             <RedditIcon
@@ -317,7 +335,7 @@ const UserProfileLayout = () => {
 
           <TelegramShareButton 
           className='me-2 mb-2'
-          url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+          url={`${window.location.origin}/profile/${userData?.reference}`}
           title='username on realtz'
           >
             <TelegramIcon
@@ -326,7 +344,7 @@ const UserProfileLayout = () => {
 
           <TwitterShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile/${userData?.reference}`}
             title='username on realtz'
           >
             <XIcon
@@ -335,7 +353,7 @@ const UserProfileLayout = () => {
 
           <WhatsappShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/profile/${userData?.reference}`}
             title='username on realtz'
           >
             <WhatsappIcon
@@ -351,7 +369,7 @@ const UserProfileLayout = () => {
          onCancel={() => showImageModal(false)}
          footer={[]}
           >
-            <img src={userImage} alt="avatar" className='w-100' />
+            <img src={userData?.image || userImage} alt="avatar" className='w-100' />
         </Modal>
 
         {/* change avatar modal */}
