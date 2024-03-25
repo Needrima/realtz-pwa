@@ -38,7 +38,6 @@ import FormatNumber from '../../misc/NumberFormatter';
 
 const Product = ({product}) => {
   const {user, token, isLoggedIn} = useSelector(state => state.authReducer)
-  console.log(isLoggedIn);
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [editForm] = Form.useForm();
@@ -251,7 +250,7 @@ const Product = ({product}) => {
         numComments: state.numComments - 1
       }))
     }catch(error) {
-      console.log(error)
+      console.log(error?.response?.data?.error)
     }
   }
 
@@ -362,7 +361,7 @@ const Product = ({product}) => {
                 }
             }}
         >
-          {product.videos.map((video, index) => <Video key={index} video={video} viewProduct={viewProduct} />)}
+          {product.videos.map((video, index) => <Video key={index} video={video} viewProduct={viewProduct} productRef={product.reference} />)}
         </Carousel>;
 
         <div className='position-absolute' style={{right: '5%', bottom: '15%'}}>

@@ -6,7 +6,6 @@ import { axiosProductInstance } from '../../api/axoios';
 export const SingleProductContext = createContext();
 const SingleProduct = () => {
   const {reference} = useParams()
-  console.log(reference)
   const [state, setState] = useState({
     product: null,
   })
