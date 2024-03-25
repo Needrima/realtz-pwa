@@ -6,7 +6,7 @@ import FormatNumber from '../../misc/NumberFormatter'
 import video from '../../assets/videos/video.mp4'
 import './UserProfile.scss'
 import { useNavigate } from 'react-router-dom'
-import { Button, Drawer, Form, Input, Modal } from 'antd'
+import { Button, Drawer, Form, Input, Modal, Rate, Upload } from 'antd'
 import { UserProfileContext } from '../../pages/UserProfile/UserProfile'
 import {
     EmailShareButton,
@@ -31,7 +31,7 @@ import { USERNAME_REGEX } from '../../misc/regex'
 const UserProfileLayout = () => {
     const navigate = useNavigate();
     const {editProfileBoxOpen, openEditProfileBox, shareProfileBoxOpen, openShareProfileBox, viewImageBoxOpen, openViewImageBox,
-        imageModalIsOpen, showImageModal} = useContext(UserProfileContext);
+        imageModalIsOpen, showImageModal, uploadImageModalOpen, openUploadImageModal} = useContext(UserProfileContext);
   return (
     <div className='px-3 bg-white'>
         <div className='mt-5 d-flex justify-content-end'>
@@ -47,6 +47,17 @@ const UserProfileLayout = () => {
 
         <div className='text-primary fw-bold text-center mt-3'>Oyebode Amirdeen</div>
         <div className='text-primary fw-bold text-center text-secondary'>@needrima</div>
+        <div className='text-primary fw-bold text-center mt-3'>
+          <Rate
+            defaultValue={4}
+            className='text-primary me-2'
+            tooltips={['Poor', 'Fair', 'Average', 'Good', 'Awesome']}
+            allowClear={false}
+            disabled
+            // allowHalf
+          /><i className="bi bi-plus-circle-fill" ></i> <br />
+          Avg. Rating
+        </div>
 
         <div className='d-flex justify-content-around mt-3'>
             <div className='text-primary text-center'>
@@ -148,6 +159,7 @@ const UserProfileLayout = () => {
             </div>
         </div>
 
+        {/* image actions drawer */}
         <Drawer
          open={viewImageBoxOpen}
         //  title={<div className='text-primary fw-bold'>Share Profile</div>}
@@ -159,7 +171,29 @@ const UserProfileLayout = () => {
         >
             <div className='text-center text-primary fw-bold fs-3' onClick={() => showImageModal(true)}>View</div>
             <hr />
-            <div className='text-center text-primary fw-bold fs-3'>Change</div>
+            <div className='text-center text-primary fw-bold fs-3' onClick={() => openUploadImageModal(true)}>Change</div>
+        </Drawer>
+
+        {/* give rating drawer */}
+        <Drawer
+         open={true}
+         title={<div className='text-primary fw-bold'>Rate Agent</div>}
+         // footer={} // react node 
+         placement='bottom'
+         height={'auto'}
+         closable={true}
+        //  onClose={() => openRatingBox(false)}
+        >
+            <div className='text-center text-primary fw-bold fs-3'>
+              <Rate
+              defaultValue={1}
+              className='text-primary'
+              tooltips={['Poor', 'Fair', 'Average', 'Good', 'Awesome']}
+              allowClear={false}
+              // allowHalf
+              onChange={(rating) => console.log(rating)}
+              />
+            </div>
         </Drawer>
 
         {/* drawer to edit profile */}
@@ -237,7 +271,7 @@ const UserProfileLayout = () => {
             className='me-2 mb-2'
             subject='username on realtz'
             body='profile bio'
-            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
             >
             <EmailIcon
             round={true} />
@@ -245,7 +279,7 @@ const UserProfileLayout = () => {
 
           <LinkedinShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
             title='username on realtz'
             summary={`profile bio`}
             >
@@ -255,7 +289,7 @@ const UserProfileLayout = () => {
 
           <PinterestShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
             media={`user image`}
             description={`profile bio`}
             >
@@ -265,7 +299,7 @@ const UserProfileLayout = () => {
 
           <RedditShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
             title='username on realtz'
             >
             <RedditIcon
@@ -274,7 +308,7 @@ const UserProfileLayout = () => {
 
           <TelegramShareButton 
           className='me-2 mb-2'
-          url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
+          url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
           title='username on realtz'
           >
             <TelegramIcon
@@ -283,7 +317,7 @@ const UserProfileLayout = () => {
 
           <TwitterShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
             title='username on realtz'
           >
             <XIcon
@@ -292,7 +326,7 @@ const UserProfileLayout = () => {
 
           <WhatsappShareButton 
             className='me-2 mb-2'
-            url={`${window.location.origin}/profile?reference=bgihigohiohthiow`}
+            url={`${window.location.origin}/view-profile?reference=bgihigohiohthiow`}
             title='username on realtz'
           >
             <WhatsappIcon
@@ -300,7 +334,7 @@ const UserProfileLayout = () => {
           </WhatsappShareButton>
         </Drawer>
         
-        {/* view profile modal */}
+        {/* view avatar modal */}
         <Modal 
          title="Avatar"
          open={imageModalIsOpen}
@@ -308,18 +342,22 @@ const UserProfileLayout = () => {
          onCancel={() => showImageModal(false)}
          footer={[]}
           >
-            <img src={userImage} alt="avatar" className='w-100 h-100' />
+            <img src={userImage} alt="avatar" className='w-100' />
         </Modal>
 
-        {/* change profile modal */}
+        {/* change avatar modal */}
         <Modal 
          title="Avatar"
-         open={imageModalIsOpen}
-         onOk={() => showImageModal(false)} 
-         onCancel={() => showImageModal(false)}
+         open={uploadImageModalOpen}
+         onOk={() => openUploadImageModal(false)} 
+         onCancel={() => openUploadImageModal(false)}
          footer={[]}
           >
-            <img src={userImage} alt="avatar" className='w-100 h-100' />
+            <div className='text-center'>
+              <Upload>
+                  <button className='btn btn-outline-primary'>Choose Image</button>
+              </Upload>
+            </div>
         </Modal>
     </div>
   )
