@@ -49,6 +49,13 @@ const UserProfile = () => {
         }))
     }
 
+    const openRatingBox = (show) => {
+        setState(state => ({
+            ...state,
+            ratingBoxIsOpen: show
+        }))
+    }
+
   return (
     <UserProfileContext.Provider value={{
         editProfileBoxOpen,
@@ -61,6 +68,8 @@ const UserProfile = () => {
         showImageModal,
         uploadImageModalOpen,
         openUploadImageModal,
+        ratingBoxIsOpen,
+        openRatingBox
     }}>    
         <Layout>
             <UserProfileLayout/>

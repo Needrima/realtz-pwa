@@ -31,7 +31,7 @@ import { USERNAME_REGEX } from '../../misc/regex'
 const UserProfileLayout = () => {
     const navigate = useNavigate();
     const {editProfileBoxOpen, openEditProfileBox, shareProfileBoxOpen, openShareProfileBox, viewImageBoxOpen, openViewImageBox,
-        imageModalIsOpen, showImageModal, uploadImageModalOpen, openUploadImageModal} = useContext(UserProfileContext);
+        imageModalIsOpen, showImageModal, uploadImageModalOpen, openUploadImageModal, ratingBoxIsOpen, openRatingBox} = useContext(UserProfileContext);
   return (
     <div className='px-3 bg-white'>
         <div className='mt-5 d-flex justify-content-end'>
@@ -55,7 +55,7 @@ const UserProfileLayout = () => {
             allowClear={false}
             disabled
             // allowHalf
-          /><i className="bi bi-plus-circle-fill" ></i> <br />
+          /><i className="bi bi-plus-circle-fill" onClick={() => openRatingBox(true)} ></i> <br />
           Avg. Rating
         </div>
 
@@ -176,22 +176,23 @@ const UserProfileLayout = () => {
 
         {/* give rating drawer */}
         <Drawer
-         open={true}
+         open={ratingBoxIsOpen}
          title={<div className='text-primary fw-bold'>Rate Agent</div>}
          // footer={} // react node 
          placement='bottom'
          height={'auto'}
          closable={true}
-        //  onClose={() => openRatingBox(false)}
+         onClose={() => openRatingBox(false)}
         >
             <div className='text-center text-primary fw-bold fs-3'>
               <Rate
-              defaultValue={1}
+              defaultValue={0}
               className='text-primary'
               tooltips={['Poor', 'Fair', 'Average', 'Good', 'Awesome']}
-              allowClear={false}
+              // allowClear={false}
               // allowHalf
               onChange={(rating) => console.log(rating)}
+              disabled={true}
               />
             </div>
         </Drawer>
