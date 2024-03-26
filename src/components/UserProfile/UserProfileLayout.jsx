@@ -40,7 +40,7 @@ const UserProfileLayout = () => {
     <div className='px-3 bg-white vh-100'>
       {loading ? 
       <div className='text-center text-primary fw-bold product-loading-center'>
-        <span className='me-2'>Loading</span> <Spin className='user-profile-spin' spinning={loading} />
+        <span className='me-2'>Loading ...</span> <Spin className='user-profile-spin' spinning={loading} />
       </div>
       : 
       <>
