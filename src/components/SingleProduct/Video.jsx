@@ -72,7 +72,7 @@ const Video = ({video, viewProduct, productRef}) => {
 
   return (
     <div ref={videoDivRef} className='w-100 vh-100 position-relative'>
-        <video ref={videoRef} loop autoPlay muted className='w-100 vh-100 object-fit-fill' 
+        <video ref={videoRef} loop autoPlay muted className='w-100 vh-100' 
           onClick={pausePlay}
           onPlay={handlePlay} 
           onTimeUpdate={handleTimeUpdate}
