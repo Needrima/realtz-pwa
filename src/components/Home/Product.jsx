@@ -83,7 +83,6 @@ const Product = ({product}) => {
       setState(state => ({
         ...state,
         productLiked: false,
-        numLikes: state.numLikes + 1,
         likingProduct: false
       }))
     }
@@ -111,7 +110,6 @@ const Product = ({product}) => {
       setState(state => ({
         ...state,
         productLiked: false,
-        numLikes: state.numLikes + 1,
         likingProduct: false
       }))
     }
