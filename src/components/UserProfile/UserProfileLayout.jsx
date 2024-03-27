@@ -28,19 +28,21 @@ import {
   } from "react-share";
 import { USERNAME_REGEX } from '../../misc/regex'
 import { useSelector } from 'react-redux'
+import TimeConverter from '../../misc/TimeConverter'
 
 const UserProfileLayout = () => {
     const navigate = useNavigate();
     const {user, token} = useSelector(state => state?.authReducer) 
     const {userData, loading, editProfileBoxOpen, openEditProfileBox, shareProfileBoxOpen, openShareProfileBox, viewImageBoxOpen, openViewImageBox,
-        imageModalIsOpen, showImageModal, uploadImageModalOpen, openUploadImageModal, ratingBoxIsOpen, openRatingBox} = useContext(UserProfileContext);
+        imageModalIsOpen, showImageModal, uploadImageModalOpen, openUploadImageModal, ratingBoxIsOpen, openRatingBox, loadingProfileProducts,
+        profileProducts} = useContext(UserProfileContext);
     console.log('user:', user);
     console.log('userData:', userData);
   return (
     <div className='px-3 bg-white vh-100'>
       {loading ? 
       <div className='text-center text-primary fw-bold product-loading-center'>
-        <span className='me-2'>Loading ...</span> <Spin className='user-profile-spin' spinning={loading} />
+        <Spin className='user-profile-spin' spinning={loading} />
       </div>
       : 
       <>
@@ -101,81 +103,56 @@ const UserProfileLayout = () => {
         </div>
 
         <div className='mt-5'>
-            <div className='fw-bold fs-4'>{userData?.user_type === 'agent' ? 'Recent listings' : 'Liked listings'}</div>
-
-            <div className='my-3 row'>
-                <div className="p-1 col-6 mb-1">
-                    <div className="rounded-3 p-2 listing">
-                        <div className='w-100 position-relative video-div '>
-                            <video loop autoPlay muted className='w-100 object-fit-fill rounded-3'> {/*object-fit-fill*/}
-                                <source src={video} type="video/mp4" />
-                            </video>
-                            <span className='badge bg-primary position-absolute status-badge'>Rented</span>
-                        </div>
-
-                        <div className='text-primary mt-1 fw-bold'>5 Bedroom Semi-Detached Duplex</div>
-                        <div className='mt-1 address'>Lakeview Park Estate, VGC, Lekki, Lagos</div>
-                        <div className="mt-1 d-flex justify-content-between align-items-center">
-                            <span className='badge badge-primary bg-primary status-badge'>More</span>
-                            <span style={{fontSize: '7px'}}>Posted: October 2, 2023</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="p-1 col-6 mb-1">
-                    <div className="rounded-3 p-2 listing">
-                        <div className='w-100 position-relative video-div '>
-                            <video loop autoPlay muted className='w-100 object-fit-fill rounded-3'> {/*object-fit-fill*/}
-                                <source src={video} type="video/mp4" />
-                            </video>
-                            <span className='badge bg-primary position-absolute status-badge'>For rent</span>
-                        </div>
-
-                        <div className='text-primary mt-1 fw-bold'>5 Bedroom Semi-Detached Duplex</div>
-                        <div className='mt-1 address'>Lakeview Park Estate, VGC, Lekki, Lagos</div>
-                        <div className="mt-1 d-flex justify-content-between align-items-center">
-                            <span className='badge badge-primary bg-primary status-badge'>More</span>
-                            <span style={{fontSize: '7px'}}>Posted: October 2, 2023</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="p-1 col-6 mb-1">
-                    <div className="rounded-3 p-2 listing">
-                        <div className='w-100 position-relative video-div '>
-                            <video loop autoPlay muted className='w-100 object-fit-fill rounded-3'> {/*object-fit-fill*/}
-                                <source src={video} type="video/mp4" />
-                            </video>
-                            <span className='badge bg-primary position-absolute status-badge'>On shortlet</span>
-                        </div>
-
-                        <div className='text-primary mt-1 fw-bold'>5 Bedroom Semi-Detached Duplex</div>
-                        <div className='mt-1 address'>Lakeview Park Estate, VGC, Lekki, Lagos</div>
-                        <div className="mt-1 d-flex justify-content-between align-items-center">
-                            <span className='badge badge-primary bg-primary status-badge'>More</span>
-                            <span style={{fontSize: '7px'}}>Posted: October 2, 2023</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="p-1 col-6 mb-1">
-                    <div className="rounded-3 p-2 listing">
-                        <div className='w-100 position-relative video-div '>
-                            <video loop autoPlay muted className='w-100 object-fit-fill rounded-3'> {/*object-fit-fill*/}
-                                <source src={video} type="video/mp4" />
-                            </video>
-                            <span className='badge bg-primary position-absolute status-badge'>For shortlet</span>
-                        </div>
-
-                        <div className='text-primary mt-1 fw-bold'>5 Bedroom Semi-Detached Duplex</div>
-                        <div className='mt-1 address'>Lakeview Park Estate, VGC, Lekki, Lagos</div>
-                        <div className="mt-1 d-flex justify-content-between align-items-center">
-                            <span className='badge badge-primary bg-primary status-badge'>More</span>
-                            <span style={{fontSize: '7px'}}>Posted: October 2, 2023</span>
-                        </div>
-                    </div>
-                </div>
+            {userData?.user_type === 'agent' && 
+            <div>
+              <span className='me-1'>{userData?.reference === user?.reference ? `Your listings` : `Other listings from ${userData?.username}`}</span>
+              <a href={`/get-user-products/${userData?.reference}`} className='text-primary fw-bold'>view more</a>
             </div>
+            }
+            {userData?.user_type === 'user' && 
+            <div>
+              <span className='me-1'>{userData?.reference === user?.reference ? `Your liked listings` : `${userData?.username} also liked`}</span>
+              <a href={`/get-liked-products/${userData?.reference}`} className='text-primary fw-bold text-decoration-none'>view more</a>
+            </div>
+            }
+          
+            {loadingProfileProducts ? <div className='text-center mt-5'><Spin spinning={loadingProfileProducts} /></div> : 
+            <div className='my-3 row'>
+                {profileProducts && profileProducts.length !== 0 ? 
+                profileProducts.slice(0, 4).map(product => (
+                  <div className="p-1 col-6 mb-1">
+                    <div className="rounded-3 p-2 listing">
+                        <div className='w-100 position-relative video-div '>
+                            <video loop autoPlay muted className='w-100 object-fit-fill rounded-3'> {/*object-fit-fill*/}
+                                <source src={product.videos[0]} type="video/mp4" />
+                            </video>
+                            <div className='position-absolute status-badge'>
+                              <span className={`badge ${product?.is_on_rent ? 'bg-danger' : 'bg-primary'} me-2`}>{product?.is_on_rent ? 'On Rent' : 'For rent'}</span>
+                              <span className={`badge ${product?.is_on_shortlet ? 'bg-danger' : 'bg-primary'} me-2`}>{product?.is_on_shortlet ? 'On Shortlet' : 'For Shortlet'}</span>
+                          </div>
+                        </div>
+
+                        <div className='text-primary mt-1 fw-bold'>5 Bedroom Semi-Detached Duplex</div>
+                        <div className='mt-1 address'>{product?.location}</div>
+                        <div className="mt-1 d-flex justify-content-between align-items-center">
+                            <span className='badge badge-primary bg-primary status-badge'>More</span>
+                            <span style={{fontSize: '7px'}}>Posted: {TimeConverter(product?.created_on)}</span>
+                        </div>
+                    </div>
+                  </div>
+                  )
+                )
+                : 
+                <div>
+                {userData?.user_type === `agent` ? 
+                  userData?.reference === user?.reference ? `You have not added any listing` : `${userData?.username} has not added any listing`
+                  : 
+                  userData?.reference === user?.reference ? `You have not liked any listing` : `${userData?.username} has not liked any listing`
+                }
+                </div>
+                }
+            </div>
+            }
         </div>
 
         {/* image actions drawer */}
@@ -296,8 +273,8 @@ const UserProfileLayout = () => {
 
           <EmailShareButton 
             className='me-2 mb-2'
-            subject='username on realtz'
-            body='profile bio'
+            subject={userData?.username}
+            body={userData?.bio}
             url={`${window.location.origin}/profile/${userData?.reference}`}
             >
             <EmailIcon
@@ -307,8 +284,8 @@ const UserProfileLayout = () => {
           <LinkedinShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/profile/${userData?.reference}`}
-            title='username on realtz'
-            summary={`profile bio`}
+            title={userData?.username}
+            summary={userData?.bio}
             >
             <LinkedinIcon
             round={true} />
@@ -317,8 +294,8 @@ const UserProfileLayout = () => {
           <PinterestShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/profile/${userData?.reference}`}
-            media={`user image`}
-            description={`profile bio`}
+            media={userData?.image}
+            description={userData?.bio}
             >
             <PinterestIcon
             round={true} />
@@ -327,7 +304,7 @@ const UserProfileLayout = () => {
           <RedditShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/profile/${userData?.reference}`}
-            title='username on realtz'
+            title={userData?.username}
             >
             <RedditIcon
             round={true} />
@@ -336,7 +313,7 @@ const UserProfileLayout = () => {
           <TelegramShareButton 
           className='me-2 mb-2'
           url={`${window.location.origin}/profile/${userData?.reference}`}
-          title='username on realtz'
+          title={userData?.username}
           >
             <TelegramIcon
             round={true} />
@@ -345,7 +322,7 @@ const UserProfileLayout = () => {
           <TwitterShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/profile/${userData?.reference}`}
-            title='username on realtz'
+            title={userData?.username}
           >
             <XIcon
             round={true} />
@@ -354,7 +331,7 @@ const UserProfileLayout = () => {
           <WhatsappShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/profile/${userData?.reference}`}
-            title='username on realtz'
+            title={userData?.username}
           >
             <WhatsappIcon
             round={true} />

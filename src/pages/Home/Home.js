@@ -26,7 +26,7 @@ const Home = () => {
 
   const getHomeProducts = async (page) => {
     try {
-      const {data} = await axiosProductInstance.get(`auth/get-home-product/15/${page}`, {
+      const {data} = await axiosProductInstance.get(`auth/get-home-product/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
         headers: {
           token: token
         }
@@ -44,7 +44,7 @@ const Home = () => {
 
   const getTrendingProducts = async (page) => {
     try {
-      const {data} = await axiosProductInstance.get(`auth/get-trending-product/15/${page}`, {
+      const {data} = await axiosProductInstance.get(`auth/get-trending-product/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
         headers: {
           token: token
         }
