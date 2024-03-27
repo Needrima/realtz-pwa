@@ -307,8 +307,8 @@ const UserProfileLayout = () => {
 
           <EmailShareButton 
             className='me-2 mb-2'
-            subject='username on realtz'
-            body='profile bio'
+            subject={userData?.username}
+            body={userData?.bio}
             url={`${window.location.origin}/profile/${userData?.reference}`}
             >
             <EmailIcon
@@ -318,8 +318,8 @@ const UserProfileLayout = () => {
           <LinkedinShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/profile/${userData?.reference}`}
-            title='username on realtz'
-            summary={`profile bio`}
+            title={userData?.username}
+            summary={userData?.bio}
             >
             <LinkedinIcon
             round={true} />
@@ -328,8 +328,8 @@ const UserProfileLayout = () => {
           <PinterestShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/profile/${userData?.reference}`}
-            media={`user image`}
-            description={`profile bio`}
+            media={userData?.image}
+            description={userData?.bio}
             >
             <PinterestIcon
             round={true} />
@@ -338,7 +338,7 @@ const UserProfileLayout = () => {
           <RedditShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/profile/${userData?.reference}`}
-            title='username on realtz'
+            title={userData?.username}
             >
             <RedditIcon
             round={true} />
@@ -347,7 +347,7 @@ const UserProfileLayout = () => {
           <TelegramShareButton 
           className='me-2 mb-2'
           url={`${window.location.origin}/profile/${userData?.reference}`}
-          title='username on realtz'
+          title={userData?.username}
           >
             <TelegramIcon
             round={true} />
@@ -356,7 +356,7 @@ const UserProfileLayout = () => {
           <TwitterShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/profile/${userData?.reference}`}
-            title='username on realtz'
+            title={userData?.username}
           >
             <XIcon
             round={true} />
@@ -365,7 +365,7 @@ const UserProfileLayout = () => {
           <WhatsappShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/profile/${userData?.reference}`}
-            title='username on realtz'
+            title={userData?.username}
           >
             <WhatsappIcon
             round={true} />

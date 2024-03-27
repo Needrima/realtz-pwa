@@ -526,7 +526,7 @@ const Product = ({product}) => {
           <LinkedinShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/product/${product.reference}`}
-            title='Checkout this property on Realtz'
+            title='Checkout this awesome property on Realtz'
             summary={`${product.description.slice(0, 50)} ....`}
             source={`${window.location.origin}/home`}
             >
@@ -547,7 +547,7 @@ const Product = ({product}) => {
           <RedditShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/product/${product.reference}`}
-            title='Checkout this property on Realtz'
+            title='Checkout this awesome property on Realtz'
             >
             <RedditIcon
             round={true} />
@@ -556,7 +556,7 @@ const Product = ({product}) => {
           <TelegramShareButton 
           className='me-2 mb-2'
           url={`${window.location.origin}/product/${product.reference}`}
-          title='Checkout this property on Realtz'
+          title='Checkout this awesome property on Realtz'
           >
             <TelegramIcon
             round={true} />
@@ -565,7 +565,7 @@ const Product = ({product}) => {
           <TwitterShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/product/${product.reference}`}
-            title='Checkout this property on Realtz'
+            title='Checkout this awesome property on Realtz'
             hashtags={['#realz_app', '#property_rentals', '#property_shortlets']}
           >
             <XIcon
@@ -575,7 +575,7 @@ const Product = ({product}) => {
           <WhatsappShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/product/${product.reference}`}
-            title='Checkout this property on Realtz'
+            title='Checkout this awesome property on Realtz'
           >
             <WhatsappIcon
             round={true} />
