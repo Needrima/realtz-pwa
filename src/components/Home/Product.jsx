@@ -172,7 +172,7 @@ const Product = ({product}) => {
       fetchingComments: true,
     }))
     try {
-      const {data} = await axiosProductInstance.get(`get-product-comments/${product?.reference}/15/${page}`, {
+      const {data} = await axiosProductInstance.get(`get-product-comments/${product?.reference}/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
         headers: {
           token: token
         }

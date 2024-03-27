@@ -30,7 +30,7 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
       fetchingReplies: true,
     }))
     try {
-      const {data} = await axiosProductInstance.get(`get-comment-replies/${comment?.reference}/15/${page}`, {
+      const {data} = await axiosProductInstance.get(`get-comment-replies/${comment?.reference}/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
         headers: {
           token: token
         }
