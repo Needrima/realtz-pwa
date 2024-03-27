@@ -251,7 +251,7 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
             }
 
             {fetchingReplies && <div className='text-center text-primary fw-bold'>
-                <span className='me-2'>Loading</span> <Spin spinning={fetchingReplies} />
+                <Spin spinning={fetchingReplies} />
             </div>}
           </div>
       </Drawer>

@@ -451,7 +451,7 @@ const Product = ({product}) => {
           </div>
           {fetchingComments && 
             <div className='text-center text-primary fw-bold'>
-                <span className='me-2'>Loading</span> <Spin spinning={fetchingComments} />
+               <Spin spinning={fetchingComments} />
             </div>
           }
         </Drawer>

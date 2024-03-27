@@ -40,7 +40,7 @@ const UserProfileLayout = () => {
     <div className='px-3 bg-white vh-100'>
       {loading ? 
       <div className='text-center text-primary fw-bold product-loading-center'>
-        <span className='me-2'>Loading ...</span> <Spin className='user-profile-spin' spinning={loading} />
+        <Spin className='user-profile-spin' spinning={loading} />
       </div>
       : 
       <>
@@ -101,8 +101,19 @@ const UserProfileLayout = () => {
         </div>
 
         <div className='mt-5'>
-            <div className='fw-bold fs-4'>{userData?.user_type === 'agent' ? 'Recent listings' : 'Liked listings'}</div>
-
+            {userData?.user_type === 'agent' && 
+            <>
+              <div className='fw-bold'>{userData?.reference === user?.reference ? `Your listings` : `Other listings from ${userData?.username}`}</div>
+              <a href={`/get-user-products/${userData?.reference}`} className='text-primary text-none'>view more</a>
+            </>
+            }
+            {userData?.user_type === 'user' && 
+            <>
+              <div className='fw-bold'>{userData?.reference === user?.reference ? `Your liked listings` : `${userData?.username} also liked`}</div>
+              <a href={`/get-liked-products/${userData?.reference}`} className='text-primary text-none'>view more</a>
+            </>
+            }
+          
             <div className='my-3 row'>
                 <div className="p-1 col-6 mb-1">
                     <div className="rounded-3 p-2 listing">

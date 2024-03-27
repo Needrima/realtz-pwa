@@ -1,9 +1,9 @@
-import { Layout } from 'antd'
 import React, { createContext, useEffect, useState } from 'react'
 import UserProfileLayout from '../../components/UserProfile/UserProfileLayout'
 import { useParams } from 'react-router-dom';
 import { axiosUserInstance } from '../../api/axoios';
 import { useSelector } from 'react-redux';
+import Layout from "../../components/Layout";
 
 export const UserProfileContext = createContext();
 const UserProfile = () => {

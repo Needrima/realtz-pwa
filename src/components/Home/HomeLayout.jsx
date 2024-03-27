@@ -17,7 +17,6 @@ const HomeLayout = () => {
         next={() => getHomeProducts(homeProductsData?.next_page)} // triggers if hasMore={true}
         loader={
         <div className={`mb-3 d-flex align-items-center ${homeProductsData ? '' : 'product-loading-center'}`}>
-          <div className='text-light fw-bold fs-3 me-3'>Loading</div>
           <Spin className='home-spin' />
         </div>} // triggers if hasMore={true}
         endMessage={
