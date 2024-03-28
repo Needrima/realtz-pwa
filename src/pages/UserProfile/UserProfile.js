@@ -1,9 +1,10 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useRef, useState } from 'react'
 import UserProfileLayout from '../../components/UserProfile/UserProfileLayout'
 import { useParams } from 'react-router-dom';
 import { axiosProductInstance, axiosUserInstance } from '../../api/axoios';
 import { useSelector } from 'react-redux';
 import Layout from "../../components/Layout";
+import { message } from 'antd';
 
 export const UserProfileContext = createContext();
 const UserProfile = () => {
@@ -21,9 +22,10 @@ const UserProfile = () => {
         ratingBoxIsOpen: false,
         loadingProfileProducts: true,
         profileProducts: null,
+        uploadingProfileImage: false,
     })
     const {userData, loading, editProfileBoxOpen, shareProfileBoxOpen, viewImageBoxOpen, imageModalIsOpen, uploadImageModalOpen, ratingBoxIsOpen,
-        loadingProfileProducts, profileProducts} = state;
+        loadingProfileProducts, profileProducts, uploadingProfileImage} = state;
     
     const openEditProfileBox = (show) => {
         setState(state => ({
@@ -80,10 +82,8 @@ const UserProfile = () => {
                 userData: data.user
             }))
             if (data?.user?.user_type === 'agent') {
-                console.log('getting agents listing')
                 getUserProducts(data?.user?.reference)
             }else if (data?.user?.user_type === 'user') {
-                console.log('getting like products')
                 getLikedProducts(data?.user?.reference)
             }
         }catch(error) {
@@ -127,6 +127,38 @@ const UserProfile = () => {
         }
     }
 
+    const uploadImage = async ({file}) => {
+        setState(state => ({
+            ...state,
+            uploadingProfileImage: true,
+        }))
+
+        const fd = new FormData();
+        fd.append("profile_image", file, file.name)
+        try {
+            const {data} = await axiosUserInstance.post('auth/upload-profile-image', fd, {
+                headers: {
+                    token: token,
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            message.success(data?.message)
+            setState(state =>({
+                ...state,
+                userData: {...state.userData, image: data?.new_image_link},
+                uploadingProfileImage: false,
+                uploadImageModalOpen: false,
+                viewImageBoxOpen: false,
+            }))
+        }catch(error) {
+            setState(state => ({
+                ...state,
+                uploadingProfileImage: false,
+            }))
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         getUser();
     }, [token])
@@ -149,6 +181,8 @@ const UserProfile = () => {
         loading,
         loadingProfileProducts, 
         profileProducts,
+        uploadImage,
+        uploadingProfileImage,
     }}>    
         <Layout>
             <UserProfileLayout/>
