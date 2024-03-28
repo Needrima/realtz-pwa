@@ -6,7 +6,7 @@ import FormatNumber from '../../misc/NumberFormatter'
 import video from '../../assets/videos/video.mp4'
 import './UserProfile.scss'
 import { useNavigate } from 'react-router-dom'
-import { Drawer, Form, Input, Modal, Rate, Spin, Upload } from 'antd'
+import { Drawer, Form, Input, Modal, Rate, Spin, Upload, message } from 'antd'
 import { UserProfileContext } from '../../pages/UserProfile/UserProfile'
 import {
     EmailShareButton,
@@ -35,9 +35,7 @@ const UserProfileLayout = () => {
     const {user, token} = useSelector(state => state?.authReducer) 
     const {userData, loading, editProfileBoxOpen, openEditProfileBox, shareProfileBoxOpen, openShareProfileBox, viewImageBoxOpen, openViewImageBox,
         imageModalIsOpen, showImageModal, uploadImageModalOpen, openUploadImageModal, ratingBoxIsOpen, openRatingBox, loadingProfileProducts,
-        profileProducts} = useContext(UserProfileContext);
-    console.log('user:', user);
-    console.log('userData:', userData);
+        profileProducts, uploadImage, uploadingProfileImage} = useContext(UserProfileContext);
   return (
     <div className='px-3 bg-white vh-100'>
       {loading ? 
@@ -119,8 +117,8 @@ const UserProfileLayout = () => {
             {loadingProfileProducts ? <div className='text-center mt-5'><Spin spinning={loadingProfileProducts} /></div> : 
             <div className='my-3 row'>
                 {profileProducts && profileProducts.length !== 0 ? 
-                profileProducts.slice(0, 4).map(product => (
-                  <div className="p-1 col-6 mb-1">
+                profileProducts.slice(0, 4).map((product, index) => (
+                  <div key={index} className="p-1 col-6 mb-1">
                     <div className="rounded-3 p-2 listing">
                         <div className='w-100 position-relative video-div '>
                             <video loop autoPlay muted className='w-100 object-fit-fill rounded-3'> {/*object-fit-fill*/}
@@ -358,8 +356,16 @@ const UserProfileLayout = () => {
          footer={[]}
           >
             <div className='text-center'>
-              <Upload>
-                  <button className='btn btn-outline-primary'>Choose Image</button>
+              <Upload
+                listType='picture'
+                accept='.png,.jpeg,.jpg' 
+                beforeUpload={(file) => {
+                  return false
+                }}
+                onChange={uploadImage}
+                showUploadList={uploadingProfileImage}
+              >
+                  <button disabled={uploadingProfileImage} className='btn btn-primary'>{uploadingProfileImage ? <>Uploading <Spin spinning={uploadingProfileImage} /></> : 'Choose Image'}</button>
               </Upload>
             </div>
         </Modal>
