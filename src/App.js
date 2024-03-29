@@ -10,11 +10,11 @@ import { Provider, useDispatch } from 'react-redux';
 import { syncSession } from './redux/Actions';
 import { useEffect } from 'react';
 import Store from './redux/Store';
+import UserProfile from './pages/UserProfile/UserProfile';
+import SingleProduct from './pages/SingleProduct/SingleProduct';
 
 function App() {
   const dispatch = useDispatch();
-
-  const loggedIn = !!(localStorage.getItem('token') && localStorage.getItem('user'));
 
   useEffect(() => {
       const data = {};
@@ -23,6 +23,10 @@ function App() {
       data['isLoggedIn'] = !!(data['user'] && data['token']);
       dispatch(syncSession(data))
   }, []);
+
+  const token = localStorage.getItem('token');
+  const user = localStorage.getItem('user');
+  const loggedIn = !!(token && user);
 
   const handleRedirectToLogin = () => {
     if (loggedIn) {
@@ -56,6 +60,15 @@ function App() {
     }
   };
 
+  const handleRedirectToProfile = () => {
+    if (loggedIn) {
+      const userObj = JSON.parse(user);
+      return <Navigate replace={true} to={`/profile/${userObj?.reference}`} />;
+    } else {
+      return <Navigate replace={true} to="/login" />;
+    }
+  }
+
   return (
     <div>
       <Routes>
@@ -64,7 +77,10 @@ function App() {
         <Route path='/signup' element={handleRedirectToSignup()} />
         <Route path="/forgot-password" element={handleRedirectToForgotPassword()} />
         <Route path='/home' element={<Home />} />
+        <Route path='/profile/:reference' element={<UserProfile />} />
+        <Route path='/product/:reference' element={<SingleProduct />} />
         <Route path='/notifications' element={<Notification />} />
+        <Route path='/profile' element={handleRedirectToProfile()} />
       </Routes>
     </div>
   );

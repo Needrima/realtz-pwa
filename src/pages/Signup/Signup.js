@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from "react";
-import "./Signup.scss";
-import { Checkbox, Form, Input, Spin, message } from "antd";
-import userIcon from "../../assets/icons/user.svg";
-import emailIcon from "../../assets/icons/sms.svg";
-import phoneIcon from "../../assets/icons/call.svg";
-import passwordIcon from "../../assets/icons/password.svg";
-import { useNavigate } from "react-router-dom";
-import OtpInput from "react-otp-input";
-import {
-  ALPHABET_REGEX,
-  PHONE_REGEX,
-  PASSWORD_SYMBOLS_REGEX,
-  PASSWORD_UPPERCASE_REGEX,
-  PASSWORD_LOWERCASE_REGEX,
-  PASSWORD_NUM_REGEX,
-} from "../../misc/regex";
-import timerIcon from "../../assets/icons/timer.svg";
-import { useTimer } from "react-timer-hook";
-import { axiosUserInstance } from "../../api/axoios";
+import React, { useEffect, useState } from 'react'
+import './Signup.scss'
+import {Checkbox, Form, Input, Spin, message} from 'antd'
+import userIcon from '../../assets/icons/user.svg'
+import emailIcon from '../../assets/icons/sms.svg'
+import phoneIcon from '../../assets/icons/call.svg'
+import passwordIcon from '../../assets/icons/password.svg'
+import { useNavigate } from 'react-router-dom'
+import OtpInput from 'react-otp-input';
+import { NAME_REGEX, USERNAME_REGEX, PHONE_REGEX, PASSWORD_SYMBOLS_REGEX, PASSWORD_UPPERCASE_REGEX, PASSWORD_LOWERCASE_REGEX, PASSWORD_NUM_REGEX } from '../../misc/regex'
+import timerIcon from '../../assets/icons/timer.svg'
+import { useTimer } from 'react-timer-hook';
+import {axiosUserInstance} from '../../api/axoios'
 
 const Signup = () => {
   // react hooks
@@ -99,6 +92,7 @@ const Signup = () => {
     const reqData = {
       user_type: "user",
       firstname: values.firstname,
+      username: values.username,
       lastname: values.lastname,
       email: values.email,
       phone_number: values.phone_number,
@@ -190,12 +184,8 @@ const Signup = () => {
                 { whitespace: true, message: "Firstname cannot be empty" },
                 {
                   async validator(rule, value) {
-                    if (ALPHABET_REGEX.test(value)) return Promise.resolve();
-                    return Promise.reject(
-                      new Error(
-                        "Firstname must be alphabets with '-' as the only special character allowed"
-                      )
-                    );
+                    if (NAME_REGEX.test(value)) return Promise.resolve();
+                    return Promise.reject(new Error("Firstname must be alphabets with '-' as the only special character allowed"));
                   },
                   validateTrigger: "onChange",
                 },
@@ -220,12 +210,8 @@ const Signup = () => {
                 { whitespace: true, message: "Lastname cannot be empty" },
                 {
                   async validator(rule, value) {
-                    if (ALPHABET_REGEX.test(value)) return Promise.resolve();
-                    return Promise.reject(
-                      new Error(
-                        "Firstname must be alphabets with '-' as the only special character allowed"
-                      )
-                    );
+                    if (NAME_REGEX.test(value)) return Promise.resolve();
+                    return Promise.reject(new Error("Firstname must be alphabets with '-' as the only special character allowed"));
                   },
                   validateTrigger: "onChange",
                 },
@@ -240,7 +226,31 @@ const Signup = () => {
             </Form.Item>
 
             <Form.Item
-              name="email"
+              name='username'
+              rules={[
+                {required: true, message: 'Username is required'},
+                {min: 3, message: "Username should be atleast 3 characters long"},
+                {whitespace: true, message: "Username cannot be empty"},
+                {
+                  async validator(rule, value) {
+                    if (USERNAME_REGEX.test(value)) return Promise.resolve();
+                    return Promise.reject(new Error("Username must be alphanumeric with '_' as the only special character allowed"));
+                  },
+                  validateTrigger: "onChange",
+                },
+                
+              ]}
+              hasFeedback
+            >
+              <Input
+                prefix={<img src={userIcon} alt='user icon' />}
+                placeholder='Username'
+                className='text-input'
+              />
+            </Form.Item>
+
+            <Form.Item
+              name='email'
               rules={[
                 { required: true, message: "Email is required" },
                 { whitespace: true, message: "Email cannot be empty" },
@@ -344,18 +354,7 @@ const Signup = () => {
               name="agreement"
               valuePropName="checked"
               rules={[
-                {
-                  async validator(rule, value) {
-                    value
-                      ? Promise.resolve()
-                      : Promise.reject(
-                          new Error(
-                            "You have not accepted our terms and condtions"
-                          )
-                        );
-                  },
-                  validateTrigger: "onChange",
-                },
+                {required: true, message: "You have not accepted our terms and condtions"},
               ]}
             >
               <Checkbox>

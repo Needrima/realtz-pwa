@@ -1,0 +1,41 @@
+.avatar {
+    width: 96px;
+    height: 96px;
+}
+
+.upload-img-icon {
+    right: 0;
+    bottom: 10px;
+}
+
+.bio {
+    height: 70px;
+    overflow-y: scroll;
+}
+
+.listing {
+    background-color: rgba(34, 34, 34, 0.05);
+
+    .video-div {
+        video {
+            height: 150px;
+        }
+
+        .status-badge {
+            bottom: 15px;
+            right: 15px;
+        }
+    }
+
+    .address {
+        font-size: 10px;
+    }
+
+}
+
+.product-loading-center {
+    left: 50%;
+    bottom: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+}

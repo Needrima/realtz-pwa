@@ -37,7 +37,7 @@ import { useNavigate } from 'react-router-dom';
 import FormatNumber from '../../misc/NumberFormatter';
 
 const Product = ({product}) => {
-  const {user, token} = useSelector(state => state.authReducer)
+  const {user, token, isLoggedIn} = useSelector(state => state.authReducer)
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [editForm] = Form.useForm();
@@ -47,14 +47,14 @@ const Product = ({product}) => {
       commentsData: null,
       comments: [],
       fetchingComments: false,
-      productLiked: product?.liked_by.includes(user.reference),
+      productLiked: isLoggedIn ? product?.liked_by.includes(user.reference) : false,
       numLikes: product?.liked_by.length,
-      productSaved: product?.saved_by.includes(user.reference),
+      productSaved: isLoggedIn ? product?.saved_by.includes(user.reference) : false,
       numComments: product?.commented_on_by?.length || 0,
       addingNewComment: false,
       likingProduct: false,
       savingProduct: false,
-      productViewed: product?.viewed_by.includes(user.reference),
+      productViewed: isLoggedIn ? product?.viewed_by.includes(user.reference) : false,
       editCommentBoxOpen: false,
       commentToEdit: null,
       editingComment: false
@@ -83,6 +83,7 @@ const Product = ({product}) => {
       setState(state => ({
         ...state,
         productLiked: false,
+        numLikes: state.numLikes + 1,
         likingProduct: false
       }))
     }
@@ -110,6 +111,7 @@ const Product = ({product}) => {
       setState(state => ({
         ...state,
         productLiked: false,
+        numLikes: state.numLikes + 1,
         likingProduct: false
       }))
     }
@@ -248,12 +250,12 @@ const Product = ({product}) => {
         numComments: state.numComments - 1
       }))
     }catch(error) {
-      console.log(error)
+      console.log(error?.response?.data?.error)
     }
   }
 
   const viewProduct = async () => {
-    if (productViewed) return;
+    if (productViewed || !isLoggedIn) return;
     try {
       const {data} = await axiosProductInstance.get(`/auth/view/${product?.reference}`, {
         headers: {
@@ -364,14 +366,14 @@ const Product = ({product}) => {
 
         <div className='position-absolute' style={{right: '5%', bottom: '15%'}}>
             <div className='mb-4'>
-                <img onClick={() => navigate(`/profile/${product?.user_reference}`)} className='d-block' src={profileIcon} alt="view owners profile" />
+                <img onClick={() => {isLoggedIn ? navigate(`/profile/${product?.user_reference}`) : navigate('/login')}} className='d-block' src={profileIcon} alt="view owners profile" />
             </div>
 
             <div className='mb-4'>
                 {likingProduct ? <Spin spinning={likingProduct} /> : productLiked ? 
-                <img onClick={unLikeProduct} className='d-block' src={likeIconLiked} alt="like video" /> // chage this to blue like image
+                <img onClick={isLoggedIn ? unLikeProduct : () => navigate('/login')} className='d-block' src={likeIconLiked} alt="like video" /> // chage this to blue like image
                 : 
-                <img onClick={likeProduct} className='d-block' src={likeIcon} alt="like video" /> 
+                <img onClick={isLoggedIn ? likeProduct : () => navigate('/login') } className='d-block' src={likeIcon} alt="like video" /> 
                 }
                 <div className='text-light text-center fw-bold'>{FormatNumber(numLikes)}</div>
             </div>
@@ -383,11 +385,11 @@ const Product = ({product}) => {
 
             <div className='mb-4'>
                 {savingProduct ? <Spin spinning={savingProduct} /> : productSaved ? 
-                <img onClick={unSaveProduct} className='d-block' src={saveIconSaved} alt="save video" /> // chage this to blue like image
+                <img onClick={isLoggedIn ? unSaveProduct : () => navigate('/login')} className='d-block' src={saveIconSaved} alt="save video" /> // chage this to blue like image
                 : 
-                <img onClick={saveProduct}className='d-block' src={saveIcon} alt="save video" /> 
+                <img onClick={isLoggedIn ? saveProduct : () => navigate('/login')}className='d-block' src={saveIcon} alt="save video" /> 
                 }
-                <div className='text-light text-center fw-bold'>{productSaved}</div>
+                {/* <div className='text-light text-center fw-bold'>{productSaved}</div> */}
             </div>
 
             <div className='mb-4'>
@@ -395,6 +397,7 @@ const Product = ({product}) => {
             </div>
         </div>
         
+        {isLoggedIn && 
         <div className='position-absolute bottom-0 text-light mb-4' style={{left: '4%', width: '75%'}}>
             <div className='fs-4 fw-bold'>{product?.owner}</div>
             <div className='fs-4'>{TimeConverter(product?.created_on)}</div>
@@ -402,12 +405,13 @@ const Product = ({product}) => {
               {product?.description.slice(0, 30)} {' '}
               {product?.hash_tags.map(hash_tag => hash_tag.startsWith('#') ? hash_tag : '#'+hash_tag).slice(0, 2).join(' ')} ... <u className='fw-bold'>more</u></div>
         </div>
+        }
                 
         {/* drawer to display comments */}
         <Drawer
           open={commentsBoxOpen}
           title={<div className='text-primary fw-bold'>Comments</div>}
-          footer={
+          footer={isLoggedIn &&
           <>
             <Form 
             form={form}
@@ -451,7 +455,7 @@ const Product = ({product}) => {
           </div>
           {fetchingComments && 
             <div className='text-center text-primary fw-bold'>
-               <Spin spinning={fetchingComments} />
+                <span className='me-2'>Loading</span> <Spin spinning={fetchingComments} />
             </div>
           }
         </Drawer>
@@ -526,7 +530,7 @@ const Product = ({product}) => {
           <LinkedinShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/product/${product.reference}`}
-            title='Checkout this awesome property on Realtz'
+            title='Checkout this property on Realtz'
             summary={`${product.description.slice(0, 50)} ....`}
             source={`${window.location.origin}/home`}
             >
@@ -547,7 +551,7 @@ const Product = ({product}) => {
           <RedditShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/product/${product.reference}`}
-            title='Checkout this awesome property on Realtz'
+            title='Checkout this property on Realtz'
             >
             <RedditIcon
             round={true} />
@@ -556,7 +560,7 @@ const Product = ({product}) => {
           <TelegramShareButton 
           className='me-2 mb-2'
           url={`${window.location.origin}/product/${product.reference}`}
-          title='Checkout this awesome property on Realtz'
+          title='Checkout this property on Realtz'
           >
             <TelegramIcon
             round={true} />
@@ -565,7 +569,7 @@ const Product = ({product}) => {
           <TwitterShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/product/${product.reference}`}
-            title='Checkout this awesome property on Realtz'
+            title='Checkout this property on Realtz'
             hashtags={['#realz_app', '#property_rentals', '#property_shortlets']}
           >
             <XIcon
@@ -575,7 +579,7 @@ const Product = ({product}) => {
           <WhatsappShareButton 
             className='me-2 mb-2'
             url={`${window.location.origin}/product/${product.reference}`}
-            title='Checkout this awesome property on Realtz'
+            title='Checkout this property on Realtz'
           >
             <WhatsappIcon
             round={true} />
