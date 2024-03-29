@@ -29,7 +29,6 @@ const Login = () => {
 
     try {
       const { data } = await axiosUserInstance.post("login", reqData);
-      console.log(data);
       const loginData = {
         token: data?.token,
         user: data?.user,
