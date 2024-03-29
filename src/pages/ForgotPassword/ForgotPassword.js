@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input } from "antd";
+import { Form, Input, message, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import emailIcon from "../../assets/icons/sms.svg";
+import passwordIcon from "../../assets/icons/password.svg";
 import { useTimer } from "react-timer-hook";
 import OtpInput from "react-otp-input";
 import timerIcon from "../../assets/icons/timer.svg";
+import { axiosUserInstance } from "../../api/axoios";
+import {
+  PASSWORD_SYMBOLS_REGEX,
+  PASSWORD_UPPERCASE_REGEX,
+  PASSWORD_LOWERCASE_REGEX,
+  PASSWORD_NUM_REGEX,
+} from "../../misc/regex";
 
 const ForgotPassword = () => {
   const [state, setState] = useState({
@@ -12,19 +20,92 @@ const ForgotPassword = () => {
     otp: "",
     loading: false,
     email: "",
+    currentPage: "1",
+    resetTimerFlag: false,
   });
 
-  const { formSubmitted, otp, loading, email } = state;
+  const navigate = useNavigate();
+  const { resetTimerFlag, otp, loading, email, currentPage } = state;
 
-  const onFinish = (values) => {
+  const startPasswordReset = async (values) => {
     setState((state) => ({
       ...state,
-      formSubmitted: true,
-      email: values.email,
+      loading: true,
     }));
+
+    const reqData = {
+      email: values.email,
+    };
+
+    try {
+      const { data } = await axiosUserInstance.post(
+        "start-password-recovery",
+        reqData
+      );
+
+      setState((state) => ({
+        ...state,
+        loading: false,
+        otp_verification_key: data?.otp_verification_key,
+        email: values.email,
+        currentPage: "2",
+      }));
+      console.log(data);
+      message.success(data?.message || `OTP has been sent to ${email}`);
+    } catch (error) {
+      message.error(
+        error?.response?.data?.error || "OTP could not be sent to your email"
+      );
+      setState((state) => ({
+        ...state,
+        loading: false,
+      }));
+    }
   };
 
-  const onInputOTP = async (otp) => {
+  const completePasswordReset = async (values) => {
+    setState((state) => ({
+      ...state,
+      loading: true,
+    }));
+
+    const { email, otp_verification_key, otp } = state;
+
+    const reqData = {
+      email: email,
+      new_password: values.new_password,
+      confirm_password: values.confirm_password,
+      otp: otp,
+      otp_verification_key: otp_verification_key,
+    };
+
+    try {
+      const { data } = await axiosUserInstance.post(
+        "complete-password-recovery",
+        reqData
+      );
+      setState((state) => ({
+        ...state,
+        loading: false,
+      }));
+      message.success(data?.message || "Password successfully reset");
+      navigate("/login", { replace: true });
+    } catch (error) {
+      message.error(
+        error?.response?.data?.error || "password verification failed"
+      );
+      setState((state) => ({
+        ...state,
+        loading: false,
+        otp: "",
+        otp_verification_key: "",
+        email: "",
+        currentPage: "1",
+      }));
+    }
+  };
+
+  const onInputOTP = (otp) => {
     setState((state) => ({
       ...state,
       otp: otp,
@@ -33,12 +114,10 @@ const ForgotPassword = () => {
     if (otp.length === 6) {
       setState((state) => ({
         ...state,
-        loading: true,
+        currentPage: "3",
       }));
     }
   };
-
-  const navigate = useNavigate();
 
   // OTP timer configuration
   const expiryTimestamp = new Date();
@@ -55,18 +134,42 @@ const ForgotPassword = () => {
       loading: true,
     }));
 
-    restart(expiryTimestamp);
+    const { email } = state;
+
+    const reqData = {
+      channel: "email",
+      email: email,
+    };
+
+    try {
+      const { data } = await axiosUserInstance.post("send-otp", reqData);
+      setState((state) => ({
+        ...state,
+        loading: false,
+        otp: "",
+        resetTimerFlag: !resetTimerFlag,
+      }));
+      console.log(data);
+      message.success(data?.message || "otp sent");
+    } catch (error) {
+      setState((state) => ({
+        ...state,
+        loading: false,
+        otp: "",
+      }));
+      message.error(error?.response?.data?.error || "sending otp failed");
+    }
   };
 
   useEffect(() => {
-    if (formSubmitted) {
+    if (currentPage === "2") {
       restart(expiryTimestamp);
     }
-  }, [formSubmitted]);
+  }, [currentPage, resetTimerFlag]);
 
   return (
     <div className="px-2 pt-5 pb-3">
-      {!formSubmitted ? (
+      {currentPage === "1" && (
         <>
           <h1 className="fw-bold mt-3 mb-3">
             Reset your <span className="text-default">Password</span>
@@ -74,7 +177,7 @@ const ForgotPassword = () => {
           <p className="mb-5 text-muted">
             Lorem ipsum dolor sit amet, consecturadipiscing
           </p>
-          <Form onFinish={onFinish}>
+          <Form onFinish={startPasswordReset}>
             <Form.Item
               name="email"
               className="mb-8"
@@ -96,8 +199,11 @@ const ForgotPassword = () => {
             </Form.Item>
 
             <div className="text-center">
-              <button className="login-button w-100 btn btn-primary btn-lg px-5 py-3 fw-bold">
-                Send OTP
+              <button
+                disabled={loading}
+                className="login-button w-100 btn btn-primary btn-lg px-5 py-3 fw-bold"
+              >
+                {loading ? <Spin spinning={loading} /> : "Send OTP"}
               </button>
             </div>
           </Form>
@@ -111,7 +217,8 @@ const ForgotPassword = () => {
             </span>
           </div>
         </>
-      ) : (
+      )}
+      {currentPage === "2" && (
         <div>
           <h1 className="fw-bold mt-5 mb-3">
             Enter the <span className="text-primary">code</span>
@@ -152,6 +259,82 @@ const ForgotPassword = () => {
             </span>
           </div>
         </div>
+      )}
+      {currentPage === "3" && (
+        <>
+          <h1 className="fw-bold mt-3 mb-3">
+            Enter your new <span className="text-default">Password</span>
+          </h1>
+          <p className="mb-5 text-muted">
+            Lorem ipsum dolor sit amet, consecturadipiscing
+          </p>
+          <Form onFinish={completePasswordReset}>
+            <Form.Item
+              name="new_password"
+              rules={[
+                { required: true, message: "Password is required" },
+                { whitespace: true, message: "Password cannot be empty" },
+                {
+                  async validator(rule, value) {
+                    if (
+                      PASSWORD_UPPERCASE_REGEX.test(value) &&
+                      PASSWORD_LOWERCASE_REGEX.test(value) &&
+                      PASSWORD_NUM_REGEX.test(value) &&
+                      PASSWORD_SYMBOLS_REGEX.test(value) &&
+                      value.length >= 6
+                    )
+                      return Promise.resolve();
+                    return Promise.reject(
+                      new Error(
+                        "Password must be atleast 6 characters with atleaset 1 lowercase, 1 uppercase, 1 number and one special character"
+                      )
+                    );
+                  },
+                  validateTrigger: "onChange",
+                },
+              ]}
+              hasFeedback
+            >
+              <Input.Password
+                prefix={<img src={passwordIcon} alt="password icon" />}
+                placeholder="Password"
+                className="text-input"
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="confirm_password"
+              dependencies={["new_password"]}
+              rules={[
+                { required: true, message: "Confirm password is required" },
+                ({ getFieldValue }) => ({
+                  async validator(rule, value) {
+                    if (value && getFieldValue("new_password") === value)
+                      return Promise.resolve();
+                    return Promise.reject(new Error("Passwords mismatch"));
+                  },
+                  validateTrigger: "onChange",
+                }),
+              ]}
+              hasFeedback
+            >
+              <Input.Password
+                prefix={<img src={passwordIcon} alt="password icon" />}
+                placeholder="Confirm password"
+                className="text-input"
+              />
+            </Form.Item>
+
+            <div className="text-center">
+              <button
+                disabled={loading}
+                className="btn btn-primary btn-lg px-5 py-3 fw-bold"
+              >
+                {loading ? <Spin spinning={loading} /> : "Reset Password"}
+              </button>
+            </div>
+          </Form>
+        </>
       )}
     </div>
   );

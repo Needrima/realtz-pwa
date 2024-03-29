@@ -13,40 +13,40 @@ const Login = () => {
 
   const [state, setState] = useState({
     loading: false,
-  })
-  const {loading} = state;
+  });
+  const { loading } = state;
 
   const onFinish = async (values) => {
-    setState(state => ({
+    setState((state) => ({
       ...state,
       loading: true,
-    }))
+    }));
 
     const reqData = {
       email: values.email,
       password: values.password,
-    }
+    };
 
     try {
-      const {data} = await axiosUserInstance.post("login", reqData);
+      const { data } = await axiosUserInstance.post("login", reqData);
       console.log(data);
       const loginData = {
         token: data?.token,
         user: data?.user,
-      }
-      dispatch(login(loginData))
-      message.success(data?.message || 'login successful');
-      setState(state => ({
+      };
+      dispatch(login(loginData));
+      message.success(data?.message || "login successful");
+      setState((state) => ({
         ...state,
         loading: false,
-      }))
-      navigate("/home", {replace: true})
-    }catch(error){
-      message.error(error?.response?.data?.error || 'login failed')
-      setState(state => ({
+      }));
+      navigate("/home", { replace: true });
+    } catch (error) {
+      message.error(error?.response?.data?.error || "login failed");
+      setState((state) => ({
         ...state,
         loading: false,
-      }))
+      }));
     }
   };
 
@@ -95,8 +95,11 @@ const Login = () => {
         </div>
 
         <div className="text-center">
-          <button disabled={loading} className="login-button w-100 btn btn-primary btn-lg px-5 py-3 fw-bold">
-            {loading ? <Spin spinning={loading} /> : 'Login'}
+          <button
+            disabled={loading}
+            className="login-button w-100 btn btn-primary btn-lg px-5 py-3 fw-bold"
+          >
+            {loading ? <Spin spinning={loading} /> : "Login"}
           </button>
         </div>
       </Form>
