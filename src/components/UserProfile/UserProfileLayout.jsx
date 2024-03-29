@@ -120,7 +120,7 @@ const UserProfileLayout = () => {
                 profileProducts.slice(0, 4).map((product, index) => (
                   <div key={index} className="p-1 col-6 mb-1">
                     <div className="rounded-3 p-2 listing">
-                        <div className='w-100 position-relative video-div '>
+                        <div className='w-100 position-relative video-div' onClick={() => navigate(`/product/${product.reference}`)}>
                             <video loop autoPlay muted className='w-100 object-fit-fill rounded-3'> {/*object-fit-fill*/}
                                 <source src={product.videos[0]} type="video/mp4" />
                             </video>
@@ -131,7 +131,9 @@ const UserProfileLayout = () => {
                         </div>
 
                         <div className='text-primary mt-1 fw-bold'>5 Bedroom Semi-Detached Duplex</div>
+
                         <div className='mt-1 address'>{product?.location}</div>
+
                         <div className="mt-1 d-flex justify-content-between align-items-center">
                             <span className='badge badge-primary bg-primary status-badge'>More</span>
                             <span style={{fontSize: '7px'}}>Posted: {TimeConverter(product?.created_on)}</span>
