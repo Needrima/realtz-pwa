@@ -44,6 +44,29 @@ axiosProductInstance.interceptors.response.use(
       // }
       return Promise.reject(error);
     }
+);
+
+  // Create an instance of Axios with a custom configuration
+  const axiosNotificationInstance = axios.create({
+    baseURL: process.env.REACT_APP_BASE_NOTIFICATION_URL, // Set your base URL
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  
+  axiosNotificationInstance.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      (error) => {
+        // Handle response error
+        // if (error?.response?.status === 401) {
+        //   sessionStorage.removeItem('token')
+        //   sessionStorage.removeItem('user')
+        //   window.location.href = "/login"
+        // }
+        return Promise.reject(error);
+      }
   );
 
-export {axiosUserInstance, axiosProductInstance};
+export {axiosUserInstance, axiosProductInstance, axiosNotificationInstance};
