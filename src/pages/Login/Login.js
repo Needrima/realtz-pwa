@@ -6,6 +6,7 @@ import passwordIcon from "../../assets/icons/password.svg";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/Actions";
 import { axiosUserInstance } from "../../api/axoios";
+import CustomSpin from "../../components/UI/CustomSpin/CustomSpin";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -98,7 +99,7 @@ const Login = () => {
             disabled={loading}
             className="login-button w-100 btn btn-primary btn-lg px-5 py-3 fw-bold"
           >
-            {loading ? <Spin spinning={loading} /> : "Login"}
+            {loading ? <CustomSpin color={'white'} spinning={loading} /> : "Login"}
           </button>
         </div>
       </Form>

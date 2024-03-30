@@ -13,6 +13,7 @@ import {
   PASSWORD_LOWERCASE_REGEX,
   PASSWORD_NUM_REGEX,
 } from "../../misc/regex";
+import CustomSpin from "../../components/UI/CustomSpin/CustomSpin";
 
 const ForgotPassword = () => {
   const [state, setState] = useState({
@@ -203,7 +204,7 @@ const ForgotPassword = () => {
                 disabled={loading}
                 className="login-button w-100 btn btn-primary btn-lg px-5 py-3 fw-bold"
               >
-                {loading ? <Spin spinning={loading} /> : "Send OTP"}
+                {loading ? <CustomSpin color={'white'} spinning={loading} /> : "Send OTP"}
               </button>
             </div>
           </Form>
@@ -330,7 +331,7 @@ const ForgotPassword = () => {
                 disabled={loading}
                 className="btn btn-primary btn-lg px-5 py-3 fw-bold"
               >
-                {loading ? <Spin spinning={loading} /> : "Reset Password"}
+                {loading ? <CustomSpin color={'white'} spinning={loading} /> : "Reset Password"}
               </button>
             </div>
           </Form>

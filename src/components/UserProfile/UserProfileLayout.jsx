@@ -29,6 +29,7 @@ import {
 import { USERNAME_REGEX } from '../../misc/regex'
 import { useSelector } from 'react-redux'
 import TimeConverter from '../../misc/TimeConverter'
+import CustomSpin from '../UI/CustomSpin/CustomSpin'
 
 const UserProfileLayout = () => {
     const navigate = useNavigate();
@@ -40,7 +41,7 @@ const UserProfileLayout = () => {
     <div className='px-3 bg-white vh-100'>
       {loading ? 
       <div className='text-center text-primary fw-bold product-loading-center'>
-        <Spin className='user-profile-spin' spinning={loading} />
+        <CustomSpin className='user-profile-spin' spinning={loading} />
       </div>
       : 
       <>
@@ -114,7 +115,7 @@ const UserProfileLayout = () => {
             </div>
             }
           
-            {loadingProfileProducts ? <div className='text-center mt-5'><Spin spinning={loadingProfileProducts} /></div> : 
+            {loadingProfileProducts ? <div className='text-center mt-5'><CustomSpin spinning={loadingProfileProducts} /></div> : 
             <div className='my-3 row'>
                 {profileProducts && profileProducts.length !== 0 ? 
                 profileProducts.slice(0, 4).map((product, index) => (
@@ -367,7 +368,7 @@ const UserProfileLayout = () => {
                 onChange={uploadImage}
                 showUploadList={uploadingProfileImage}
               >
-                  <button disabled={uploadingProfileImage} className='btn btn-primary'>{uploadingProfileImage ? <>Uploading <Spin spinning={uploadingProfileImage} /></> : 'Choose Image'}</button>
+                  <button disabled={uploadingProfileImage} className='btn btn-primary'>{uploadingProfileImage ? <>Uploading <CustomSpin color={'white'} spinning={uploadingProfileImage} /></> : 'Choose Image'}</button>
               </Upload>
             </div>
         </Modal>

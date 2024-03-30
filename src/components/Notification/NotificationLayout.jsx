@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './Notification.scss'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Spin, Drawer } from 'antd'
+import CustomSpin from '../UI/CustomSpin/CustomSpin'
 
 const NotificationLayout = () => {
     const [state, setState] = useState({
@@ -31,7 +32,7 @@ const NotificationLayout = () => {
         loader={
         <div className='mb-3 d-flex justify-content-center align-items-center'>
           <div className='text-primary fw-bold fs-3 me-3'>Loading</div>
-          <Spin />
+          <CustomSpin />
         </div>} // triggers if hasMore={true}
         endMessage={
           <p className='text-primary text-center fw-bold'>

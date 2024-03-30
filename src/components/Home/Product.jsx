@@ -35,6 +35,7 @@ import {
 } from "react-share";
 import { useNavigate } from 'react-router-dom';
 import FormatNumber from '../../misc/NumberFormatter';
+import CustomSpin from '../UI/CustomSpin/CustomSpin';
 
 const Product = ({product}) => {
   const {user, token} = useSelector(state => state.authReducer)
@@ -368,7 +369,7 @@ const Product = ({product}) => {
             </div>
 
             <div className='mb-4'>
-                {likingProduct ? <Spin spinning={likingProduct} /> : productLiked ? 
+                {likingProduct ? <CustomSpin color={'white'} spinning={likingProduct} /> : productLiked ? 
                 <img onClick={unLikeProduct} className='d-block' src={likeIconLiked} alt="like video" /> // chage this to blue like image
                 : 
                 <img onClick={likeProduct} className='d-block' src={likeIcon} alt="like video" /> 
@@ -382,7 +383,7 @@ const Product = ({product}) => {
             </div>
 
             <div className='mb-4'>
-                {savingProduct ? <Spin spinning={savingProduct} /> : productSaved ? 
+                {savingProduct ? <CustomSpin color={'white'} spinning={savingProduct} /> : productSaved ? 
                 <img onClick={unSaveProduct} className='d-block' src={saveIconSaved} alt="save video" /> // chage this to blue like image
                 : 
                 <img onClick={saveProduct}className='d-block' src={saveIcon} alt="save video" /> 
@@ -426,7 +427,7 @@ const Product = ({product}) => {
                   className='border border-primary px-2 mb-2'
                   />
               </Form.Item>
-              <button disabled={addingNewComment} type='submit' className='btn btn-primary'>{addingNewComment ? <Spin spinning={addingNewComment} />: 'Comment'}</button>
+              <button disabled={addingNewComment} type='submit' className='btn btn-primary'>{addingNewComment ? <CustomSpin color={'white'} spinning={addingNewComment} />: 'Comment'}</button>
             </Form>
             {commentsData && !commentsData?.has_next && <div className='text-center text-primary fw-bold'>no more comments</div>}
           </>
@@ -451,7 +452,7 @@ const Product = ({product}) => {
           </div>
           {fetchingComments && 
             <div className='text-center text-primary fw-bold'>
-               <Spin spinning={fetchingComments} />
+               <CustomSpin spinning={fetchingComments} />
             </div>
           }
         </Drawer>
@@ -490,7 +491,7 @@ const Product = ({product}) => {
                 disabled={editingComment} 
                 type='submit'
                 className='btn btn-primary'
-              >{editingComment ? <Spin spinning={editingComment} />: 'Edit'}</button>
+              >{editingComment ? <CustomSpin color={'white'} spinning={editingComment} />: 'Edit'}</button>
           </Form>
         </Drawer>
 
