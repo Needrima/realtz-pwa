@@ -141,7 +141,7 @@ const Video = ({video, viewProduct, productRef}) => {
           onClick={() => navigate(`/product/${productRef}`)}
           onPlay={handlePlay} 
           onTimeUpdate={handleTimeUpdate}
-        > {/*object-fit-fill*/}
+        > {/*object-fit-fill*/} 
             <source src={video} type="video/mp4" />
         </video>
 
