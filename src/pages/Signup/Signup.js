@@ -11,6 +11,7 @@ import { NAME_REGEX, USERNAME_REGEX, PHONE_REGEX, PASSWORD_SYMBOLS_REGEX, PASSWO
 import timerIcon from '../../assets/icons/timer.svg'
 import { useTimer } from 'react-timer-hook';
 import {axiosUserInstance} from '../../api/axoios'
+import CustomSpin from '../../components/UI/CustomSpin/CustomSpin'
 
 const Signup = () => {
   // react hooks
@@ -371,7 +372,7 @@ const Signup = () => {
                 className="btn btn-primary btn-lg px-5 py-3 fw-bold"
               >
                 {" "}
-                {loading ? <Spin spinning={loading} /> : "Create Account"}
+                {loading ? <CustomSpin color={'white'} spinning={loading} /> : "Create Account"}
               </button>
             </div>
           </Form>

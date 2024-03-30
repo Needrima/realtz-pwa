@@ -70,6 +70,7 @@ const UserProfile = () => {
     }
 
     const getUser = async () => {
+        console.log('getting user')
         try {
             const {data} = await axiosUserInstance.get(`auth/get-user/${reference}`, {
                 headers: {

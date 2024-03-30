@@ -5,6 +5,7 @@ import TimeConverter from '../../misc/TimeConverter';
 import { useSelector } from 'react-redux';
 import { axiosProductInstance } from '../../api/axoios';
 import FormatNumber from '../../misc/NumberFormatter';
+import CustomSpin from '../UI/CustomSpin/CustomSpin';
 
 const Comment = ({comment, deleteComment, openEditCommentBox}) => {
   const {user, token, isLoggedIn} = useSelector(state => state.authReducer)
@@ -211,7 +212,7 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
                   className='border border-primary px-2 mb-2'
                   />
                 </Form.Item>
-                <button disabled={addingNewReply} type='submit' className='btn btn-primary'>{addingNewReply ? <Spin spinning={addingNewReply} />: 'Reply'}</button>
+                <button disabled={addingNewReply} type='submit' className='btn btn-primary'>{addingNewReply ? <CustomSpin color={'white'} spinning={addingNewReply} />: 'Reply'}</button>
               </Form>
               {repliesData && !repliesData?.has_next && <div className='text-center text-primary fw-bold'>no more replies</div>}
             </>
@@ -251,7 +252,7 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
             }
 
             {fetchingReplies && <div className='text-center text-primary fw-bold'>
-                <Spin spinning={fetchingReplies} />
+                <CustomSpin spinning={fetchingReplies} />
             </div>}
           </div>
       </Drawer>
@@ -290,7 +291,7 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
                 disabled={editingReply} 
                 type='submit'
                 className='btn btn-primary'
-              >{editingReply ? <Spin spinning={editingReply} />: 'Edit'}</button>
+              >{editingReply ? <CustomSpin color={'white'} spinning={editingReply} />: 'Edit'}</button>
             </Form>
         </Drawer>
     </>

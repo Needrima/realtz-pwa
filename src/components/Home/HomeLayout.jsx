@@ -4,6 +4,7 @@ import { HomeContext } from "../../pages/Home/Home";
 import Product from "./Product";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Drawer, Spin } from "antd";
+import CustomSpin from "../UI/CustomSpin/CustomSpin";
 
 const HomeLayout = () => {
   const {
@@ -25,7 +26,7 @@ const HomeLayout = () => {
         next={() => getHomeProducts(homeProductsData?.next_page)} // triggers if hasMore={true}
         loader={
         <div className={`mb-3 d-flex align-items-center ${homeProductsData ? '' : 'product-loading-center'}`}>
-          <Spin className='home-spin' />
+          <CustomSpin color={'white'} />
         </div>} // triggers if hasMore={true}
         endMessage={
           <p className={`text-center fw-bold text-light ${homeProductsData ? '' : 'product-loading-center'}`}>
@@ -54,7 +55,7 @@ const HomeLayout = () => {
               }`}
             >
               <div className="text-light fw-bold fs-3 me-3">Loading</div>
-              <Spin />
+              <CustomSpin color={'white'} />
             </div>
           } // triggers if hasMore={true}
           endMessage={
