@@ -68,9 +68,9 @@ const HomeLayout = () => {
             </p>
           } // triggers if hasMore={false}
           // below props only if you need pull down functionality
-          refreshFunction={() => window.location.reload()}
-          pullDownToRefresh
-          pullDownToRefreshThreshold={50}
+          // refreshFunction={() => window.location.reload()}
+          // pullDownToRefresh
+          // pullDownToRefreshThreshold={50}
         >
           {trendingProducts &&
             trendingProducts.length !== 0 &&
