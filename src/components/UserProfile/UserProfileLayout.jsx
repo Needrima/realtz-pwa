@@ -105,13 +105,13 @@ const UserProfileLayout = () => {
             {userData?.user_type === 'agent' && 
             <div>
               <span className='me-1'>{userData?.reference === user?.reference ? `Your listings` : `Other listings from ${userData?.username}`}</span>
-              <a href={`/get-user-products/${userData?.reference}`} className='text-primary fw-bold'>view more</a>
+              <a href={`/products/?type=user&reference=${userData?.reference}`} className='text-primary fw-bold'>view more</a>
             </div>
             }
             {userData?.user_type === 'user' && 
             <div>
               <span className='me-1'>{userData?.reference === user?.reference ? `Your liked listings` : `${userData?.username} also liked`}</span>
-              <a href={`/get-liked-products/${userData?.reference}`} className='text-primary fw-bold text-decoration-none'>view more</a>
+              <a href={`/products/?type=liked&reference=${userData?.reference}`} className='text-primary fw-bold text-decoration-none'>view more</a>
             </div>
             }
           

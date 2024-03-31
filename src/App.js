@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import Store from './redux/Store';
 import UserProfile from './pages/UserProfile/UserProfile';
 import SingleProduct from './pages/SingleProduct/SingleProduct';
+import Products from './pages/Products/Products';
 
 function App() {
   const dispatch = useDispatch();
@@ -81,6 +82,7 @@ function App() {
         <Route path='/product/:reference' element={<SingleProduct />} />
         <Route path='/notifications' element={<Notification />} />
         <Route path='/profile' element={handleRedirectToProfile()} />
+        <Route path='/products' element={<Products />} />
       </Routes>
     </div>
   );
