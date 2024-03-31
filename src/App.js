@@ -64,7 +64,16 @@ function App() {
   const handleRedirectToProfile = () => {
     if (loggedIn) {
       const userObj = JSON.parse(user);
-      return <Navigate replace={true} to={`/profile/${userObj?.reference}`} />;
+      return <Navigate to={`/profile/${userObj?.reference}`} />;
+    } else {
+      return <Navigate replace={true} to="/login" />;
+    }
+  }
+
+  const handleRedirectToSavedProduct = () => {
+    if (loggedIn) {
+      const userObj = JSON.parse(user);
+      return <Navigate to={`/products?type=saved&reference=${userObj?.reference}`} />;
     } else {
       return <Navigate replace={true} to="/login" />;
     }
@@ -82,6 +91,7 @@ function App() {
         <Route path='/product/:reference' element={<SingleProduct />} />
         <Route path='/notifications' element={<Notification />} />
         <Route path='/profile' element={handleRedirectToProfile()} />
+        <Route path='/saved' element={handleRedirectToSavedProduct()} />
         <Route path='/products' element={<Products />} />
       </Routes>
     </div>

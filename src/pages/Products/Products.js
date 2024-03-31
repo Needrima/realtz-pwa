@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Catalogue from '../../components/Catalogue/Catalogue'
-import Layout from 'antd/es/layout/layout'
+import Layout from '../../components/Layout'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { axiosProductInstance } from '../../api/axoios'
 import { useSelector } from 'react-redux'
@@ -9,7 +9,6 @@ const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const type = searchParams.get('type');
   const reference = searchParams.get('reference');
-  console.log(type, reference)
   const {token} = useSelector(state => state.authReducer)
 
   const [state, setState] = useState({
@@ -83,12 +82,36 @@ const Products = () => {
     }
   };
 
+  const getSavedProducts = async (page) => {
+    console.log('getting home product')
+    try {
+      const {data} = await axiosProductInstance.get(`auth/get-saved-product/${reference}/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
+          headers: {
+            token: token
+          }
+        }
+      )
+
+      setState((state) => ({
+        ...state,
+        loading: false,
+        productsData: data,
+        products: [...state.products, ...data.products],
+      }));
+      console.log('home product data:', data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getNextFunc = () => {
     switch(type) {
       case 'user':
         return getUserProducts
       case 'liked':
         return getLikedProducts
+      case 'saved':
+        return getSavedProducts
       default:
         return getHomeProducts
     }
@@ -103,6 +126,8 @@ useEffect(() => {
       case 'liked':
         getLikedProducts(1)
         break;
+      case 'saved':
+        getSavedProducts(1)
       default: getHomeProducts(1)
     }
   }
