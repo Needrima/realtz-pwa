@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Catalogue from '../../components/Catalogue/Catalogue'
 import Layout from '../../components/Layout'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { axiosProductInstance } from '../../api/axoios'
 import { useSelector } from 'react-redux'
 
@@ -140,6 +140,7 @@ useEffect(() => {
           products={products}
           productsData={productsData}
           nextFunc={getNextFunc()}
+          loading={loading}
         />
       </div>
     </Layout>

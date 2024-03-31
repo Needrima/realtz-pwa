@@ -75,16 +75,16 @@ const UserProfileLayout = () => {
 
         {userData?.user_type === 'agent' && 
         <div className='d-flex justify-content-around mt-3'>
-            <div className='text-primary text-center'>
-                <div className='fw-bold'>{FormatNumber(userData?.num_likes)}</div>
+            <div className='text-center border border-primary p-3 rounded'>
+                <div className='fw-bold text-primary'>{FormatNumber(userData?.num_likes)}</div>
                 <div>Likes</div>
             </div>
-            <div  className='text-primary text-center'>
-                <div className='fw-bold'>{FormatNumber(userData?.num_products)}</div>
+            <div  className='text-center border border-primary p-3 rounded'>
+                <div className='fw-bold text-primary'>{FormatNumber(userData?.num_products)}</div>
                 <div>Listings</div>
             </div>
-            <div className='text-primary text-center'>
-                <div className='fw-bold'>{userData?.star_rating} / 5</div>
+            <div className='text-center border border-primary p-3 rounded'>
+                <div className='fw-bold text-primary'>{userData?.star_rating} / 5</div>
                 <div>Star rating</div>
             </div>
         </div>}

@@ -13,6 +13,7 @@ import Store from './redux/Store';
 import UserProfile from './pages/UserProfile/UserProfile';
 import SingleProduct from './pages/SingleProduct/SingleProduct';
 import Products from './pages/Products/Products';
+import ProductDetails from './pages/ProductDetails/ProductDetails';
 
 function App() {
   const dispatch = useDispatch();
@@ -89,6 +90,7 @@ function App() {
         <Route path='/home' element={<Home />} />
         <Route path='/profile/:reference' element={<UserProfile />} />
         <Route path='/product/:reference' element={<SingleProduct />} />
+        <Route path='/product-details/:reference' element={<ProductDetails />} />
         <Route path='/notifications' element={<Notification />} />
         <Route path='/profile' element={handleRedirectToProfile()} />
         <Route path='/saved' element={handleRedirectToSavedProduct()} />

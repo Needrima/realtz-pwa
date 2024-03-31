@@ -3,8 +3,10 @@ import './Catalogue.scss'
 import InfiniteScroll from "react-infinite-scroll-component";
 import CustomSpin from '../UI/CustomSpin/CustomSpin';
 import FormatNumber from '../../misc/NumberFormatter';
+import { useNavigate } from 'react-router-dom';
 
-const Catalogue = ({products, productsData, nextFunc}) => {
+const Catalogue = ({products, productsData, nextFunc, loading}) => {
+  const navigate = useNavigate();
   return (
     <div className='catalogue'>
     <InfiniteScroll
@@ -27,7 +29,7 @@ const Catalogue = ({products, productsData, nextFunc}) => {
     >
       <div className='row'>
         {products && products.length !== 0 ? products.map((product, index) => (
-          <div key={index} className="col-4 border border-1 rounded video-div position-relative">
+          <div key={index} className="col-4 border border-1 rounded video-div position-relative" onClick={() => navigate(`/product/${product.reference}`)}>
             <video loop autoPlay muted className='w-100 h-100 object-fit-fill rounded' > {/*object-fit-fill*/} 
                 <source src={product?.videos[0]} type="video/mp4" />
             </video>
@@ -37,7 +39,7 @@ const Catalogue = ({products, productsData, nextFunc}) => {
           </div>
         )) 
         : 
-        <div className='vh-100 d-flex align-items-center justify-content-center text-primary fw-bold'>No feeds available</div>
+        <div className='vh-100 d-flex align-items-center justify-content-center text-primary fw-bold'>{loading ? 'Loading feeds' : 'No feeds available'}</div>
         }
       </div>
     </InfiniteScroll>
