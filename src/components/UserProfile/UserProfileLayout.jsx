@@ -75,7 +75,7 @@ const UserProfileLayout = () => {
           Avg. Rating
         </div>}
 
-        {userData?.user_type === 'agent' && 
+        {userData?.user_type === 'agent' ? 
         <div className='d-flex justify-content-around mt-3'>
             <div className='text-center border border-primary p-3 rounded'>
                 <div className='fw-bold text-primary'>{FormatNumber(userData?.num_likes)}</div>
@@ -89,6 +89,21 @@ const UserProfileLayout = () => {
                 <div className='fw-bold text-primary'>{userData?.star_rating} / 5</div>
                 <div>Star rating</div>
             </div>
+        </div>
+        :
+        <div className='d-flex justify-content-around mt-3'>
+            <div className='text-center border border-primary p-3 rounded' onClick ={() => navigate(`/products?type=saved&reference=${userData?.reference}`)}>
+                <div className='fw-bold text-primary'>{FormatNumber(userData?.num_saves || 0)}</div>
+                <div>Saved Listings</div>
+            </div>
+            <div  className='text-center border border-primary p-3 rounded'>
+                <div className='fw-bold text-primary'>{FormatNumber(userData?.num_orders || 0)}</div>
+                <div>Orders</div>
+            </div>
+            {/* <div className='text-center border border-primary p-3 rounded'>
+                <div className='fw-bold text-primary'>{userData?.star_rating} / 5</div>
+                <div>Star rating</div>
+            </div> */}
         </div>}
 
         <div className={`mt-3 px-2 text-center`}>
