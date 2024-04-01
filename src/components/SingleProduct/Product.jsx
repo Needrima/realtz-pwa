@@ -9,7 +9,7 @@ import likeIcon from '../../assets/icons/heart-white.svg'
 import likeIconLiked from '../../assets/icons/heart-blue.svg'
 import commentIcon from '../../assets/icons/comment.svg'
 import shareIcon from '../../assets/icons/share-white.svg'
-import { Drawer, Spin, message, Form, Input } from 'antd'
+import { Drawer, message, Form, Input } from 'antd'
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import Comment from './Comment'
 import { useSelector } from 'react-redux';
@@ -404,7 +404,9 @@ const Product = ({product}) => {
             <div className='fs-4'>{TimeConverter(product?.created_on)}</div>
             <div className='fs-4'>
               {product?.description.slice(0, 30)} {' '}
-              {product?.hash_tags.map(hash_tag => hash_tag.startsWith('#') ? hash_tag : '#'+hash_tag).slice(0, 2).join(' ')} ... <u className='fw-bold'>more</u></div>
+              {product?.hash_tags.map(hash_tag => hash_tag.startsWith('#') ? hash_tag : '#'+hash_tag).slice(0, 2).join(' ')} ... 
+              <u className='fw-bold' onClick={() => navigate(`/product-details/${product.reference}`)}>more</u>
+            </div>
         </div>
         }
                 

@@ -142,7 +142,7 @@ const UserProfileLayout = () => {
                         <div className='mt-1 address'>{product?.location}</div>
 
                         <div className="mt-1 d-flex justify-content-between align-items-center">
-                            <span className='badge badge-primary bg-primary status-badge'>More</span>
+                            <span className='badge badge-primary bg-primary status-badge' onClick={() => navigate(`/product-details/${product.reference}`)}>more</span>
                             <span style={{fontSize: '7px'}}>Posted: {TimeConverter(product?.created_on)}</span>
                         </div>
                     </div>

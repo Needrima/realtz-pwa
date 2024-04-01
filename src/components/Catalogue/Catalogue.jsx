@@ -19,7 +19,7 @@ const Catalogue = ({products, productsData, nextFunc, loading}) => {
       </div>} // triggers if hasMore={true}
       endMessage={
         <p className={`text-center fw-bold text-light ${productsData ? '' : 'product-loading-center'}`}>
-          <b>no more feeds</b>
+          <b className='text-primary'>no more feeds</b>
         </p>
       } // triggers if hasMore={false}
       // below props only if you need pull down functionality

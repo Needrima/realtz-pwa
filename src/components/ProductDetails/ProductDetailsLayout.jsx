@@ -68,7 +68,7 @@ const ProductDetailsLayout = () => {
             <img src={ownerImg} alt="" className='rounded-circle me-2'  width={45} height={45}/>
             <div>
               <div className='fw-bold'>Oyebode Amirdeen</div>
-              <div className='owner-prof'>Real Estate Company</div>
+              <div className='owner-prof'>Agent</div>
             </div>
           </div>
 
