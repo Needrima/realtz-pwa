@@ -1,9 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import settingsIcon from '../../assets/icons/settings-icon.svg'
 import userImage from '../../assets/images/casual.jpg'
 import uploadImageIcon from '../../assets/icons/upload-image-icon.svg'
 import FormatNumber from '../../misc/NumberFormatter'
-import video from '../../assets/videos/video.mp4'
 import './UserProfile.scss'
 import { useNavigate } from 'react-router-dom'
 import { Drawer, Form, Input, Modal, Rate, Spin, Upload, message } from 'antd'
@@ -37,6 +36,9 @@ const UserProfileLayout = () => {
     const {userData, loading, editProfileBoxOpen, openEditProfileBox, shareProfileBoxOpen, openShareProfileBox, viewImageBoxOpen, openViewImageBox,
         imageModalIsOpen, showImageModal, uploadImageModalOpen, openUploadImageModal, ratingBoxIsOpen, openRatingBox, loadingProfileProducts,
         profileProducts, uploadImage, uploadingProfileImage} = useContext(UserProfileContext);
+
+        const [fullBio, showFullbio] = useState(false)
+
   return (
     <div className='px-3 bg-white vh-100'>
       {loading ? 
@@ -73,27 +75,46 @@ const UserProfileLayout = () => {
           Avg. Rating
         </div>}
 
-        {userData?.user_type === 'agent' && 
+        {userData?.user_type === 'agent' ? 
         <div className='d-flex justify-content-around mt-3'>
-            <div className='text-primary text-center'>
-                <div className='fw-bold'>{FormatNumber(userData?.num_likes)}</div>
+            <div className='text-center border border-primary p-3 rounded'>
+                <div className='fw-bold text-primary'>{FormatNumber(userData?.num_likes)}</div>
                 <div>Likes</div>
             </div>
-            <div  className='text-primary text-center'>
-                <div className='fw-bold'>{FormatNumber(userData?.num_products)}</div>
+            <div  className='text-center border border-primary p-3 rounded'>
+                <div className='fw-bold text-primary'>{FormatNumber(userData?.num_products)}</div>
                 <div>Listings</div>
             </div>
-            <div className='text-primary text-center'>
-                <div className='fw-bold'>{userData?.star_rating} / 5</div>
+            <div className='text-center border border-primary p-3 rounded'>
+                <div className='fw-bold text-primary'>{userData?.star_rating} / 5</div>
                 <div>Star rating</div>
             </div>
+        </div>
+        :
+        <div className='d-flex justify-content-around mt-3'>
+            <div className='text-center border border-primary p-3 rounded' onClick ={() => navigate(`/products?type=saved&reference=${userData?.reference}`)}>
+                <div className='fw-bold text-primary'>{FormatNumber(userData?.num_saves || 0)}</div>
+                <div>Saved Listings</div>
+            </div>
+            <div  className='text-center border border-primary p-3 rounded'>
+                <div className='fw-bold text-primary'>{FormatNumber(userData?.num_orders || 0)}</div>
+                <div>Orders</div>
+            </div>
+            {/* <div className='text-center border border-primary p-3 rounded'>
+                <div className='fw-bold text-primary'>{userData?.star_rating} / 5</div>
+                <div>Star rating</div>
+            </div> */}
         </div>}
 
-        <div className='mt-3 px-4 text-center bio'>
-          {userData?.bio || (userData?.reference === user?.reference) 
-          ? "You don't have a bio yet. Click the edit profile button to tell others a little about yourself" 
-          : `${userData?.username} has not added a bio yet` 
-          }
+        <div className={`mt-3 px-2 text-center`}>
+          
+          <div className={`bio ${fullBio && 'full-bio'}`}>
+            {userData?.bio || (userData?.reference === user?.reference) 
+            ? "You don't have a bio yet. Click the edit profile button to tell others a little about yourself" 
+            : `${userData?.username} has not added a bio yet` 
+            }
+          </div> 
+          {userData?.bio && <span className='fw-bold text-primary' onClick={() => showFullbio(shown => !shown)}>{fullBio ? 'show less' : 'show more'}</span>}
         </div>
 
         <div className='mt-3 d-flex justify-content-center'>
@@ -136,7 +157,7 @@ const UserProfileLayout = () => {
                         <div className='mt-1 address'>{product?.location}</div>
 
                         <div className="mt-1 d-flex justify-content-between align-items-center">
-                            <span className='badge badge-primary bg-primary status-badge'>More</span>
+                            <span className='badge badge-primary bg-primary status-badge' onClick={() => navigate(`/product-details/${product.reference}`)}>more</span>
                             <span style={{fontSize: '7px'}}>Posted: {TimeConverter(product?.created_on)}</span>
                         </div>
                     </div>

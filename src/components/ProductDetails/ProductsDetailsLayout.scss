@@ -1,0 +1,38 @@
+.video-preview-div {
+    height: 400px;
+}
+
+.fade-in-element {
+opacity: 0;
+transition: opacity 1s ease; /* Adjust the duration and easing function as needed */
+}
+
+.visible {
+    opacity: 1;
+}
+
+.pause-play-img {
+transform: translate(-50%, -50%);
+}
+
+.mute-unmute-img {
+  bottom: 6%;
+  right: 5.5%;
+}
+
+.owner-img-section {
+   background-color: rgba(34, 34, 34, 0.05);
+}
+
+.owner-prof {
+    font-size: 10px;
+}
+
+.description {
+    height: 90px;
+    overflow-y: hidden;
+}
+
+.full-description {
+    height: auto;
+}
