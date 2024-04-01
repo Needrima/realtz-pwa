@@ -122,7 +122,7 @@ const Video = () => {
     }, [pausePlayImgVisible]); 
 
   return (
-    <div ref={videoDivRef} className='video-div position-relative rounded-4'>
+    <div ref={videoDivRef} className='video-preview-div position-relative rounded-4'>
         <video ref={videoRef} onClick={pausePlay} loop autoPlay muted className='w-100 h-100 object-fit-fill rounded-4'
         > {/*object-fit-fill*/} 
             <source src={video} type="video/mp4" />

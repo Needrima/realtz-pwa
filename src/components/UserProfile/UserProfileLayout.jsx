@@ -1,9 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import settingsIcon from '../../assets/icons/settings-icon.svg'
 import userImage from '../../assets/images/casual.jpg'
 import uploadImageIcon from '../../assets/icons/upload-image-icon.svg'
 import FormatNumber from '../../misc/NumberFormatter'
-import video from '../../assets/videos/video.mp4'
 import './UserProfile.scss'
 import { useNavigate } from 'react-router-dom'
 import { Drawer, Form, Input, Modal, Rate, Spin, Upload, message } from 'antd'
@@ -37,6 +36,9 @@ const UserProfileLayout = () => {
     const {userData, loading, editProfileBoxOpen, openEditProfileBox, shareProfileBoxOpen, openShareProfileBox, viewImageBoxOpen, openViewImageBox,
         imageModalIsOpen, showImageModal, uploadImageModalOpen, openUploadImageModal, ratingBoxIsOpen, openRatingBox, loadingProfileProducts,
         profileProducts, uploadImage, uploadingProfileImage} = useContext(UserProfileContext);
+
+        const [fullBio, showFullbio] = useState(false)
+
   return (
     <div className='px-3 bg-white vh-100'>
       {loading ? 
@@ -89,11 +91,15 @@ const UserProfileLayout = () => {
             </div>
         </div>}
 
-        <div className='mt-3 px-4 text-center bio'>
-          {userData?.bio || (userData?.reference === user?.reference) 
-          ? "You don't have a bio yet. Click the edit profile button to tell others a little about yourself" 
-          : `${userData?.username} has not added a bio yet` 
-          }
+        <div className={`mt-3 px-2 text-center`}>
+          
+          <div className={`bio ${fullBio && 'full-bio'}`}>
+            {userData?.bio || (userData?.reference === user?.reference) 
+            ? "You don't have a bio yet. Click the edit profile button to tell others a little about yourself" 
+            : `${userData?.username} has not added a bio yet` 
+            }
+          </div> 
+          {userData?.bio && <span className='fw-bold text-primary' onClick={() => showFullbio(shown => !shown)}>{fullBio ? 'show less' : 'show more'}</span>}
         </div>
 
         <div className='mt-3 d-flex justify-content-center'>

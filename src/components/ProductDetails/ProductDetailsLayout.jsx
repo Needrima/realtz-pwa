@@ -78,7 +78,21 @@ const ProductDetailsLayout = () => {
 
           <div className="mt-4">
             <div className='fs-3 fw-bold text-primary'>Features</div>
-            <div></div>
+
+            <div className='d-flex justify-content-around mt-3'>
+              <div className='text-center border border-primary py-3 px-2 rounded'>
+                  <div className='fw-bold text-primary'>5</div>
+                  <div>Bedrooms</div>
+              </div>
+              <div  className='text-center border border-primary py-3 px-2 rounded'>
+                  <div className='fw-bold text-primary'>2</div>
+                  <div>Living Rooms</div>
+              </div>
+              <div className='text-center border border-primary py-3 px-2 rounded'>
+                  <div className='fw-bold text-primary'>2</div>
+                  <div>Dining Rooms</div>
+              </div>
+          </div>
           </div>
         </div>
     </div>
