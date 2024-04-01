@@ -401,7 +401,9 @@ const Product = ({product}) => {
             <div className='fs-4'>{TimeConverter(product?.created_on)}</div>
             <div className='fs-4'>
               {product?.description.slice(0, 30)} {' '}
-              {product?.hash_tags.map(hash_tag => hash_tag.startsWith('#') ? hash_tag : '#'+hash_tag).slice(0, 2).join(' ')} ... <u className='fw-bold'>more</u></div>
+              {product?.hash_tags.map(hash_tag => hash_tag.startsWith('#') ? hash_tag : '#'+hash_tag).slice(0, 2).join(' ')} ... 
+              <u className='fw-bold' onClick={() => navigate(`/product-details/${product.reference}`)}>more</u>
+            </div>
         </div>
                 
         {/* drawer to display comments */}

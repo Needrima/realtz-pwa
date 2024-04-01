@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Carousel from 'react-multi-carousel';
 import './ProductsDetailsLayout.scss'
 import Video from './Video';
@@ -6,6 +6,7 @@ import locationBlack from '../../assets/icons/location-black.svg'
 import ownerImg from '../../assets/images/casual.jpg'
 
 const ProductDetailsLayout = () => {
+  const [fullDesc, showFullDesc] = useState(false);
     //carousel responsveness property
   const responsive = {
     // superLargeDesktop: {
@@ -73,7 +74,11 @@ const ProductDetailsLayout = () => {
 
           <div className='mt-4'>
             <div className='fs-3 fw-bold text-primary'>Description</div>
-            <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi ullam quia ut consequatur natus, voluptas atque itaque modi sapiente facere accusamus soluta, cumque error illum similique placeat temporibus recusandae porro ea inventore maiores, nesciunt quam ab mollitia. Vel explicabo iste molestiae ipsa accusamus? Sit rem voluptas explicabo, magni ex perferendis!</div>
+            <div className={`description ${fullDesc && 'full-description'}`}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi ullam quia ut consequatur natus, voluptas atque itaque modi 
+              sapiente facere accusamus soluta, cumque error illum similique placeat temporibus recusandae porro ea inventore maiores, nesciunt
+              quam ab mollitia. Vel explicabo iste molestiae ipsa accusamus? Sit rem voluptas explicabo, magni ex perferendis!
+            </div> <span className='fw-bold text-primary' onClick={() => showFullDesc(shown => !shown)}>{fullDesc ? 'show less' : 'show more'}</span>
           </div>
 
           <div className="mt-4">
