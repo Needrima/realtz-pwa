@@ -84,18 +84,45 @@ const ProductDetailsLayout = () => {
           <div className="mt-4">
             <div className='fs-3 fw-bold text-primary'>Features</div>
 
-            <div className='d-flex justify-content-around mt-3'>
-              <div className='text-center border border-primary py-3 px-2 rounded'>
-                  <div className='fw-bold text-primary'>5</div>
-                  <div>Bedrooms</div>
+            <div className='d-flex flex-wrap justify-content-around mt-3'>
+            <div className='text-center border border-primary bg-primary text-white py-3 px-2 mb-3 me-3 rounded'>
+                  {/* <div className='fw-bold text-primary'>5</div> */}
+                  <div className='fw-bold'>Bedroom</div>
               </div>
-              <div  className='text-center border border-primary py-3 px-2 rounded'>
-                  <div className='fw-bold text-primary'>2</div>
-                  <div>Living Rooms</div>
+              <div  className='text-center border border-primary bg-primary text-white py-3 px-2 mb-3 me-3 rounded'>
+                  {/* <div className='fw-bold text-primary'>2</div> */}
+                  <div className='fw-bold'>Bathroom</div>
               </div>
-              <div className='text-center border border-primary py-3 px-2 rounded'>
-                  <div className='fw-bold text-primary'>2</div>
-                  <div>Dining Rooms</div>
+              <div className='text-center border border-primary bg-primary text-white py-3 px-2 mb-3 me-3 rounded'>
+                  {/* <div className='fw-bold text-primary'>2</div> */}
+                  <div className='fw-bold'>Living room</div>
+              </div>
+          </div>
+          </div>
+
+          <div className="mt-4">
+            <div className='fs-3 fw-bold text-primary'>Facilities</div>
+
+            <div className='d-flex flex-wrap justify-content-start mt-3'>
+              <div className='text-center border border-primary bg-primary text-white py-3 px-2 mb-3 me-3 rounded'>
+                  {/* <div className='fw-bold text-primary'>5</div> */}
+                  <div className='fw-bold'>Parking Lot</div>
+              </div>
+              <div  className='text-center border border-primary bg-primary text-white py-3 px-2 mb-3 me-3 rounded'>
+                  {/* <div className='fw-bold text-primary'>2</div> */}
+                  <div className='fw-bold'>Swimming Pool</div>
+              </div>
+              <div className='text-center border border-primary bg-primary text-white py-3 px-2 mb-3 me-3 rounded'>
+                  {/* <div className='fw-bold text-primary'>2</div> */}
+                  <div className='fw-bold'>Garden</div>
+              </div>
+              <div className='text-center border border-primary bg-primary text-white py-3 px-2 mb-3 me-3 rounded'>
+                  {/* <div className='fw-bold text-primary'>5</div> */}
+                  <div className='fw-bold'>Pets Allowed</div>
+              </div>
+              <div  className='text-center border border-primary bg-primary text-white py-3 px-2 mb-3 me-3 rounded'>
+                  {/* <div className='fw-bold text-primary'>2</div> */}
+                  <div className='fw-bold'>Gym</div>
               </div>
           </div>
           </div>
