@@ -352,13 +352,7 @@ const Product = ({product}) => {
             responsive={responsive}
             showDots={true}
             arrows={false}
-            beforeChange={() => {
-                const videos = document.getElementsByTagName('video');
-                for (let i = 0; i < videos.length; i++){
-                    videos[i].currentTime = 0;
-                    videos[i].pause();
-                }
-            }}
+            // beforeChange={() => {}}
         >
           {product.videos.map((video, index) => <Video key={index} video={video} viewProduct={viewProduct} productRef={product.reference} />)}
         </Carousel>;

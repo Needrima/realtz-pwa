@@ -34,13 +34,7 @@ const ProductDetailsLayout = () => {
             responsive={responsive}
             showDots={true}
             arrows={false}
-            // beforeChange={() => {
-            //     const videos = document.getElementsByTagName('video');
-            //     for (let i = 0; i < videos.length; i++){
-            //         videos[i].currentTime = 0;
-            //         videos[i].pause();
-            //     }
-            // }}
+            // beforeChange={() => {}}
         >
           <Video />
           <Video />
