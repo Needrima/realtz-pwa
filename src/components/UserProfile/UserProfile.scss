@@ -9,8 +9,12 @@
 }
 
 .bio {
-    height: 70px;
-    overflow-y: scroll;
+    height: 90px;
+    overflow-y: hidden;
+}
+
+.full-bio {
+    height: auto;
 }
 
 .listing {

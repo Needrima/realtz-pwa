@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import Video from './Video'
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -352,13 +352,7 @@ const Product = ({product}) => {
             responsive={responsive}
             showDots={true}
             arrows={false}
-            beforeChange={() => {
-                const videos = document.getElementsByTagName('video');
-                for (let i = 0; i < videos.length; i++){
-                    videos[i].currentTime = 0;
-                    videos[i].pause();
-                }
-            }}
+            // beforeChange={() => {}}
         >
           {product.videos.map((video, index) => <Video key={index} video={video} viewProduct={viewProduct} productRef={product.reference} />)}
         </Carousel>;
@@ -401,7 +395,9 @@ const Product = ({product}) => {
             <div className='fs-4'>{TimeConverter(product?.created_on)}</div>
             <div className='fs-4'>
               {product?.description.slice(0, 30)} {' '}
-              {product?.hash_tags.map(hash_tag => hash_tag.startsWith('#') ? hash_tag : '#'+hash_tag).slice(0, 2).join(' ')} ... <u className='fw-bold'>more</u></div>
+              {product?.hash_tags.map(hash_tag => hash_tag.startsWith('#') ? hash_tag : '#'+hash_tag).slice(0, 2).join(' ')} ... 
+              <u className='fw-bold' onClick={() => navigate(`/product-details/${product.reference}`)}>more</u>
+            </div>
         </div>
                 
         {/* drawer to display comments */}
