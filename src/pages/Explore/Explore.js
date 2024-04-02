@@ -43,10 +43,10 @@ const Explore = () => {
   return (
     <Layout>
         <div className='px-2 py-2 vh-100'>
-            <Input 
+            {!loading && <Input 
                 className='mb-2 search-input py-2 border border-1 border-secondary'
                 suffix={<i className="bi bi-search"></i>}
-            />
+            />}
             
             <Catalogue
             products={products}
