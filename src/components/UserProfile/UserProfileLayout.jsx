@@ -124,19 +124,18 @@ const UserProfileLayout = () => {
           )}
         {userData?.user_type === 'agent' ? 
         <div className='d-flex justify-content-around mt-3'>
-            <div className='text-center border border-primary p-3 rounded'>
-                <div className='fw-bold text-primary'>{FormatNumber(userData?.num_likes)}</div>
-                <div>Likes</div>
-            </div>
-            <div  className='text-center border border-primary p-3 rounded'>
-                <div className='fw-bold text-primary'>{FormatNumber(userData?.num_products)}</div>
-                <div>Listings</div>
-            </div>
-            <div className='text-center border border-primary p-3 rounded'>
-                <div className='fw-bold text-primary'>{userData?.star_rating} / 5</div>
-                <div>Star rating</div>
-              </div>
-            </div>
+          <div className='text-center border border-primary p-3 rounded'>
+              <div className='fw-bold text-primary'>{FormatNumber(userData?.num_likes)}</div>
+              <div>Likes</div>
+          </div>
+          <div  className='text-center border border-primary p-3 rounded'>
+              <div className='fw-bold text-primary'>{FormatNumber(userData?.num_products)}</div>
+              <div>Listings</div>
+          </div>
+          <div className='text-center border border-primary p-3 rounded'>
+              <div className='fw-bold text-primary'>{userData?.star_rating} / 5</div>
+              <div>Star rating</div>
+          </div>
         </div>
         :
         <div className='d-flex justify-content-around mt-3'>
@@ -195,10 +194,12 @@ const UserProfileLayout = () => {
             </div>
             }
           
-            {loadingProfileProducts ? <div className='text-center mt-5'><CustomSpin spinning={loadingProfileProducts} /></div> : 
+            {loadingProfileProducts ? 
+            <div className='text-center mt-5'><CustomSpin spinning={loadingProfileProducts} /></div> 
+            : 
             <div className='my-3 row'>
                 {profileProducts && profileProducts.length !== 0 ? 
-                profileProducts.slice(0, 4).map((product, index) => (
+                profileProducts.slice(0, 4).map((product, index) => 
                   <div key={index} className="p-1 col-6 mb-1">
                     <div className="rounded-3 p-2 listing">
                         <div className='w-100 position-relative video-div' onClick={() => navigate(`/product/${product.reference}`)}>
@@ -222,9 +223,9 @@ const UserProfileLayout = () => {
                             <span style={{fontSize: '7px'}}>Posted: {TimeConverter(product?.created_on)}</span>
                         </div>
                       </div>
-                    </div>
-                  ))
-                ) : (
+                  </div>
+                  )
+                  : 
                   <div>
                     {userData?.user_type === `agent`
                       ? userData?.reference === user?.reference
@@ -234,9 +235,9 @@ const UserProfileLayout = () => {
                       ? `You have not liked any listing`
                       : `${userData?.username} has not liked any listing`}
                   </div>
-                )}
+                }
               </div>
-            )}
+            }
           </div>
 
           {/* image actions drawer */}
