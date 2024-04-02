@@ -156,7 +156,7 @@ const UserProfileLayout = () => {
         <div className={`mt-3 px-2 text-center`}>
           
           <div className={`bio ${fullBio && 'full-bio'}`}>
-            {userData?.bio || (userData?.reference === user?.reference) 
+            {userData?.bio ? userData?.bio : (userData?.reference === user?.reference) 
             ? "You don't have a bio yet. Click the edit profile button to tell others a little about yourself" 
             : `${userData?.username} has not added a bio yet` 
             }
@@ -208,7 +208,7 @@ const UserProfileLayout = () => {
                             </video>
                             <div className='position-absolute status-badge'>
                               <span className={`badge ${product?.is_on_rent ? 'bg-danger' : 'bg-primary'} me-2`}>{product?.is_on_rent ? 'On Rent' : 'For rent'}</span>
-                              <span className={`badge ${product?.is_on_shortlet ? 'bg-danger' : 'bg-primary'} me-2`}>{product?.is_on_shortlet ? 'On Shortlet' : 'For Shortlet'}</span>
+                              <span className={`badge ${product?.is_on_shortlet ? 'bg-danger' : 'bg-primary'}`}>{product?.is_on_shortlet ? 'On Shortlet' : 'For Shortlet'}</span>
                           </div>
                         </div>
 
