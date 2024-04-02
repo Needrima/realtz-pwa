@@ -186,10 +186,6 @@ const UserProfile = () => {
     }
   };
 
-  useEffect(() => {
-    getUser();
-  }, [token]);
-
   const editProfile = async (values) => {
     setState((state) => ({
       ...state,
@@ -233,6 +229,10 @@ const UserProfile = () => {
       }));
     }
   };
+
+  useEffect(() => {
+    getUser();
+  }, [token]);
 
   return (
     <UserProfileContext.Provider
