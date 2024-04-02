@@ -14,6 +14,7 @@ import UserProfile from './pages/UserProfile/UserProfile';
 import SingleProduct from './pages/SingleProduct/SingleProduct';
 import Products from './pages/Products/Products';
 import ProductDetails from './pages/ProductDetails/ProductDetails';
+import Explore from './pages/Explore/Explore';
 
 function App() {
   const dispatch = useDispatch();
@@ -95,6 +96,7 @@ function App() {
         <Route path='/profile' element={handleRedirectToProfile()} />
         <Route path='/saved' element={handleRedirectToSavedProduct()} />
         <Route path='/products' element={<Products />} />
+        <Route path='/explore' element={<Explore />} />
       </Routes>
     </div>
   );
