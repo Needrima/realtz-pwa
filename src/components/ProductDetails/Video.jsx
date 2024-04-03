@@ -1,11 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react'
-import video from '../../assets/videos/video.mp4'
 import playIcon from '../../assets/icons/play.svg'
 import pauseIcon from '../../assets/icons/pause.svg'
 import muteIcon from '../../assets/icons/mute.svg'
 import unMuteIcon from '../../assets/icons/unmute.svg'
 
-const Video = () => {
+const Video = ({video}) => {
     const videoRef = useRef(null);
     const videoDivRef = useRef(null);
 
