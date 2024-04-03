@@ -39,7 +39,8 @@ const Explore = () => {
 
       useEffect(() => {
         getProducts(1)
-      }, [])
+      }, [token])
+      
   return (
     <Layout>
         <div className='px-2 py-2 vh-100'>
