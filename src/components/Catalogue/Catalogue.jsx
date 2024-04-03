@@ -27,21 +27,19 @@ const Catalogue = ({products, productsData, nextFunc, loading}) => {
       // pullDownToRefresh
       // pullDownToRefreshThreshold={50}
     >
-      <div>
+      <div className='d-flex flex-wrap'>
         {products && products.length !== 0 ? products.map((product, index) => (
-          <div className='d-flex flex-wrap'>
-            <div key={index} className="col-4 border border-1 rounded video-div position-relative" onClick={() => navigate(`/product/${product.reference}`)}>
-              <video loop autoPlay muted className='w-100 h-100 object-fit-fill rounded' > {/*object-fit-fill*/} 
-                  <source src={product?.videos[0]} type="video/mp4" />
-              </video>
-              <span className='position-absolute text-white d-flex align-items-center view-count'>
-                <i className="bi bi-play-fill fs-3"></i> <span className='fw-bold'>{FormatNumber(product?.viewed_by?.length)}</span>
-              </span>
-            </div>
+          <div key={index} className="col-4 border border-1 rounded video-div position-relative" onClick={() => navigate(`/product/${product.reference}`)}>
+            <video loop autoPlay muted className='w-100 h-100 object-fit-fill rounded' > {/*object-fit-fill*/} 
+                <source src={product?.videos[0]} type="video/mp4" />
+            </video>
+            <span className='position-absolute text-white d-flex align-items-center view-count'>
+              <i className="bi bi-play-fill fs-3"></i> <span className='fw-bold'>{FormatNumber(product?.viewed_by?.length)}</span>
+            </span>
           </div>
         )) 
         : 
-        <div className='vh-100 d-flex align-items-center justify-content-center text-primary fw-bold'>{loading ? 'Loading feeds' : 'No feeds available'}</div>
+        <div className='vh-100 w-100 d-flex align-items-center justify-content-center text-primary fw-bold'>{loading ? 'Loading feeds' : 'No feeds available'}</div>
         }
       </div>
     </InfiniteScroll>
