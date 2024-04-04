@@ -218,7 +218,7 @@ const Product = ({product}) => {
           token: token,
         }
       })
-      message.success(data?.message)
+      message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
       setState(state => ({
         ...state,
         addingNewComment: false,
@@ -228,7 +228,7 @@ const Product = ({product}) => {
       }))
       form.setFieldsValue({ comment: '' });
     }catch(error) {
-      message.error(error?.response?.data?.error || 'could not add comment')
+      message.error(error?.response?.data?.error || 'could not add comment', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
       setState(state => ({
         ...state,
         addingNewComment: false,
@@ -244,19 +244,19 @@ const Product = ({product}) => {
           token: token,
         }
       })
-      message.success(data?.message)
+      message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
       setState(state => ({
         ...state,
         comments: state.comments.filter(comment => comment?.reference !== data?.deleted_reference),
         numComments: state.numComments - 1
       }))
     }catch(error) {
-      console.log(error?.response?.data?.error)
+      message.error(error?.response?.data?.error || 'could not delete comment', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
     }
   }
 
   const viewProduct = async () => {
-    if (productViewed || !isLoggedIn) return;
+    if (!isLoggedIn || productViewed || user?.reference === product.user_reference) return;
     try {
       const {data} = await axiosProductInstance.get(`/auth/view/${product?.reference}`, {
         headers: {
@@ -303,9 +303,9 @@ const Product = ({product}) => {
         editingComment: false,
       }))
       editForm.setFieldValue('edited_comment', '')
-      message.success(data?.message)
+      message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
     }catch(error) {
-      console.log(error?.response?.data?.error)
+      message.error(error?.response?.data?.error || 'could not edit comment', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
       setState(state => ({
         ...state,
         editingComment: false

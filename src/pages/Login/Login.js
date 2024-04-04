@@ -35,14 +35,14 @@ const Login = () => {
         user: data?.user,
       };
       dispatch(login(loginData));
-      message.success(data?.message || "login successful");
+      message.success(data?.message || "login successful", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
       setState((state) => ({
         ...state,
         loading: false,
       }));
       navigate("/home", { replace: true });
     } catch (error) {
-      message.error(error?.response?.data?.error || "login failed");
+      message.error(error?.response?.data?.error || "login failed", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
       setState((state) => ({
         ...state,
         loading: false,

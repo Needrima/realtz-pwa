@@ -8,7 +8,6 @@ import './Notification.scss'
 
 const NotificationLayout = () => {
   const {loading, notificationData, notifications, getNotifications} = useContext(NotificationContext);
-  console.log(notifications);
 
   return (
     <div className='px-2 mt-5'>

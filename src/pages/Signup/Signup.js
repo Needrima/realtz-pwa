@@ -70,16 +70,14 @@ const Signup = () => {
           ...state,
           loading: false,
         }));
-        message.success(data?.message || "email verified");
+        message.success(data?.message || "email verified", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
         navigate("/login", { replace: true });
       } catch (error) {
         setState((state) => ({
           ...state,
           loading: false,
         }));
-        message.error(
-          error?.response?.data?.error || "email verification failed"
-        );
+        message.error(error?.response?.data?.error || "email verification failed", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
       }
     }
   };
@@ -112,9 +110,9 @@ const Signup = () => {
         signUpFormSubmitted: true,
         email: values.email,
       }));
-      message.success(data?.message || "signup successful");
+      message.success(data?.message || "signup successful", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
     } catch (error) {
-      message.error(error?.response?.data?.error || "signup failed");
+      message.error(error?.response?.data?.error || "signup failed", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
       setState((state) => ({
         ...state,
         loading: false,
@@ -142,7 +140,7 @@ const Signup = () => {
         loading: false,
         otp: "",
       }));
-      message.success(data?.message || "otp sent");
+      message.success(data?.message || "otp sent", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
       restart(expiryTimestamp);
     } catch (error) {
       setState((state) => ({
@@ -150,7 +148,7 @@ const Signup = () => {
         loading: false,
         otp: "",
       }));
-      message.error(error?.response?.data?.error || "sending otp failed");
+      message.error(error?.response?.data?.error || "sending otp failed", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
     }
   };
 

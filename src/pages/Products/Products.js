@@ -19,7 +19,6 @@ const Products = () => {
   const {products, productsData, loading} = state;
 
   const getUserProducts = async (page) => {
-    console.log('getting user product')
     try {
         const {data} = await axiosProductInstance.get(
             `auth/get-user-products/${reference}/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
@@ -33,14 +32,12 @@ const Products = () => {
             productsData: data,
             products: [...state.products, ...data.products],
         }))
-        console.log('user data:', data)
     }catch(error) {
         console.log(error)
     }
   }
 
   const getLikedProducts = async (page) => {
-    console.log('getting liked product')
       try {
           const {data} = await axiosProductInstance.get(
               `auth/get-liked-products/${reference}/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
@@ -54,14 +51,12 @@ const Products = () => {
               productsData: data,
               products: [...state.products, ...data.products],
           }))
-          console.log('liked product data:', data)
       }catch(error) {
           console.log(error)
       }
   }
 
   const getHomeProducts = async (page) => {
-    console.log('getting home product')
     try {
       const {data} = await axiosProductInstance.get(`auth/get-home-product/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
           headers: {
@@ -76,14 +71,12 @@ const Products = () => {
         productsData: data,
         products: [...state.products, ...data.products],
       }));
-      console.log('home product data:', data)
     } catch (error) {
       console.log(error);
     }
   };
 
   const getSavedProducts = async (page) => {
-    console.log('getting home product')
     try {
       const {data} = await axiosProductInstance.get(`auth/get-saved-product/${reference}/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
           headers: {
@@ -98,7 +91,6 @@ const Products = () => {
         productsData: data,
         products: [...state.products, ...data.products],
       }));
-      console.log('home product data:', data)
     } catch (error) {
       console.log(error);
     }

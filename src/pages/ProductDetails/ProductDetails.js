@@ -9,7 +9,6 @@ export const productDetailsContext = createContext();
 const ProductDetails = () => {
   const {token} = useSelector(state => state.authReducer)
   const {reference} = useParams()
-  console.log(reference)
   const [state, setState] = useState({
     loading: true,
     product: null,
@@ -21,7 +20,6 @@ const ProductDetails = () => {
   const fetchSingleProduct = async () => {
     try {
       const {data} = await axiosProductInstance.get(`${reference}`)
-      console.log(data)
       setState(state => ({
         ...state,
         product: data?.product,
@@ -33,7 +31,6 @@ const ProductDetails = () => {
   }
 
   const getUser = async () => {
-    console.log("getting user");
     try {
       const { data } = await axiosUserInstance.get(
         `auth/get-user/${product?.user_reference}`,
@@ -43,7 +40,6 @@ const ProductDetails = () => {
           },
         }
       );
-      console.log(data.user)
       setState((state) => ({
         ...state,
         loadingOwner: false,

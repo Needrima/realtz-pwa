@@ -216,7 +216,7 @@ const Product = ({product}) => {
           token: token,
         }
       })
-      message.success(data?.message)
+      message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
       setState(state => ({
         ...state,
         addingNewComment: false,
@@ -226,7 +226,7 @@ const Product = ({product}) => {
       }))
       form.setFieldsValue({ comment: '' });
     }catch(error) {
-      message.error(error?.response?.data?.error || 'could not add comment')
+      message.error(error?.response?.data?.error || 'could not add comment', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
       setState(state => ({
         ...state,
         addingNewComment: false,
@@ -242,7 +242,7 @@ const Product = ({product}) => {
           token: token,
         }
       })
-      message.success(data?.message)
+      message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
       setState(state => ({
         ...state,
         comments: state.comments.filter(comment => comment?.reference !== data?.deleted_reference),
@@ -254,7 +254,7 @@ const Product = ({product}) => {
   }
 
   const viewProduct = async () => {
-    if (productViewed) return;
+    if (productViewed || user.reference === product.user_reference) return;
     try {
       const {data} = await axiosProductInstance.get(`/auth/view/${product?.reference}`, {
         headers: {
@@ -301,9 +301,9 @@ const Product = ({product}) => {
         editingComment: false,
       }))
       editForm.setFieldValue('edited_comment', '')
-      message.success(data?.message)
+      message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
     }catch(error) {
-      console.log(error?.response?.data?.error)
+      message.error(error?.response?.data?.error || 'could not edit comment', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
       setState(state => ({
         ...state,
         editingComment: false

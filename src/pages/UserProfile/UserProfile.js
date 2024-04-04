@@ -85,7 +85,6 @@ const UserProfile = () => {
   };
 
   const getUser = async () => {
-    console.log("getting user");
     try {
       const { data } = await axiosUserInstance.get(
         `auth/get-user/${reference}`,
@@ -169,7 +168,7 @@ const UserProfile = () => {
           },
         }
       );
-      message.success(data?.message);
+      message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
       setState((state) => ({
         ...state,
         userData: { ...state.userData, image: data?.new_image_link },
@@ -182,6 +181,7 @@ const UserProfile = () => {
         ...state,
         uploadingProfileImage: false,
       }));
+      message.error(error?.response?.data?.error || 'could not upload profile image', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
       console.log(error);
     }
   };
@@ -209,7 +209,6 @@ const UserProfile = () => {
       );
 
       const { updated_user } = data;
-      console.log(data);
       setState((state) => ({
         ...state,
         editButtonLoading: false,
@@ -217,12 +216,10 @@ const UserProfile = () => {
       }));
 
       openEditProfileBox(false);
-      message.success(data?.message || "Profile successfully updated");
+      message.success(data?.message || "Profile successfully updated", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
       formRef.current.resetFields();
     } catch (error) {
-      message.error(
-        error?.response?.data?.error || "Profile could not be updated"
-      );
+      message.error( error?.response?.data?.error || "Profile could not be updated", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
       setState((state) => ({
         ...state,
         editButtonLoading: false,
