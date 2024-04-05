@@ -1,20 +1,26 @@
-import { Form, Input } from 'antd'
+import { Checkbox, Form, Input } from 'antd'
 import React, { useContext, useState } from 'react'
 import { addProductContext } from '../../pages/AddProduct/AddProduct'
 
 const Step2 = () => {
-    const {toggleProperty, toggleFacility, listingInfo: {properties, facilities}} = useContext(addProductContext);
+    const {toggleProperty, toggleFacility, toggleHashTags, listingInfo: {properties, facilities, hashTags}, changeStep, addListingInfo} = useContext(addProductContext);
     const [state, setState] = useState({
         addedProp: '',
         addedFacility: '',
+        addedHashTag: '',
     });
 
-    const {addedProp, addedFacility} = state;
+    const {addedProp, addedFacility, addedHashTag} = state;
 
   return (
-    <div className='mt-5'>
+    <div className='my-5'>
         <h1 className='fw-bold mb-3'>Listing <span className='text-primary'>information</span></h1>
-        <Form>
+        <Form 
+            onFinish={(values) => {
+                addListingInfo(values)
+                changeStep('3')
+            }}
+        >
             <Form.Item
                 name="title"
                 label={<span className='fw-bold text-primary'>Title</span>}
@@ -36,7 +42,7 @@ const Step2 = () => {
 
             <Form.Item
                 name="location"
-                label={<span className='fw-bold text-primary'>Location</span>}
+                label={<span className='fw-bold text-primary'>Location (city/town, state)</span>}
                 rules={[
                     { required: true, message: "Location is required" },
                     {
@@ -54,8 +60,8 @@ const Step2 = () => {
             </Form.Item>
 
             <Form.Item
-                name="Address"
-                label={<span className='fw-bold text-primary'>Address</span>}
+                name="address"
+                label={<span className='fw-bold text-primary'>Address (house number, street)</span>}
                 rules={[
                     { required: true, message: "Address is required" },
                     {
@@ -134,7 +140,7 @@ const Step2 = () => {
                 </div>
 
                 <input 
-                placeholder="e.g Swimming pool, Dogs allowed" 
+                placeholder="e.g Swimming pool" 
                 className="text-input mb-2" 
                 onChange={e => setState(state => ({...state, addedFacility: e.target.value}))}
                 value={addedFacility}
@@ -149,6 +155,77 @@ const Step2 = () => {
                 }}
                 >Add</button>
             </Form.Item>
+
+            <Form.Item
+                label={<span className='fw-bold text-primary'>Hahstags</span>}
+            >
+                <div className='d-flex flex-wrap mb-2'>
+                    {hashTags.length !== 0 && hashTags.map((ht, index) => <button 
+                    key={index} 
+                    className="btn btn-primary me-2"
+                    onClick={() => toggleHashTags(ht)}
+                    >{ht.toLowerCase().trim().startsWith('#') ? ht.toLowerCase().trim() : '#'+ht.toLowerCase().trim()} X</button>)}
+                </div>
+
+                <input 
+                placeholder="e.g #animals_allowed" 
+                className="text-input mb-2" 
+                onChange={e => setState(state => ({...state, addedHashTag: e.target.value}))}
+                value={addedHashTag}
+                />
+
+                <button 
+                disabled={addedHashTag === ''}
+                className='btn btn-primary' 
+                onClick={() => {
+                    toggleHashTags(addedHashTag)
+                    setState(state => ({...state, addedHashTag: ''}))
+                }}
+                >Add</button>
+            </Form.Item>
+
+            <div className='text-center d-flex justify-content-center'>
+                <Form.Item
+                name="for_rent"
+                valuePropName="checked"
+                rules={[
+                    // {required: true, message: "You have not accepted our terms and condtions"},
+                ]}
+                >
+                <Checkbox className='text-primary fw-bold me-2' defaultChecked={false}>
+                    For rent
+                </Checkbox>
+
+                </Form.Item>
+
+                <Form.Item
+                name="for_shortlet"
+                valuePropName="checked"
+                rules={[
+                    // {required: true, message: "You have not accepted our terms and condtions"},
+                ]}
+                >
+                <Checkbox className='text-primary fw-bold'>
+                    For shortlet
+                </Checkbox>
+                </Form.Item>
+            </div>
+
+            <div className="text-center">
+              <button
+                className="btn btn-primary btn-lg px-5 py-3 fw-bold me-2"
+                onClick={() => changeStep('1')}
+              >
+                &larr;
+              </button>
+
+              <button
+                className="btn btn-primary btn-lg px-5 py-3 fw-bold"
+                type='submit'
+              >
+                Next
+              </button>
+            </div>
         </Form>
     </div>
   )

@@ -5,15 +5,17 @@ import Step1 from '../../components/AddProduct/Step1';
 import { message } from 'antd';
 import Step2 from '../../components/AddProduct/Step2';
 import { useForm } from 'antd/es/form/Form';
+import Step3 from '../../components/AddProduct/Step3';
 
 export const addProductContext = createContext();
 const AddProduct = () => {
     const [state, setState] = useState({
-        step: '2',
+        step: '1',
         videoFiles: [],
         listingInfo: {
             properties: [],
             facilities: [],
+            hashTags:   [],
         },
     })
     const {step, videoFiles, listingInfo} = state;
@@ -31,6 +33,8 @@ const AddProduct = () => {
                 return <Step1 />
             case '2':
                 return <Step2 />
+            case '3':
+                return <Step3 />
             default:
                 return <Step1 />
         }
@@ -56,7 +60,6 @@ const AddProduct = () => {
                     message.warning(`could not add ${file.name}. file exceeds 30 seconds duration`, parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
                 }else {
                     setState(state => {
-                        console.log('settig state for video:', file.name)
                         return {
                             ...state,
                             videoFiles: [...state.videoFiles, file]
@@ -68,7 +71,6 @@ const AddProduct = () => {
     }
 
     const removeFile = (file) => {
-        console.log(file)
         setState(state => ({
             ...state,
             videoFiles: state.videoFiles.filter(eachFile => file.uid !== eachFile.uid)
@@ -99,6 +101,25 @@ const AddProduct = () => {
         }))
     }
 
+    const toggleHashTags = (hashTag) => {
+        setState(state => ({
+            ...state,
+            listingInfo: {
+                ...state.listingInfo,
+                hashTags: state.listingInfo.hashTags.includes(hashTag) 
+                ?  state.listingInfo.hashTags.filter(ht => ht !== hashTag) // remove if include
+                :  [...state.listingInfo.hashTags, hashTag] // add if not include
+            }
+        }))
+    }
+
+    const addListingInfo = (values) => {
+        setState(state => ({
+            ...state,
+            listingInfo: {...state.listingInfo, ...values},
+        }))
+    }
+
   return (
     <addProductContext.Provider value={{
         step,
@@ -110,6 +131,8 @@ const AddProduct = () => {
         removeFile,
         toggleProperty,
         toggleFacility,
+        toggleHashTags,
+        addListingInfo
     }}>
         <Layout>
             <AddProductLayout>
