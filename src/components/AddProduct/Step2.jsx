@@ -1,7 +1,16 @@
 import { Form, Input } from 'antd'
-import React from 'react'
+import React, { useContext, useState } from 'react'
+import { addProductContext } from '../../pages/AddProduct/AddProduct'
 
 const Step2 = () => {
+    const {toggleProperty, toggleFacility, listingInfo: {properties, facilities}} = useContext(addProductContext);
+    const [state, setState] = useState({
+        addedProp: '',
+        addedFacility: '',
+    });
+
+    const {addedProp, addedFacility} = state;
+
   return (
     <div className='mt-5'>
         <h1 className='fw-bold mb-3'>Listing <span className='text-primary'>information</span></h1>
@@ -83,6 +92,62 @@ const Step2 = () => {
                 placeholder='Give a brief description of the listing'
                 className='px-2'
             />
+            </Form.Item>
+            
+            <Form.Item
+                label={<span className='fw-bold text-primary'>Properties</span>}
+            >
+                <div className='d-flex flex-wrap mb-2'>
+                    {properties.length !== 0 && properties.map((prop, index) => <button 
+                    key={index} 
+                    className="btn btn-primary me-2 text-capitalize"
+                    onClick={() => toggleProperty(prop)}
+                    >{prop.toLowerCase().trim()} X</button>)}
+                </div>
+
+                <input 
+                placeholder="e.g 5 Bathrooms" 
+                className="text-input mb-2" 
+                onChange={e => setState(state => ({...state, addedProp: e.target.value}))}
+                value={addedProp}
+                />
+
+                <button 
+                disabled={addedProp === ''}
+                className='btn btn-primary' 
+                onClick={() => {
+                    toggleProperty(addedProp)
+                    setState(state => ({...state, addedProp: ''}))
+                }}
+                >Add</button>
+            </Form.Item>
+
+            <Form.Item
+                label={<span className='fw-bold text-primary'>Facilities</span>}
+            >
+                <div className='d-flex flex-wrap mb-2'>
+                    {facilities.length !== 0 && facilities.map((fac, index) => <button 
+                    key={index} 
+                    className="btn btn-primary me-2 text-capitalize"
+                    onClick={() => toggleFacility(fac)}
+                    >{fac.toLowerCase().trim()} X</button>)}
+                </div>
+
+                <input 
+                placeholder="e.g Swimming pool, Dogs allowed" 
+                className="text-input mb-2" 
+                onChange={e => setState(state => ({...state, addedFacility: e.target.value}))}
+                value={addedFacility}
+                />
+
+                <button 
+                disabled={addedFacility === ''}
+                className='btn btn-primary' 
+                onClick={() => {
+                    toggleFacility(addedFacility)
+                    setState(state => ({...state, addedFacility: ''}))
+                }}
+                >Add</button>
             </Form.Item>
         </Form>
     </div>

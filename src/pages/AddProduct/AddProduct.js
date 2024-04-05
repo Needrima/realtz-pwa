@@ -4,15 +4,19 @@ import AddProductLayout from '../../components/AddProduct/AddProductLayout'
 import Step1 from '../../components/AddProduct/Step1';
 import { message } from 'antd';
 import Step2 from '../../components/AddProduct/Step2';
+import { useForm } from 'antd/es/form/Form';
 
 export const addProductContext = createContext();
 const AddProduct = () => {
     const [state, setState] = useState({
         step: '2',
         videoFiles: [],
-        listingInfo: {},
+        listingInfo: {
+            properties: [],
+            facilities: [],
+        },
     })
-    const {step, videoFiles} = state;
+    const {step, videoFiles, listingInfo} = state;
 
     const changeStep = (step) => {
         setState(state => ({
@@ -71,14 +75,41 @@ const AddProduct = () => {
         }))
     }
 
+    const toggleProperty = (property) => {
+        setState(state => ({
+            ...state,
+            listingInfo: {
+                ...state.listingInfo,
+                properties: state.listingInfo.properties.includes(property) 
+                ?  state.listingInfo.properties.filter(prop => prop !== property) // remove if include
+                :  [...state.listingInfo.properties, property] // add if not include
+            }
+        }))
+    }
+
+    const toggleFacility = (facility) => {
+        setState(state => ({
+            ...state,
+            listingInfo: {
+                ...state.listingInfo,
+                facilities: state.listingInfo.facilities.includes(facility) 
+                ?  state.listingInfo.facilities.filter(fac => fac !== facility) // remove if include
+                :  [...state.listingInfo.facilities, facility] // add if not include
+            }
+        }))
+    }
+
   return (
     <addProductContext.Provider value={{
         step,
         videoFiles,
+        listingInfo,
         changeStep,
         beforeVideoUpload,
         onChangeVideosUpload,
-        removeFile
+        removeFile,
+        toggleProperty,
+        toggleFacility,
     }}>
         <Layout>
             <AddProductLayout>
