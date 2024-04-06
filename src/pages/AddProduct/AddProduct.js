@@ -15,6 +15,8 @@ const AddProduct = () => {
             properties: [],
             facilities: [],
             hashTags:   [],
+            for_rent: false,
+            for_shortlet: false,
         },
         step2Form: Form.useForm(),
         step3Form: Form.useForm(),
@@ -114,11 +116,13 @@ const AddProduct = () => {
         }))
     }
 
-    const addListingInfo = (values) => {
+    const addListingInfo = (values, step) => {
         console.log('values:', values)
         setState(state => ({
             ...state,
-            listingInfo: {...state.listingInfo, ...values},
+            listingInfo: step === '2' 
+            ? {...state.listingInfo, ...values, for_rent: values.for_rent || false, for_shortlet: values.for_shortlet || false}
+            : {...state.listingInfo, ...values}
         }))
     }
 

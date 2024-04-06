@@ -11,7 +11,7 @@ const Step3 = () => {
         <h1 className='fw-bold mb-3'>Pricing <span className='text-primary'>information</span></h1>
         <Form 
             onFinish={(values) => {
-                addListingInfo(values)
+                addListingInfo(values, '3')
                 createProduct();
             }}
             form={step3Form[0]}

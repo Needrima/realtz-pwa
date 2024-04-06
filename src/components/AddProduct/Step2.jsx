@@ -3,13 +3,13 @@ import React, { useContext, useRef, useState } from 'react'
 import { addProductContext } from '../../pages/AddProduct/AddProduct'
 
 const Step2 = () => {
-    const {step2Form, toggleProperty, toggleFacility, toggleHashTags, listingInfo: {properties, facilities, hashTags}, changeStep, addListingInfo} = useContext(addProductContext);
+    const {step2Form, toggleProperty, toggleFacility, toggleHashTags, listingInfo: {properties, facilities, hashTags, for_rent, for_shortlet}, changeStep, addListingInfo} = useContext(addProductContext);
     const [state, setState] = useState({
         addedProp: '',
         addedFacility: '',
         addedHashTag: '',
-        rentChecked: false,
-        shortletChecked: false,
+        rentChecked: for_rent,
+        shortletChecked: for_shortlet,
     });
     const {addedProp, addedFacility, addedHashTag, rentChecked, shortletChecked} = state;
 
@@ -18,7 +18,7 @@ const Step2 = () => {
         <h1 className='fw-bold mb-3'>Listing <span className='text-primary'>information</span></h1>
         <Form 
             onFinish={(values) => {
-                addListingInfo(values)
+                addListingInfo(values, '2')
                 changeStep('3')
             }}
             form={step2Form[0]}
@@ -199,7 +199,8 @@ const Step2 = () => {
                 >
                     <Checkbox 
                     className='text-primary fw-bold me-2' 
-                    defaultChecked={false}
+                    defaultChecked={rentChecked}
+                    value={for_rent}
                     onChange={(e) => setState(state => ({...state, rentChecked: e.target.checked}))}
                     >
                         For rent
@@ -215,7 +216,8 @@ const Step2 = () => {
                 >
                 <Checkbox 
                 className='text-primary fw-bold' 
-                defaultChecked={false}
+                defaultChecked={shortletChecked}
+                value={for_shortlet}
                 onChange={(e) => setState(state => ({...state, shortletChecked: e.target.checked}))}
                 >
                     For shortlet
