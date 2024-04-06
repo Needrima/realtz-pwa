@@ -1,16 +1,17 @@
 import { Checkbox, Form, Input } from 'antd'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { addProductContext } from '../../pages/AddProduct/AddProduct'
 
 const Step2 = () => {
-    const {toggleProperty, toggleFacility, toggleHashTags, listingInfo: {properties, facilities, hashTags}, changeStep, addListingInfo} = useContext(addProductContext);
+    const {step2Form, toggleProperty, toggleFacility, toggleHashTags, listingInfo: {properties, facilities, hashTags}, changeStep, addListingInfo} = useContext(addProductContext);
     const [state, setState] = useState({
         addedProp: '',
         addedFacility: '',
         addedHashTag: '',
+        rentChecked: false,
+        shortletChecked: false,
     });
-
-    const {addedProp, addedFacility, addedHashTag} = state;
+    const {addedProp, addedFacility, addedHashTag, rentChecked, shortletChecked} = state;
 
   return (
     <div className='my-5'>
@@ -20,6 +21,7 @@ const Step2 = () => {
                 addListingInfo(values)
                 changeStep('3')
             }}
+            form={step2Form[0]}
         >
             <Form.Item
                 name="title"
@@ -106,7 +108,7 @@ const Step2 = () => {
                 <div className='d-flex flex-wrap mb-2'>
                     {properties.length !== 0 && properties.map((prop, index) => <button 
                     key={index} 
-                    className="btn btn-primary me-2 text-capitalize"
+                    className="btn btn-primary me-2 mb-2 text-capitalize"
                     onClick={() => toggleProperty(prop)}
                     >{prop.toLowerCase().trim()} X</button>)}
                 </div>
@@ -125,6 +127,7 @@ const Step2 = () => {
                     toggleProperty(addedProp)
                     setState(state => ({...state, addedProp: ''}))
                 }}
+                type='button'
                 >Add</button>
             </Form.Item>
 
@@ -134,7 +137,7 @@ const Step2 = () => {
                 <div className='d-flex flex-wrap mb-2'>
                     {facilities.length !== 0 && facilities.map((fac, index) => <button 
                     key={index} 
-                    className="btn btn-primary me-2 text-capitalize"
+                    className="btn btn-primary me-2 mb-2 text-capitalize"
                     onClick={() => toggleFacility(fac)}
                     >{fac.toLowerCase().trim()} X</button>)}
                 </div>
@@ -153,6 +156,7 @@ const Step2 = () => {
                     toggleFacility(addedFacility)
                     setState(state => ({...state, addedFacility: ''}))
                 }}
+                type='button'
                 >Add</button>
             </Form.Item>
 
@@ -168,7 +172,7 @@ const Step2 = () => {
                 </div>
 
                 <input 
-                placeholder="e.g #animals_allowed" 
+                placeholder="e.g #pets_allowed" 
                 className="text-input mb-2" 
                 onChange={e => setState(state => ({...state, addedHashTag: e.target.value}))}
                 value={addedHashTag}
@@ -181,6 +185,7 @@ const Step2 = () => {
                     toggleHashTags(addedHashTag)
                     setState(state => ({...state, addedHashTag: ''}))
                 }}
+                type='button'
                 >Add</button>
             </Form.Item>
 
@@ -192,10 +197,13 @@ const Step2 = () => {
                     // {required: true, message: "You have not accepted our terms and condtions"},
                 ]}
                 >
-                <Checkbox className='text-primary fw-bold me-2' defaultChecked={false}>
-                    For rent
-                </Checkbox>
-
+                    <Checkbox 
+                    className='text-primary fw-bold me-2' 
+                    defaultChecked={false}
+                    onChange={(e) => setState(state => ({...state, rentChecked: e.target.checked}))}
+                    >
+                        For rent
+                    </Checkbox>
                 </Form.Item>
 
                 <Form.Item
@@ -205,7 +213,11 @@ const Step2 = () => {
                     // {required: true, message: "You have not accepted our terms and condtions"},
                 ]}
                 >
-                <Checkbox className='text-primary fw-bold'>
+                <Checkbox 
+                className='text-primary fw-bold' 
+                defaultChecked={false}
+                onChange={(e) => setState(state => ({...state, shortletChecked: e.target.checked}))}
+                >
                     For shortlet
                 </Checkbox>
                 </Form.Item>
@@ -215,6 +227,7 @@ const Step2 = () => {
               <button
                 className="btn btn-primary btn-lg px-5 py-3 fw-bold me-2"
                 onClick={() => changeStep('1')}
+                type='button'
               >
                 &larr;
               </button>
@@ -222,6 +235,7 @@ const Step2 = () => {
               <button
                 className="btn btn-primary btn-lg px-5 py-3 fw-bold"
                 type='submit'
+                disabled={!rentChecked && !shortletChecked}
               >
                 Next
               </button>

@@ -2,9 +2,8 @@ import React, { createContext, useState } from 'react'
 import Layout from '../../components/Layout'
 import AddProductLayout from '../../components/AddProduct/AddProductLayout'
 import Step1 from '../../components/AddProduct/Step1';
-import { message } from 'antd';
+import { Form, message } from 'antd';
 import Step2 from '../../components/AddProduct/Step2';
-import { useForm } from 'antd/es/form/Form';
 import Step3 from '../../components/AddProduct/Step3';
 
 export const addProductContext = createContext();
@@ -17,8 +16,10 @@ const AddProduct = () => {
             facilities: [],
             hashTags:   [],
         },
+        step2Form: Form.useForm(),
+        step3Form: Form.useForm(),
     })
-    const {step, videoFiles, listingInfo} = state;
+    const {step2Form, step3Form, step, videoFiles, listingInfo} = state;
 
     const changeStep = (step) => {
         setState(state => ({
@@ -114,17 +115,24 @@ const AddProduct = () => {
     }
 
     const addListingInfo = (values) => {
+        console.log('values:', values)
         setState(state => ({
             ...state,
             listingInfo: {...state.listingInfo, ...values},
         }))
     }
 
+    const createProduct = async () => {
+        console.log(state);
+    } 
+
   return (
     <addProductContext.Provider value={{
         step,
         videoFiles,
         listingInfo,
+        step2Form,
+        step3Form,
         changeStep,
         beforeVideoUpload,
         onChangeVideosUpload,
@@ -132,7 +140,8 @@ const AddProduct = () => {
         toggleProperty,
         toggleFacility,
         toggleHashTags,
-        addListingInfo
+        addListingInfo,
+        createProduct
     }}>
         <Layout>
             <AddProductLayout>

@@ -104,7 +104,7 @@ const ProductDetailsLayout = () => {
             <div className='mt-4'>
               <div className='fs-3 fw-bold text-primary'>Description</div>
               <div className={`description ${fullDesc && 'full-description'}`}>
-                {product.description}
+                {product.description} <span className='text-primary fw-bold'>{product.hash_tags.map(hashTag => hashTag.startsWith('#') ? hashTag : '#'+hashTag).join(' ')}</span>
               </div> 
               <span className='fw-bold text-primary' onClick={() => showFullDesc(shown => !shown)}>{fullDesc ? 'show less' : 'show more'}</span>
             </div>
