@@ -3,7 +3,7 @@ import React, { useContext, useRef, useState } from 'react'
 import { addProductContext } from '../../pages/AddProduct/AddProduct'
 
 const Step2 = () => {
-    const {step2Form, toggleProperty, toggleFacility, toggleHashTags, listingInfo: {properties, facilities, hashTags, for_rent, for_shortlet}, changeStep, addListingInfo} = useContext(addProductContext);
+    const {step2Form, step3Form, toggleProperty, toggleFacility, toggleHashTags, listingInfo: {properties, facilities, hashTags, for_rent, for_shortlet}, changeStep, addProductInfo} = useContext(addProductContext);
     const [state, setState] = useState({
         addedProp: '',
         addedFacility: '',
@@ -18,7 +18,7 @@ const Step2 = () => {
         <h1 className='fw-bold mb-3'>Listing <span className='text-primary'>information</span></h1>
         <Form 
             onFinish={(values) => {
-                addListingInfo(values, '2')
+                addProductInfo(values)
                 changeStep('3')
             }}
             form={step2Form[0]}
@@ -86,8 +86,8 @@ const Step2 = () => {
                 rules={[
                     {required: true, message: 'Reply cannot be empty'},
                     {
-                        min: 3,
-                        message: "Address should be atleast 3 characters long",
+                        min: 20,
+                        message: "Address should be atleast 20 characters long",
                     },
                     {
                         max: 500,
@@ -201,7 +201,10 @@ const Step2 = () => {
                     className='text-primary fw-bold me-2' 
                     defaultChecked={rentChecked}
                     value={for_rent}
-                    onChange={(e) => setState(state => ({...state, rentChecked: e.target.checked}))}
+                    onChange={(e) => setState(state => {
+                        step3Form[0].resetFields();
+                        return {...state, rentChecked: e.target.checked}
+                    })}
                     >
                         For rent
                     </Checkbox>
@@ -218,7 +221,10 @@ const Step2 = () => {
                 className='text-primary fw-bold' 
                 defaultChecked={shortletChecked}
                 value={for_shortlet}
-                onChange={(e) => setState(state => ({...state, shortletChecked: e.target.checked}))}
+                onChange={(e) => setState(state => {
+                    step3Form[0].resetFields();
+                    return{ ...state, shortletChecked: e.target.checked }
+                })}
                 >
                     For shortlet
                 </Checkbox>

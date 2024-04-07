@@ -116,7 +116,7 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
         numReplies: state.numReplies - 1
       }))
     }catch(error) {
-      console.log(error)
+      message.error('could not delete reply', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
     }
   }
 

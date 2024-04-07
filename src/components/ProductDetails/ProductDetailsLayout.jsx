@@ -59,7 +59,7 @@ const ProductDetailsLayout = () => {
 
             {product.for_rent && 
               <div className='mt-4'>
-                <div>Rent / year</div>
+                <div>Rent (annually)</div>
 
                 <div className='fs-1 text-primary fw-bold'>&#8358; {product.annual_rent}</div>
                 <div>
@@ -72,7 +72,7 @@ const ProductDetailsLayout = () => {
 
             {product.for_shortlet && 
               <div className='mt-4'>
-                <div>Shortlet Rent / night</div>
+                <div>Shortlet (nightly)</div>
 
                 <div className='fs-1 text-primary fw-bold'>&#8358; {product.short_let_amount}</div>
                 <div>
