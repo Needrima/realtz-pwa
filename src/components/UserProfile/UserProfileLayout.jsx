@@ -56,6 +56,7 @@ const UserProfileLayout = () => {
     editProfile,
     editButtonLoading,
     formRef,
+    rateUser,
   } = useContext(UserProfileContext);
   const [fullBio, showFullbio] = useState(false)
 
@@ -109,9 +110,9 @@ const UserProfileLayout = () => {
                 tooltips={["Poor", "Fair", "Average", "Good", "Awesome"]}
                 // allowClear={false}
                 disabled
-                allowHalf
+                // allowHalf
               />
-              {user?.reference !== userData?.reference && (
+              {user?.reference !== userData?.reference && !userData?.rated_by.includes(user?.reference) && (
                 <i
                   className="bi bi-plus-circle-fill"
                   onClick={() => openRatingBox(true)}
@@ -269,7 +270,7 @@ const UserProfileLayout = () => {
           </Drawer>
 
           {/* give rating drawer */}
-          {userData?.reference !== user?.reference && (
+          {userData?.reference !== user?.reference && !userData?.rated_by.includes(user?.reference) && (
             <Drawer
               open={ratingBoxIsOpen}
               title={<div className="text-primary fw-bold">Rate Agent</div>}
@@ -286,7 +287,7 @@ const UserProfileLayout = () => {
                   tooltips={["Poor", "Fair", "Average", "Good", "Awesome"]}
                   // allowClear={false}
                   // allowHalf
-                  onChange={(rating) => console.log(rating)}
+                  onChange={(rating) => rateUser(rating)}
                   disabled={true}
                 />
               </div>

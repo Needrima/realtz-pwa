@@ -227,6 +227,18 @@ const UserProfile = () => {
     }
   };
 
+  const rateUser = async(rating) => {
+    console.log(rating)
+    try {
+      const {data} = await axiosUserInstance.get(`auth/rate-user/${userData?.reference}/${rating}`);
+      console.log(data)
+      // openRatingBox(false)
+    }catch(error) {
+      console.log(error)
+      message.error(error?.response?.data?.error || 'could not rate user', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
+    }
+  }
+
   useEffect(() => {
     getUser();
   }, []);
@@ -255,6 +267,7 @@ const UserProfile = () => {
         editProfile,
         editButtonLoading,
         formRef,
+        rateUser,
       }}
     >
       <Layout>
