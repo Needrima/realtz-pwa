@@ -61,7 +61,6 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
   }
 
   const openEditReplyBox = (replyToEdit) => {
-    console.log(replyToEdit?.reply);
     setState(state => ({
       ...state,
       replyToEdit: replyToEdit,
@@ -84,7 +83,7 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
           token: token,
         }
       })
-      message.success(data?.message)
+      message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
       setState(state => ({
         ...state,
         addingNewReply: false,
@@ -94,7 +93,7 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
       }))
       form.setFieldsValue({ reply: '' });
     }catch(error) {
-      message.error(error?.response?.data?.error || 'could not add reply')
+      message.error(error?.response?.data?.error || 'could not add reply', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
       setState(state => ({
         ...state,
         addingNewReply: false,
@@ -110,14 +109,14 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
           token: token,
         }
       })
-      message.success(data?.message)
+      message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
       setState(state => ({
         ...state,
         replies: state.replies.filter(reply => reply?.reference !== data?.deleted_reference),
         numReplies: state.numReplies - 1
       }))
     }catch(error) {
-      console.log(error)
+      message.error('could not delete reply', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
     }
   }
 
@@ -126,7 +125,6 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
       message.warning('no change has been made')
       return
     }
-    // console.log('new reply:', values.edited_reply)
     setState(state => ({
       ...state,
       editingReply: true,
@@ -147,9 +145,9 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
         editingReply: false
       }))
       editForm.setFieldValue('edited_reply', '')
-      message.success(data?.message)
+      message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
     }catch(error) {
-      console.log(error?.response?.data?.error)
+      message.error(error?.response?.data?.error || 'could not edit reply', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
       setState(state => ({
         ...state,
         editingReply: false

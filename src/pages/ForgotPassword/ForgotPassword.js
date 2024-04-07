@@ -51,12 +51,9 @@ const ForgotPassword = () => {
         email: values.email,
         currentPage: "2",
       }));
-      console.log(data);
-      message.success(data?.message || `OTP has been sent to ${email}`);
+      message.success(data?.message || `OTP has been sent to ${email}`, parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
     } catch (error) {
-      message.error(
-        error?.response?.data?.error || "OTP could not be sent to your email"
-      );
+      message.error(error?.response?.data?.error || "OTP could not be sent to your email", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
       setState((state) => ({
         ...state,
         loading: false,
@@ -89,12 +86,10 @@ const ForgotPassword = () => {
         ...state,
         loading: false,
       }));
-      message.success(data?.message || "Password successfully reset");
+      message.success(data?.message || "Password successfully reset", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
       navigate("/login", { replace: true });
     } catch (error) {
-      message.error(
-        error?.response?.data?.error || "password verification failed"
-      );
+      message.error(error?.response?.data?.error || "password verification failed", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
       setState((state) => ({
         ...state,
         loading: false,
@@ -150,15 +145,14 @@ const ForgotPassword = () => {
         otp: "",
         resetTimerFlag: !resetTimerFlag,
       }));
-      console.log(data);
-      message.success(data?.message || "otp sent");
+      message.success(data?.message || "otp sent", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
     } catch (error) {
       setState((state) => ({
         ...state,
         loading: false,
         otp: "",
       }));
-      message.error(error?.response?.data?.error || "sending otp failed");
+      message.error(error?.response?.data?.error || "sending otp failed", parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
     }
   };
 

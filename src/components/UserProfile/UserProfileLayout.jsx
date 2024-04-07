@@ -464,6 +464,7 @@ const UserProfileLayout = () => {
                 }}
                 onChange={uploadImage}
                 showUploadList={uploadingProfileImage}
+                multiple={false}
               >
                 <button
                   disabled={uploadingProfileImage}
