@@ -3,10 +3,11 @@ import React, { createContext, useEffect, useState } from "react";
 import HomeLayout from "../../components/Home/HomeLayout";
 import { axiosProductInstance } from "../../api/axoios";
 import { useSelector } from "react-redux";
+import { token } from "../../api/token";
 
 export const HomeContext = createContext(null);
 const Home = () => {
-  const { token } = useSelector((state) => state.authReducer);
+  // const { token } = useSelector((state) => state.authReducer);
 
   const [state, setState] = useState({
     tab: "home",
@@ -34,7 +35,7 @@ const Home = () => {
     try {
       const {data} = await axiosProductInstance.get(`auth/get-home-product/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
           headers: {
-            token: token
+            token: token()
           }
         }
       )
@@ -53,7 +54,7 @@ const Home = () => {
     try {
       const {data} = await axiosProductInstance.get(`auth/get-trending-product/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
           headers: {
-            token: token
+            token: token()
           }
         }
       );
@@ -71,7 +72,7 @@ const Home = () => {
   useEffect(() => {
     getHomeProducts(1);
     getTrendingProducts(1);
-  }, [token]);
+  }, []);
 
   return (
     <HomeContext.Provider

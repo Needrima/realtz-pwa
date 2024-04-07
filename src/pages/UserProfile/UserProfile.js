@@ -5,10 +5,11 @@ import { axiosProductInstance, axiosUserInstance } from "../../api/axoios";
 import { useSelector } from "react-redux";
 import Layout from "../../components/Layout";
 import { message } from "antd";
+import { token } from "../../api/token";
 
 export const UserProfileContext = createContext();
 const UserProfile = () => {
-  const { token } = useSelector((state) => state?.authReducer);
+  // const { token } = useSelector((state) => state?.authReducer);
   const { reference } = useParams();
   const formRef = useRef();
 
@@ -90,7 +91,7 @@ const UserProfile = () => {
         `auth/get-user/${reference}`,
         {
           headers: {
-            token: token,
+            token: token(),
           },
         }
       );
@@ -115,7 +116,7 @@ const UserProfile = () => {
         `auth/get-user-products/${reference}/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/1`,
         {
           headers: {
-            token: token,
+            token: token(),
           },
         }
       );
@@ -135,7 +136,7 @@ const UserProfile = () => {
         `auth/get-liked-products/${reference}/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/1`,
         {
           headers: {
-            token: token,
+            token: token(),
           },
         }
       );
@@ -163,7 +164,7 @@ const UserProfile = () => {
         fd,
         {
           headers: {
-            token: token,
+            token: token(),
             "Content-Type": "multipart/form-data",
           },
         }
@@ -202,7 +203,7 @@ const UserProfile = () => {
         reqData,
         {
           headers: {
-            token: token,
+            token: token(),
           },
         }
       );
@@ -228,7 +229,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     getUser();
-  }, [token]);
+  }, []);
 
   return (
     <UserProfileContext.Provider

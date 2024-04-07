@@ -4,12 +4,13 @@ import Layout from '../../components/Layout'
 import { useSearchParams } from 'react-router-dom'
 import { axiosProductInstance } from '../../api/axoios'
 import { useSelector } from 'react-redux'
+import { token } from '../../api/token'
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const type = searchParams.get('type');
   const reference = searchParams.get('reference');
-  const {token} = useSelector(state => state.authReducer)
+  // const {token} = useSelector(state => state.authReducer)
 
   const [state, setState] = useState({
     loading: true,
@@ -23,7 +24,7 @@ const Products = () => {
         const {data} = await axiosProductInstance.get(
             `auth/get-user-products/${reference}/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
                 headers: {
-                    token: token,
+                    token: token(),
                 }
             })
         setState(state => ({
@@ -42,7 +43,7 @@ const Products = () => {
           const {data} = await axiosProductInstance.get(
               `auth/get-liked-products/${reference}/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
                   headers: {
-                      token: token,
+                      token: token(),
                   }
               })
           setState(state => ({
@@ -60,7 +61,7 @@ const Products = () => {
     try {
       const {data} = await axiosProductInstance.get(`auth/get-home-product/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
           headers: {
-            token: token
+            token: token()
           }
         }
       )
@@ -80,7 +81,7 @@ const Products = () => {
     try {
       const {data} = await axiosProductInstance.get(`auth/get-saved-product/${reference}/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
           headers: {
-            token: token
+            token: token()
           }
         }
       )
@@ -123,7 +124,7 @@ useEffect(() => {
       default: getHomeProducts(1)
     }
   }
-}, [reference, type, token])
+}, [reference, type])
 
   return (
     <Layout>

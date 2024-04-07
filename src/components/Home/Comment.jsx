@@ -6,9 +6,10 @@ import { useSelector } from 'react-redux';
 import { axiosProductInstance } from '../../api/axoios';
 import FormatNumber from '../../misc/NumberFormatter';
 import CustomSpin from '../UI/CustomSpin/CustomSpin';
+import { token } from '../../api/token';
 
 const Comment = ({comment, deleteComment, openEditCommentBox}) => {
-  const {user, token} = useSelector(state => state.authReducer)
+  const {user} = useSelector(state => state.authReducer)
   const [form] = Form.useForm();
   const [editForm] = Form.useForm();
   const [state, setState] = useState({
@@ -33,7 +34,7 @@ const Comment = ({comment, deleteComment, openEditCommentBox}) => {
     try {
       const {data} = await axiosProductInstance.get(`get-comment-replies/${comment?.reference}/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
         headers: {
-          token: token
+          token: token()
         }
       })
       setState(state => ({

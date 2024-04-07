@@ -4,10 +4,11 @@ import NotificationLayout from '../../components/Notification/NotificationLayout
 import { useSelector } from 'react-redux';
 import { axiosNotificationInstance, axiosUserInstance } from '../../api/axoios';
 import { message } from 'antd';
+import { token } from '../../api/token';
 
 export const NotificationContext = createContext(null);
 const Notification = () => {
-  const {user, token} = useSelector(state => state?.authReducer)
+  const {user} = useSelector(state => state?.authReducer)
 
   const [state, setState] = useState({
     loading: true,
@@ -20,7 +21,7 @@ const Notification = () => {
     try {
       const {data} = await axiosNotificationInstance.get(`auth/get-notifications/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
         headers: {
-          token: token,
+          token: token(),
         }
       })
       setState(state => ({

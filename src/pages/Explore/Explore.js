@@ -5,10 +5,11 @@ import Catalogue from '../../components/Catalogue/Catalogue'
 import Layout from '../../components/Layout'
 import { Input } from 'antd'
 import './explore.scss'
+import { token } from '../../api/token'
 
 export const exploreContext = createContext()
 const Explore = () => {
-    const {token} = useSelector(state => state.authReducer)
+    // const {token} = useSelector(state => state.authReducer)
     const [state, setState] = useState({
         productsData: null,
         products: [],
@@ -21,7 +22,7 @@ const Explore = () => {
         try {
           const {data} = await axiosProductInstance.get(`auth/get-home-product/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
               headers: {
-                token: token
+                token: token()
               }
             }
           )
@@ -39,7 +40,7 @@ const Explore = () => {
 
       useEffect(() => {
         getProducts(1)
-      }, [token])
+      }, [])
       
   return (
     <Layout>

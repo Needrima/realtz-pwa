@@ -36,9 +36,10 @@ import {
 import { useNavigate } from 'react-router-dom';
 import FormatNumber from '../../misc/NumberFormatter';
 import CustomSpin from '../UI/CustomSpin/CustomSpin';
+import { token } from '../../api/token';
 
 const Product = ({product}) => {
-  const {user, token} = useSelector(state => state.authReducer)
+  const {user} = useSelector(state => state.authReducer)
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [editForm] = Form.useForm();
@@ -71,7 +72,7 @@ const Product = ({product}) => {
     try {
       const {data} = await axiosProductInstance.get(`auth/like/${product.reference}`, {
         headers: {
-          token: token
+          token: token()
         }
       })
       setState(state => ({
@@ -97,7 +98,7 @@ const Product = ({product}) => {
     try {
       const {data} = await axiosProductInstance.get(`auth/unlike/${product.reference}`, {
         headers: {
-          token: token
+          token: token()
         }
       })
       setState(state => ({
@@ -124,7 +125,7 @@ const Product = ({product}) => {
     try {
       const {data} = await axiosProductInstance.get(`auth/save/${product.reference}`, {
         headers: {
-          token: token
+          token: token()
         }
       })
       setState(state => ({
@@ -150,7 +151,7 @@ const Product = ({product}) => {
     try {
       const {data} = await axiosProductInstance.get(`auth/unsave/${product.reference}`, {
         headers: {
-          token: token
+          token: token()
         }
       })
       setState(state => ({
@@ -175,7 +176,7 @@ const Product = ({product}) => {
     try {
       const {data} = await axiosProductInstance.get(`get-product-comments/${product?.reference}/${process.env.REACT_APP_DEFAULT_FETCH_COUNT}/${page}`, {
         headers: {
-          token: token
+          token: token()
         }
       })
       setState(state => ({
@@ -213,7 +214,7 @@ const Product = ({product}) => {
         comment: values.comment
       }, {
         headers: {
-          token: token,
+          token: token(),
         }
       })
       message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
@@ -239,7 +240,7 @@ const Product = ({product}) => {
     try {
       const {data} = await axiosProductInstance.get(`/auth/delete-comment/${product?.reference}/${comment_reference}`, {
         headers: {
-          token: token,
+          token: token(),
         }
       })
       message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
@@ -258,7 +259,7 @@ const Product = ({product}) => {
     try {
       const {data} = await axiosProductInstance.get(`/auth/view/${product?.reference}`, {
         headers: {
-          token: token,
+          token: token(),
         }
       })
       setState(state => ({...state, productViewed: true}))
@@ -290,7 +291,7 @@ const Product = ({product}) => {
         comment: values.edited_comment
       }, {
         headers: {
-          token: token,
+          token: token(),
         }
       })
       setState(state => ({
