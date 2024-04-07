@@ -38,7 +38,6 @@ import FormatNumber from '../../misc/NumberFormatter';
 import CustomSpin from '../UI/CustomSpin/CustomSpin';
 
 const Product = ({product}) => {
-  console.log(product);
   const {user, token} = useSelector(state => state.authReducer)
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -250,7 +249,7 @@ const Product = ({product}) => {
         numComments: state.numComments - 1
       }))
     }catch(error) {
-      console.log(error)
+      message.error("could not delete comment", parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
     }
   }
 

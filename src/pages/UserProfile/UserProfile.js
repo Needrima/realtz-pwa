@@ -182,7 +182,6 @@ const UserProfile = () => {
         uploadingProfileImage: false,
       }));
       message.error(error?.response?.data?.error || 'could not upload profile image', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
-      console.log(error);
     }
   };
 

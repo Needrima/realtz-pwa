@@ -130,7 +130,6 @@ const AddProduct = () => {
     }
 
     const addProductInfo = (values) => {
-        console.log('values:', values)
         setState(state => ({
             ...state,
             listingInfo:  {
@@ -140,8 +139,6 @@ const AddProduct = () => {
                 for_shortlet: values.for_shortlet || false
             }
         }))
-
-        console.log(state)
     }
 
     const addPricing = (values) => {

@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 export const HomeContext = createContext(null);
 const Home = () => {
   const { token } = useSelector((state) => state.authReducer);
-  console.log(parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
 
   const [state, setState] = useState({
     tab: "home",
