@@ -145,14 +145,14 @@ const Video = ({video, viewProduct, productRef}) => {
             <source src={video} type="video/mp4" />
         </video>
 
-        {paused ? 
+        {/* {paused ? 
         <img className={`position-absolute top-50 start-50 ${pausePlayImgVisible ? 'visible' : 'fade-in-element'} pause-play-img`}
          src={playIcon} alt="play icon" 
          onClick={pausePlay} />
         :
         <img className={`position-absolute top-50 start-50 ${pausePlayImgVisible ? 'visible' : 'fade-in-element'} pause-play-img`}
          src={pauseIcon} alt="pause icon" 
-         onClick={pausePlay} />}
+         onClick={pausePlay} />} */}
 
         {muted ? 
         <img className={`position-absolute mute-unmute-img`}
