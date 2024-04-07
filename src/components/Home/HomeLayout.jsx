@@ -29,7 +29,7 @@ const HomeLayout = () => {
           <CustomSpin color={'white'} />
         </div>} // triggers if hasMore={true}
         endMessage={
-          <p className={`text-center fw-bold text-light ${homeProductsData ? '' : 'product-loading-center'}`}>
+          <p className={`text-center fw-bold ${homeProductsData ? '' : 'product-loading-center'}`}>
             <b>no more {tab} feeds</b>
           </p>
         } // triggers if hasMore={false}
@@ -60,7 +60,7 @@ const HomeLayout = () => {
           } // triggers if hasMore={true}
           endMessage={
             <p
-              className={`text-center fw-bold text-light ${
+              className={`text-center fw-bold ${
                 trendingProductsData ? "" : "product-loading-center"
               }`}
             >

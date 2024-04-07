@@ -30,11 +30,10 @@ import { USERNAME_REGEX } from "../../misc/regex";
 import { useSelector } from "react-redux";
 import TimeConverter from "../../misc/TimeConverter";
 import CustomSpin from "../UI/CustomSpin/CustomSpin";
-import { axiosUserInstance } from "../../api/axoios";
 
 const UserProfileLayout = () => {
   const navigate = useNavigate();
-  const { user, token } = useSelector((state) => state?.authReducer);
+  const { user } = useSelector((state) => state?.authReducer);
   const {
     userData,
     loading,
@@ -212,8 +211,8 @@ const UserProfileLayout = () => {
                           </div>
                         </div>
 
-                        <div className="text-primary mt-1 fw-bold">
-                          5 Bedroom Semi-Detached Duplex
+                        <div className="text-primary mt-1 fw-bold text-capitalize">
+                          {product?.title}
                         </div>
 
                         <div className="mt-1 address">{product?.location}</div>

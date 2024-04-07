@@ -4,10 +4,11 @@ import ProductDetailsLayout from '../../components/ProductDetails/ProductDetails
 import { useParams } from 'react-router-dom';
 import { axiosProductInstance, axiosUserInstance } from '../../api/axoios';
 import { useSelector } from 'react-redux';
+import { token } from '../../api/token';
 
 export const productDetailsContext = createContext();
 const ProductDetails = () => {
-  const {token} = useSelector(state => state.authReducer)
+  // const {token} = useSelector(state => state.authReducer)
   const {reference} = useParams()
   const [state, setState] = useState({
     loading: true,
@@ -36,7 +37,7 @@ const ProductDetails = () => {
         `auth/get-user/${product?.user_reference}`,
         {
           headers: {
-            token: token,
+            token: token(),
           },
         }
       );
@@ -56,7 +57,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     getUser()
-  }, [product, token])
+  }, [product])
 
   return (
     <productDetailsContext.Provider value={{

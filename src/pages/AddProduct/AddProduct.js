@@ -8,10 +8,11 @@ import Step3 from '../../components/AddProduct/Step3';
 import {axiosProductInstance} from '../../api/axoios'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { token } from '../../api/token';
 
 export const addProductContext = createContext();
 const AddProduct = () => {
-    const {token} = useSelector(state => state.authReducer)
+    // const {token} = useSelector(state => state.authReducer)
     const navigate = useNavigate();
     const [state, setState] = useState({
         step: '1',
@@ -182,7 +183,7 @@ const AddProduct = () => {
         try {
             const {data} = await axiosProductInstance.post('auth/create-product', reqData, {
                 headers: {
-                    token: token,
+                    token: token(),
                     "Content-Type": "multipart/form-data"
                 }
             })
