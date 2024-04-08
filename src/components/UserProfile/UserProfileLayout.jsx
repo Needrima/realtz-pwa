@@ -57,6 +57,7 @@ const UserProfileLayout = () => {
     editButtonLoading,
     formRef,
     rateUser,
+    ratingUser,
   } = useContext(UserProfileContext);
   const [fullBio, showFullbio] = useState(false)
 
@@ -288,7 +289,7 @@ const UserProfileLayout = () => {
                   // allowClear={false}
                   // allowHalf
                   onChange={(rating) => rateUser(rating)}
-                  disabled={true}
+                  disabled={ratingUser}
                 />
               </div>
             </Drawer>
