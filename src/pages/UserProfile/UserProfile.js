@@ -236,16 +236,18 @@ const UserProfile = () => {
       ratingUser: true,
     }))
     try {
-      const {data} = await axiosUserInstance.get(`auth/rate-user/${userData?.reference}/${rating}`);
-      console.log(data)
-      
-      // setState(state => ({
-      //   ...state,
-      //   ratingUser: false,
-      //   userData: data?.updated_user,
-      // }))
-      // openRatingBox(false)
-      message.success(data?.message || 'you have sucessfully dropped a rating for this user', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
+      const {data} = await axiosUserInstance.get(`auth/rate-user/${userData?.reference}/${rating}`, {
+        headers: {
+          token: token(),
+        }
+      });
+      setState(state => ({
+        ...state,
+        ratingUser: false,
+        userData: data?.updated_user,
+      }))
+      openRatingBox(false)
+      message.success(data?.message || `you have sucessfully dropped a rating for ${userData?.username}`, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
     }catch(error) {
       console.log(error)
       message.error(error?.response?.data?.error || 'could not rate user', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
