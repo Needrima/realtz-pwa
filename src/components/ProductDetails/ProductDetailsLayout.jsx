@@ -3,8 +3,8 @@ import Carousel from 'react-multi-carousel';
 import './ProductsDetailsLayout.scss'
 import Video from './Video';
 import locationBlack from '../../assets/icons/location-black.svg'
-import ownerImg from '../../assets/images/casual.jpg'
 import { productDetailsContext } from '../../pages/ProductDetails/ProductDetails';
+import defaultImage from '../../assets/images/default.jpg'
 import CustomSpin from '../UI/CustomSpin/CustomSpin';
 import { useNavigate } from 'react-router-dom';
 
@@ -92,7 +92,7 @@ const ProductDetailsLayout = () => {
              <div className='text-center w-100'> <CustomSpin spinning={loadingOwner} /> </div>
               :
               <>
-                <img src={owner.image} alt="" className='rounded-circle me-2' width={45} height={45}/>
+                <img src={owner.image || defaultImage} alt="" className='rounded-circle me-2' width={45} height={45}/>
                 <div>
                   <div className='fw-bold'>{owner.fullname}</div>
                   <div className='owner-prof'>Agent</div>
