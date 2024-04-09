@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react'
 import settingsIcon from '../../assets/icons/settings-icon.svg'
-import userImage from '../../assets/images/casual.jpg'
+import defaultImage from '../../assets/images/default.jpg'
 import uploadImageIcon from '../../assets/icons/upload-image-icon.svg'
 import FormatNumber from '../../misc/NumberFormatter'
-import video from "../../assets/videos/video.mp4";
 import './UserProfile.scss'
 import { useNavigate } from 'react-router-dom'
 import { Drawer, Form, Input, Modal, Rate, Spin, Upload, message } from 'antd'
@@ -83,7 +82,7 @@ const UserProfileLayout = () => {
               onClick={() => openViewImageBox(true)}
             >
               <img
-                src={userData?.image || userImage}
+                src={userData?.image || defaultImage}
                 alt="avatar"
                 className="rounded-circle avatar"
               />
@@ -394,7 +393,7 @@ const UserProfileLayout = () => {
             <PinterestShareButton
               className="me-2 mb-2"
               url={`${window.location.origin}/profile/${userData?.reference}`}
-              media={userData?.image}
+              media={userData || defaultImage}
               description={userData?.bio}
             >
               <PinterestIcon round={true} />
@@ -442,7 +441,7 @@ const UserProfileLayout = () => {
             footer={[]}
           >
             <img
-              src={userData?.image || userImage}
+              src={userData?.image || defaultImage}
               alt="avatar"
               className="w-100"
             />
