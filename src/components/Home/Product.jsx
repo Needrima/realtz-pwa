@@ -348,7 +348,7 @@ const Product = ({product}) => {
   };
 
   return (
-    <div className='position-relative w-100 vh-100'>
+    <div className='position-relative w-100 vh-100 mb-3'>
         <Carousel 
             responsive={responsive}
             showDots={true}

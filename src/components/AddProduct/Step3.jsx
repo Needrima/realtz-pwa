@@ -203,22 +203,22 @@ const Step3 = () => {
         </Form>
 
         <Drawer
-             open={createProductBoxOpen}
-             //  title={<div className='text-primary fw-bold'>Share Profile</div>}
-             // footer={} // react node
-             placement="bottom"
-             height={"auto"}
-             closable={false}
-             onClose={() => openCreateProductBox(false)}
+            open={createProductBoxOpen}
+            title={<div className='text-primary fw-bold'>Add Listing</div>}
+            // footer={} // react node
+            placement="bottom"
+            height={"auto"}
+            closable={!creatingProduct}
+            maskClosable={!creatingProduct}
+            onClose={() => openCreateProductBox(false)}
         >
             <div className='text-danger fw-bold fs-4 mb-3'>
-                NB: <br />
-                Ensure that all the listing information and pricing information entered are correct and accurate.
+                NB: Ensure that all the listing information and pricing information entered are correct and accurate.
             </div>
             <div className='text-center'>
                 <button className="btn btn-primary me-2" onClick={() => createProduct()} disabled={creatingProduct}
                 >{creatingProduct ? <CustomSpin color={'white'} /> : 'Add Lisitng'}</button>
-                <button className="btn btn-primary" onClick={() => openCreateProductBox(false)}>Cancel</button>
+                <button className="btn btn-primary" onClick={() => openCreateProductBox(false)} disabled={creatingProduct}>Cancel</button>
             </div>
         </Drawer>
     </div>

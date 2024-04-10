@@ -19,7 +19,7 @@ const HomeLayout = () => {
   } = useContext(HomeContext);
 
   return (
-    <div className='bg-dark vh-100'>
+    <div className='bg-dark h-100'>
       {tab === 'home' && <InfiniteScroll
         dataLength={homeProducts.length} //This is important field to render the next data
         hasMore={!homeProductsData ? true : homeProductsData?.has_next} 
@@ -30,7 +30,7 @@ const HomeLayout = () => {
         </div>} // triggers if hasMore={true}
         endMessage={
           <p className={`text-center fw-bold ${homeProductsData ? '' : 'product-loading-center'}`}>
-            <b>no more {tab} feeds</b>
+            <b className="text-light">no more {tab} feeds</b>
           </p>
         } // triggers if hasMore={false}
         // below props only if you need pull down functionality
