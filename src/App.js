@@ -17,6 +17,7 @@ import ProductDetails from './pages/ProductDetails/ProductDetails';
 import Explore from './pages/Explore/Explore';
 import AddProduct from './pages/AddProduct/AddProduct';
 import Terms from './pages/Terms/Terms';
+import Privacy from './pages/PrivacyPolicy/Privacy';
 
 function App() {
   const dispatch = useDispatch();
@@ -101,6 +102,7 @@ function App() {
         <Route path='/explore' element={<Explore />} />
         <Route path='/add-product' element={<AddProduct />} />
         <Route path='/terms' element={<Terms />} />
+        <Route path='/privacy' element={<Privacy />} />
       </Routes>
     </div>
   );
