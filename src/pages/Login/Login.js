@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Spin, message } from "antd";
+import { Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import emailIcon from "../../assets/icons/sms.svg";
 import passwordIcon from "../../assets/icons/password.svg";
@@ -104,7 +104,7 @@ const Login = () => {
         </div>
       </Form>
 
-      <div className="w-max-content mx-auto mt-8">
+      <div className="w-max-content mx-auto mt-3">
         Don't have an account?{" "}
         <span
           className="fw-bold text-default"

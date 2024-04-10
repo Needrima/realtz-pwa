@@ -175,7 +175,7 @@ const ForgotPassword = () => {
           <Form onFinish={startPasswordReset}>
             <Form.Item
               name="email"
-              className="mb-8"
+              className="mt-5 mb-3"
               rules={[
                 { required: true, message: "Email is required" },
                 { whitespace: true, message: "Email cannot be empty" },
@@ -198,11 +198,11 @@ const ForgotPassword = () => {
                 disabled={loading}
                 className="login-button w-100 btn btn-primary btn-lg px-5 py-3 fw-bold"
               >
-                {loading ? <CustomSpin color={'white'} spinning={loading} /> : "Send OTP"}
+                {loading ? <CustomSpin color={'white'} spinning={loading} /> : "Proceed"}
               </button>
             </div>
           </Form>
-          <div className="w-max-content mx-auto mt-8">
+          <div className="w-max-content mx-auto mt-3">
             Don't have an account?{" "}
             <span
               className="fw-bold text-default"
@@ -216,7 +216,7 @@ const ForgotPassword = () => {
       {currentPage === "2" && (
         <div>
           <h1 className="fw-bold mt-5 mb-3">
-            Enter the <span className="text-primary">code</span>
+            Enter <span className="text-primary">OTP</span>
           </h1>
 
           <div className="mb-3 mb-5 text-muted">
@@ -232,7 +232,7 @@ const ForgotPassword = () => {
             inputStyle={"otp-input rounded border-0"}
           />
 
-          <div className="text-center mt-10">
+          <div className="text-center mt-8">
             <span className="otp-countdown p-3 rounded-4">
               <img src={timerIcon} alt="timer icon" /> {minutes}:
               {seconds.toLocaleString("en-US", {

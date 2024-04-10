@@ -360,7 +360,9 @@ const Signup = () => {
                 Agree to our{" "}
                 <a href="/terms" className="text-primary text-decoration-none">
                   Terms and Conditions
-                </a>
+                </a> and  <a href="/privacy" className="text-primary text-decoration-none">
+                  Privacy Policy
+                </a> 
               </Checkbox>
             </Form.Item>
 
@@ -375,7 +377,7 @@ const Signup = () => {
             </div>
           </Form>
 
-          <div className="text-center mt-5">
+          <div className="text-center mt-3">
             Already have an account?{" "}
             <span
               className="text-primary fw-bold"
