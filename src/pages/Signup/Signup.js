@@ -375,7 +375,7 @@ const Signup = () => {
             </div>
           </Form>
 
-          <div className="text-center mt-5">
+          <div className="text-center mt-3">
             Already have an account?{" "}
             <span
               className="text-primary fw-bold"

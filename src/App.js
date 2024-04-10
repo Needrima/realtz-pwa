@@ -16,6 +16,7 @@ import Products from './pages/Products/Products';
 import ProductDetails from './pages/ProductDetails/ProductDetails';
 import Explore from './pages/Explore/Explore';
 import AddProduct from './pages/AddProduct/AddProduct';
+import Terms from './pages/Terms/Terms';
 
 function App() {
   const dispatch = useDispatch();
@@ -99,6 +100,7 @@ function App() {
         <Route path='/products' element={<Products />} />
         <Route path='/explore' element={<Explore />} />
         <Route path='/add-product' element={<AddProduct />} />
+        <Route path='/terms' element={<Terms />} />
       </Routes>
     </div>
   );
