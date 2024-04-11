@@ -182,7 +182,7 @@ const Step2 = () => {
                 disabled={addedHashTag === ''}
                 className='btn btn-primary' 
                 onClick={() => {
-                    toggleHashTags(addedHashTag)
+                    toggleHashTags(addedHashTag.replace(" ", "_"))
                     setState(state => ({...state, addedHashTag: ''}))
                 }}
                 type='button'
