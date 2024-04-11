@@ -353,7 +353,7 @@ const Signup = () => {
               name="agreement"
               valuePropName="checked"
               rules={[
-                {required: true, message: "You have not accepted our terms and condtions"},
+                {required: true, message: "You have not accepted our terms and condtions and privacy policy"},
               ]}
             >
               <Checkbox>

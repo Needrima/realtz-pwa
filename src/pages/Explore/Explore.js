@@ -36,11 +36,31 @@ const Explore = () => {
         } catch (error) {
           console.log(error);
         }
-      };
+    };
 
-      useEffect(() => {
-        getProducts(1)
-      }, [])
+    let typingTimer = 1000
+    let typingTimeout = null;
+
+    const isTyping = (e) => {
+      clearTimeout(typingTimeout)
+      typingTimeout = setTimeout(() => search(e.target.value), typingTimer)
+    }
+
+    const stoppedTyping = () => {
+      clearTimeout(typingTimeout)
+    }
+
+    const search = (value) => {
+      setState(state => ({
+        ...state,
+        loading: true
+      }))
+      console.log('seaching for:', value)
+    }
+
+    useEffect(() => {
+      getProducts(1)
+    }, [])
       
   return (
     <Layout>
@@ -48,6 +68,8 @@ const Explore = () => {
             {!loading && <Input 
                 className='mb-2 search-input py-2 border border-1 border-secondary'
                 suffix={<i className="bi bi-search"></i>}
+                onKeyUp={isTyping}
+                onKeyDown={stoppedTyping}
             />}
             
             <Catalogue
