@@ -137,7 +137,7 @@ const Video = ({video, viewProduct, productRef}) => {
 
   return (
     <div ref={videoDivRef} className='w-100 vh-100 position-relative'>
-        <video ref={videoRef} loop autoPlay muted className='w-100 vh-100' 
+        <video ref={videoRef} loop autoPlay muted className='w-100 h-100' 
           onClick={() => navigate(`/product/${productRef}`)}
           onPlay={handlePlay} 
           onTimeUpdate={handleTimeUpdate}

@@ -3,7 +3,7 @@ import React, { useContext, useRef, useState } from 'react'
 import { addProductContext } from '../../pages/AddProduct/AddProduct'
 
 const Step2 = () => {
-    const {step2Form, step3Form, toggleProperty, toggleFacility, toggleHashTags, listingInfo: {properties, facilities, hashTags, for_rent, for_shortlet}, changeStep, addProductInfo} = useContext(addProductContext);
+    const {step2Form, step3Form, toggleProperty, toggleFacility, toggleHashTags, listingInfo: {properties, facilities, hash_tags, for_rent, for_shortlet}, changeStep, addProductInfo} = useContext(addProductContext);
     const [state, setState] = useState({
         addedProp: '',
         addedFacility: '',
@@ -164,7 +164,7 @@ const Step2 = () => {
                 label={<span className='fw-bold text-primary'>Hahstags</span>}
             >
                 <div className='d-flex flex-wrap mb-2'>
-                    {hashTags.length !== 0 && hashTags.map((ht, index) => <button 
+                    {hash_tags.length !== 0 && hash_tags.map((ht, index) => <button 
                     key={index} 
                     className="btn btn-primary me-2"
                     onClick={() => toggleHashTags(ht)}
