@@ -20,7 +20,7 @@ const AddProduct = () => {
         listingInfo: {
             properties: [],
             facilities: [],
-            hashTags:   [],
+            hash_tags:   [],
             for_rent: false,
             for_shortlet: false,
             annual_rent: 0,
@@ -123,9 +123,9 @@ const AddProduct = () => {
             ...state,
             listingInfo: {
                 ...state.listingInfo,
-                hashTags: state.listingInfo.hashTags.includes(hashTag) 
-                ?  state.listingInfo.hashTags.filter(ht => ht !== hashTag) // remove if include
-                :  [...state.listingInfo.hashTags, hashTag] // add if not include
+                hash_tags: state.listingInfo.hash_tags.includes(hashTag) 
+                ?  state.listingInfo.hash_tags.filter(ht => ht !== hashTag) // remove if include
+                :  [...state.listingInfo.hash_tags, hashTag] // add if not include
             }
         }))
     }

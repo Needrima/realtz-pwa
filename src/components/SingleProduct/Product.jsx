@@ -361,6 +361,7 @@ const Product = ({product}) => {
                     videos[i].pause();
                 }
             }}
+            dotListClass='dotListClass'
         >
           {product.videos.map((video, index) => <Video key={index} video={video} viewProduct={viewProduct} productRef={product.reference} />)}
         </Carousel>;

@@ -34,3 +34,11 @@
 .visible {
     opacity: 1;
 }
+
+.dotListClass {
+  .react-multi-carousel-dot--active {
+    button {
+      background-color: #2771ff;
+    }
+  }
+}

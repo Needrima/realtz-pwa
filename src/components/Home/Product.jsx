@@ -39,6 +39,7 @@ import CustomSpin from '../UI/CustomSpin/CustomSpin';
 import { token } from '../../api/token';
 
 const Product = ({product}) => {
+  console.log(product)
   const {user} = useSelector(state => state.authReducer)
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -354,6 +355,7 @@ const Product = ({product}) => {
             showDots={true}
             arrows={false}
             // beforeChange={() => {}}
+            dotListClass='dotListClass'
         >
           {product.videos.map((video, index) => <Video key={index} video={video} viewProduct={viewProduct} productRef={product.reference} />)}
         </Carousel>;
