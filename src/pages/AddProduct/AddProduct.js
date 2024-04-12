@@ -73,8 +73,8 @@ const AddProduct = () => {
             video.preload = 'metadata';
             video.src = URL.createObjectURL(file);
             video.onloadedmetadata = () => {
-                if (video.duration > 30) {
-                    message.warning(`could not add ${file.name}. file exceeds 30 seconds duration`, parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
+                if (video.duration > 60) {
+                    message.warning(`could not add ${file.name}. file exceeds 60 seconds duration`, parseInt(process.env.REACT_APP_POPUP_TIMEOUT));
                 }else {
                     setState(state => {
                         return {

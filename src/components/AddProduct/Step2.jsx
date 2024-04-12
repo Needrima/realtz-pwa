@@ -233,7 +233,7 @@ const Step2 = () => {
 
             <div className="text-center">
               <button
-                className="btn btn-primary btn-lg px-5 py-3 fw-bold me-2"
+                className="btn btn-primary px-4 py-3 fw-bold me-2"
                 onClick={() => changeStep('1')}
                 type='button'
               >
@@ -241,7 +241,7 @@ const Step2 = () => {
               </button>
 
               <button
-                className="btn btn-primary btn-lg px-5 py-3 fw-bold"
+                className="btn btn-primary p-3 fw-bold"
                 type='submit'
                 disabled={!rentChecked && !shortletChecked}
               >
