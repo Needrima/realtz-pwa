@@ -357,7 +357,7 @@ const Signup = () => {
               ]}
             >
               <Checkbox>
-                Agree to our{" "}
+                By using Realtz, you agree to our{" "}
                 <a href="/terms" className="text-primary text-decoration-none">
                   Terms and Conditions
                 </a> and  <a href="/privacy" className="text-primary text-decoration-none">
