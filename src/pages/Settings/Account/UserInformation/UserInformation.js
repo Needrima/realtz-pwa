@@ -28,7 +28,7 @@ const UserInformation = () => {
     // external libraries hooks
     const expiryTimestamp = new Date();
     expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 180); // three minutes timer
-    const expiryCountDown = useTimer({ expiryTimestamp, onExpire: () => console.log("timeout") });
+    const emailExpiryCountDown = useTimer({ expiryTimestamp, onExpire: () => console.log("timeout") });
 
     const onEmailOTPInput = async (otp) => {
       setState(state => ({
@@ -60,7 +60,7 @@ const UserInformation = () => {
             userData: data?.updated_user,
             verifyEmailBoxOpen: false,
           }))
-          expiryCountDown.pause()
+          emailExpiryCountDown.pause()
           message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
         }catch(error) {
           setState(state => ({
@@ -113,7 +113,7 @@ const UserInformation = () => {
           sendingOTP: false,
           verifyEmailBoxOpen: true,
         }))
-        if (!expiryCountDown.isRunning) expiryCountDown.restart(expiryTimestamp);
+        if (!emailExpiryCountDown.isRunning) emailExpiryCountDown.restart(expiryTimestamp);
       }catch(error) {
         setState(state => ({
           ...state,
@@ -161,7 +161,7 @@ const UserInformation = () => {
       onPhoneNumberOTPInput,
       openVerifyEmailBox,
       verifyEmailBoxOpen,
-      expiryCountDown,
+      emailExpiryCountDown,
       sendOTP,
     }}>
       <Layout>
