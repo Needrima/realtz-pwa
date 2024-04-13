@@ -33,7 +33,7 @@ const NotificationLayout = () => {
           // pullDownToRefresh
           // pullDownToRefreshThreshold={50}
         >
-        {notifications && notifications.length > 0 ? notifications.map(notification => <Notification notification={notification} />) : <div className='text-center text-primary'>You don't have any notification</div>}
+        {notifications && notifications.length > 0 ? notifications.map((notification, index) => <Notification key={index} notification={notification} />) : <div className='text-center text-primary'>You don't have any notification</div>}
       </InfiniteScroll>
       </>}
     </div>
