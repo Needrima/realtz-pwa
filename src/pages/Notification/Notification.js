@@ -1,15 +1,11 @@
 import Layout from '../../components/Layout'
 import React, { createContext, useEffect, useState } from 'react'
 import NotificationLayout from '../../components/Notification/NotificationLayout'
-import { useSelector } from 'react-redux';
-import { axiosNotificationInstance, axiosUserInstance } from '../../api/axoios';
-import { message } from 'antd';
+import { axiosNotificationInstance } from '../../api/axoios';
 import { token } from '../../api/token';
 
 export const NotificationContext = createContext(null);
 const Notification = () => {
-  const {user} = useSelector(state => state?.authReducer)
-
   const [state, setState] = useState({
     loading: true,
     notificationData: null,
@@ -37,7 +33,7 @@ const Notification = () => {
 
   useEffect(() => {
     getNotifications(1)
-  }, [user])
+  }, [])
 
   return (
     <NotificationContext.Provider value={{
