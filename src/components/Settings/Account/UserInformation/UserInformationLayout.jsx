@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import wariningIcon from '../../../../assets/icons/warning-icon.svg'
-import { useSelector } from 'react-redux'
 import { Drawer } from 'antd'
 import './UserInformation.scss'
 import { userInformationContext } from '../../../../pages/Settings/Account/UserInformation/UserInformation'
@@ -9,40 +8,45 @@ import timerIcon from '../../../../assets/icons/timer.svg'
 import CustomSpin from '../../../UI/CustomSpin/CustomSpin'
 
 const UserInformationLayout = () => {
-    const {user} = useSelector(state => state.authReducer)
-    const {sendingOTP, verifyEmailOTP, onEmailOTPInput, verifyingEmail, verifyEmailBoxOpen, openVerifyEmailBox, expiryCountDown,
+    const {loading, userData, sendingOTP, verifyEmailOTP, onEmailOTPInput, verifyingEmail, verifyEmailBoxOpen, openVerifyEmailBox, expiryCountDown,
         sendOTP,} = useContext(userInformationContext);
 
   return (
     <div className='p-2'>
         <h1 className='fw-bold text-primary mt-3 text-center mb-5'>User Information</h1>
 
+        {loading ?
+        <div className='text-center mt-10'>
+            <CustomSpin spinning={loading} />
+        </div> 
+        :
         <div className='options rounded py-4 px-2'>
             <div className='mb-4'>
                 <div className='fw-bold  fs-1 fs-1'>Firstname</div>
-                <div className='fs-5 text-primary'>{user?.firstname || ''}</div>
+                <div className='fs-5 text-primary'>{userData?.firstname || ''}</div>
             </div>
 
             <div className='mb-4'>
                 <div className='fw-bold  fs-1'>Lastname</div>
-                <div className='fs-5 text-primary'>{user?.lastname || ''}</div>
+                <div className='fs-5 text-primary'>{userData?.lastname || ''}</div>
             </div>
 
             <div className='mb-4'>
                 <div className='fw-bold  fs-1'>Username</div>
-                <div className='fs-5 text-primary'>{user?.username || ''}</div>
+                <div className='fs-5 text-primary'>{userData?.username || ''}</div>
             </div>
 
             <div className='mb-4'>
-                <div className='fw-bold  fs-1'>Email {!user?.is_email_verified && <img src={wariningIcon} alt="" />}</div>
-                <div className='fs-5 text-primary'>{user?.email || ''} {!user?.is_email_verified && <span className='text-primary text-decoration-underline' onClick={() => sendOTP('email')}>( {sendingOTP ? <CustomSpin spinning={sendingOTP} /> : 'verify'} )</span>}</div>
+                <div className='fw-bold  fs-1'>Email {!userData?.is_email_verified && <img src={wariningIcon} alt="" />}</div>
+                <div className='fs-5 text-primary'>{userData?.email || ''} {!userData?.is_email_verified && <span className='text-primary text-decoration-underline' onClick={() => sendOTP('email')}>( {sendingOTP ? <CustomSpin spinning={sendingOTP} /> : 'verify'} )</span>}</div>
             </div>
 
             <div className='mb'>
-                <div className='fw-bold  fs-1'>Phone Number {!user?.is_phone_number_verified && <img src={wariningIcon} alt="" />}</div>
-                <div className='fs-5 text-primary'>{user?.phone_number || ''} {!user?.is_phone_number_verified && <span className='text-primary text-decoration-underline'>( verify )</span>}</div>
+                <div className='fw-bold  fs-1'>Phone Number {!userData?.is_phone_number_verified && <img src={wariningIcon} alt="" />}</div>
+                <div className='fs-5 text-primary'>{userData?.phone_number || ''} {!userData?.is_phone_number_verified && <span className='text-primary text-decoration-underline'>( verify )</span>}</div>
             </div>
         </div>
+        }
 
         {/* verify email drawer */}
         <Drawer
@@ -55,7 +59,7 @@ const UserInformationLayout = () => {
             height={'auto'}
             onClose={() => openVerifyEmailBox(false)}
         >
-            <div className='mb-3'>Enter 6 digits otp sent to <span className='text-primary fw-bold'>{user?.email}</span></div>
+            <div className='mb-3'>Enter 6 digits otp sent to <span className='text-primary fw-bold'>{userData?.email}</span></div>
             <OtpInput
                 value={verifyEmailOTP}
                 onChange={onEmailOTPInput}

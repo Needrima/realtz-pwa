@@ -1,25 +1,29 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import Layout from '../../../../components/Layout'
 import UserInformationLayout from '../../../../components/Settings/Account/UserInformation/UserInformationLayout'
 import { useTimer } from 'react-timer-hook'
 import { axiosUserInstance } from '../../../../api/axoios'
 import { token } from '../../../../api/token'
 import { message } from 'antd'
+import { useSelector } from 'react-redux'
 
 export const userInformationContext = createContext()
 const UserInformation = () => {
+    const {user} = useSelector(state => state.authReducer)
     const [state, setState] = useState({
+        loading: true,
+        userData: null,
         sendingOTP: false,
         verifyEmailOTP: '',
-        verifyEmailOTPVerificationCode: '',
+        verifyEmailOTPVerificationKey: '',
         verifyingEmail: false,
         verifyPhoneNumberOTP: '',
-        verifyPhoneNumberOTPVerificationCode: '',
+        verifyPhoneNumberOTPVerificationKey: '',
         verifyingPhoneNumber: false,
         verifyEmailBoxOpen: false,
     })
 
-    const {sendingOTP, verifyEmailOTP, verifyingEmail, verifyPhoneNumberOTP, verifyingPhoneNumber, verifyEmailBoxOpen} = state
+    const {loading, userData, sendingOTP, verifyEmailOTP, verifyingEmail, verifyPhoneNumberOTP, verifyingPhoneNumber, verifyEmailBoxOpen} = state
 
     // external libraries hooks
     const expiryTimestamp = new Date();
@@ -33,7 +37,32 @@ const UserInformation = () => {
       }))
 
       if (otp.length === 6) {
-        console.log('verifying otp')
+        console.log('verifying email')
+        setState(state => ({
+          ...state,
+          verifyingEmail: true,
+        }))
+
+        const {verifyEmailOTPVerificationKey} = state;
+        const reqData = {
+          otp: otp,
+          otp_verification_key: verifyEmailOTPVerificationKey,
+        }
+        try {
+          const {data} = await axiosUserInstance.post("auth/verify-email", reqData, {
+            headers: {
+              token: token(),
+            }
+          })
+          setState(state => ({
+            ...state,
+            verifyingEmail: false,
+            userData: data?.updated_user,
+          }))
+          message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
+        }catch(error) {
+          message.error(error?.respose?.data?.error ,parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
+        }
       }
     }
 
@@ -55,7 +84,7 @@ const UserInformation = () => {
       }))
     }
 
-    const sendOTP = async (channel) => {
+    const sendOTP = async (channel) => { // channel is either "email" for email otp or "sms" for phone otp
       setState(state => ({
         ...state,
         sendingOTP: true,
@@ -83,13 +112,39 @@ const UserInformation = () => {
           ...state,
           sendingOTP: false,
         }))
-        message.error(error?.response?.data?.error || 'could not verify email, try later')
+        message.error(error?.response?.data?.error || 'could not verify email, try later', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
         console.log(error)
       }
     }
 
+    const getUser = async () => {
+      try {
+        const { data } = await axiosUserInstance.get(
+          `auth/get-user/${user?.reference}`,
+          {
+            headers: {
+              token: token(),
+            },
+          }
+        );
+        setState((state) => ({
+          ...state,
+          loading: false,
+          userData: data.user,
+        }));
+      } catch (error) {
+        
+      }
+    };
+
+    useEffect(() => {
+      getUser();
+    }, [user])
+
   return (
     <userInformationContext.Provider value={{
+      loading,
+      userData,
       sendingOTP,
       verifyEmailOTP,
       verifyingEmail,
