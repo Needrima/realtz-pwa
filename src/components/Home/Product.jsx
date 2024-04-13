@@ -365,7 +365,7 @@ const Product = ({product}) => {
                 <img onClick={() => navigate(`/profile/${product?.user_reference}`)} className='d-block' src={profileIcon} alt="view owners profile" />
             </div>
 
-            <div className='mb-4'>
+            <div className='mb-4 d-flex flex-column align-items-center'>
                 {likingProduct ? <CustomSpin color={'white'} spinning={likingProduct} /> : productLiked ? 
                 <img onClick={unLikeProduct} className='d-block' src={likeIconLiked} alt="like video" /> // chage this to blue like image
                 : 
@@ -374,7 +374,7 @@ const Product = ({product}) => {
                 <div className='text-light text-center fw-bold'>{FormatNumber(numLikes)}</div>
             </div>
 
-            <div className='mb-4'>
+            <div className='mb-4 d-flex flex-column align-items-center'>
                 <img className='d-block' src={commentIcon} alt="comment on video" onClick={openComments} />
                 <div className='text-light text-center fw-bold'>{FormatNumber(numComments)}</div>
             </div>

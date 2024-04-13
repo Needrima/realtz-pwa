@@ -23,27 +23,27 @@ const UserInformationLayout = () => {
         <div className='options rounded py-4 px-2'>
             <div className='mb-4'>
                 <div className='fw-bold  fs-1 fs-1'>Firstname</div>
-                <div className='fs-5 text-primary'>{userData?.firstname || ''}</div>
+                <div className='fs-5 text-primary text-capitalize'>{userData?.firstname}</div>
             </div>
 
             <div className='mb-4'>
                 <div className='fw-bold  fs-1'>Lastname</div>
-                <div className='fs-5 text-primary'>{userData?.lastname || ''}</div>
+                <div className='fs-5 text-primary text-capitalize'>{userData?.lastname}</div>
             </div>
 
             <div className='mb-4'>
                 <div className='fw-bold  fs-1'>Username</div>
-                <div className='fs-5 text-primary'>{userData?.username || ''}</div>
+                <div className='fs-5 text-primary'>@{userData?.username}</div>
             </div>
 
             <div className='mb-4'>
-                <div className='fw-bold  fs-1'>Email {!userData?.is_email_verified && <img src={wariningIcon} alt="" />}</div>
-                <div className='fs-5 text-primary'>{userData?.email || ''} {!userData?.is_email_verified && <span className='text-primary text-decoration-underline' onClick={() => sendOTP('email')}>( {sendingOTP ? <CustomSpin spinning={sendingOTP} /> : 'verify'} )</span>}</div>
+                <div className='fw-bold fs-1'>Email {!userData?.is_email_verified && <img src={wariningIcon} alt="" />}</div>
+                <div className='fs-5 text-primary'>{userData?.email} {!userData?.is_email_verified && <span className='text-primary text-decoration-underline' onClick={() => sendOTP('email')}>( {sendingOTP ? <CustomSpin spinning={sendingOTP} /> : 'verify'} )</span>}</div>
             </div>
 
             <div className='mb'>
                 <div className='fw-bold  fs-1'>Phone Number {!userData?.is_phone_number_verified && <img src={wariningIcon} alt="" />}</div>
-                <div className='fs-5 text-primary'>{userData?.phone_number || ''} {!userData?.is_phone_number_verified && <span className='text-primary text-decoration-underline'>( verify )</span>}</div>
+                <div className='fs-5 text-primary'>{userData?.phone_number} {!userData?.is_phone_number_verified && <span className='text-primary text-decoration-underline'>( verify )</span>}</div>
             </div>
         </div>
         }
