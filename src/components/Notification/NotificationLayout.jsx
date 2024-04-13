@@ -25,7 +25,7 @@ const NotificationLayout = () => {
           </div>} // triggers if hasMore={true}
           endMessage={
             <p className={`text-center fw-bold text-light ${notificationData ? '' : 'product-loading-center'}`}>
-              <b>no more notifications</b>
+              <b className='text-primary'>no more notifications</b>
             </p>
           } // triggers if hasMore={false}
           // below props only if you need pull down functionality
