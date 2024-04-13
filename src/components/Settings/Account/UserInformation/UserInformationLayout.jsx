@@ -8,7 +8,7 @@ import timerIcon from '../../../../assets/icons/timer.svg'
 import CustomSpin from '../../../UI/CustomSpin/CustomSpin'
 
 const UserInformationLayout = () => {
-    const {loading, userData, sendingOTP, verifyEmailOTP, onEmailOTPInput, verifyingEmail, verifyEmailBoxOpen, openVerifyEmailBox, expiryCountDown,
+    const {loading, userData, sendingOTP, verifyEmailOTP, onEmailOTPInput, verifyingEmail, verifyEmailBoxOpen, openVerifyEmailBox, emailExpiryCountDown,
         sendOTP,} = useContext(userInformationContext);
 
   return (
@@ -71,7 +71,7 @@ const UserInformationLayout = () => {
 
             <div className="text-center mt-5">
                 <span className="otp-countdown p-3 rounded-4">
-                    <img src={timerIcon} alt="timer icon" /> {expiryCountDown.minutes}:{expiryCountDown.seconds}
+                    <img src={timerIcon} alt="timer icon" /> {emailExpiryCountDown.minutes}:{emailExpiryCountDown.seconds}
                 </span>
             </div>
 
@@ -79,7 +79,7 @@ const UserInformationLayout = () => {
                 Didn't receive OTP?{" "}
                 <span
                 className={`text-primary fw-bold ${
-                    expiryCountDown.isRunning || verifyingEmail || sendingOTP ? "opacity-50 pe-none" : ""
+                    emailExpiryCountDown.isRunning || verifyingEmail || sendingOTP ? "opacity-50 pe-none" : ""
                 }`}
                 onClick={() => sendOTP('email')}
                 >
