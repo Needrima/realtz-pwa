@@ -1,5 +1,5 @@
 import React from 'react'
-import '../Settings.scss'
+import './Account.scss'
 import proceedIcon from '../../../assets/icons/proceed-icon.svg'
 import { useNavigate } from 'react-router-dom'
 

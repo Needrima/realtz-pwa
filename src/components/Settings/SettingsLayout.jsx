@@ -46,13 +46,13 @@ const SettingsLayout = () => {
                 <img src={proceedIcon} alt="" />
             </div>
 
-            <div className='d-flex justify-content-between align-items-center mb-4'>
+            {/* <div className='d-flex justify-content-between align-items-center mb-4'>
                 <div className='d-flex '>
                     <img src={shieldIcon} alt="user icon" className='me-2' />
                     <span className='fw-bold fs-4'>Security</span>
                 </div>
                 <img src={proceedIcon} alt="" />
-            </div>
+            </div> */}
 
             <div className='d-flex justify-content-between align-items-center mb-4' onClick={() => navigate("/notifications")}>
                 <div className='d-flex '>
