@@ -58,9 +58,15 @@ const UserInformation = () => {
             ...state,
             verifyingEmail: false,
             userData: data?.updated_user,
+            verifyEmailBoxOpen: false,
           }))
+          expiryCountDown.pause()
           message.success(data?.message, parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
         }catch(error) {
+          setState(state => ({
+            ...state,
+            verifyingEmail: false,
+          }))
           message.error(error?.respose?.data?.error ,parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
         }
       }
@@ -100,9 +106,10 @@ const UserInformation = () => {
             token: token(),
           }
         })
+        console.log(data)
         setState(state => ({
           ...state,
-          verifyEmailOTPVerificationCode: data?.otp_verification_key,
+          verifyEmailOTPVerificationKey: data?.otp_verification_key,
           sendingOTP: false,
           verifyEmailBoxOpen: true,
         }))
