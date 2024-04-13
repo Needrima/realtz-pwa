@@ -5,7 +5,7 @@ import { addProductContext } from '../../pages/AddProduct/AddProduct';
 const Step1 = () => {
     const {beforeVideoUpload, onChangeVideosUpload, videoFiles, removeFile, changeStep} = useContext(addProductContext)
   return (
-    <div className='text-center vh-100 w-100 d-flex flex-column align-items-center justify-content-center'>
+    <div className='text-center mt-6 w-100 d-flex flex-column align-items-center justify-content-center'>
         <div className='mb-3 w-100 d-flex justify-content-around flex-wrap'>
             {videoFiles.length !== 0 && videoFiles.map((file, index) => 
                 <div key={index} className='col-6 p-1 position-relative' style={{height: 127}}>
@@ -32,9 +32,9 @@ const Step1 = () => {
                 fileList={videoFiles}
                 maxCount={3}
             >
-                <button className='btn btn-primary px-3 fw-bold me-2'>Add Videos</button>
+                <button className='btn btn-primary p-3 fw-bold me-2'>Add Videos</button>
             </Upload>
-            <button className='btn btn-primary px-3 fw-bold' disabled={videoFiles.length === 0} onClick={() => changeStep('2')}>Next</button>
+            <button className='btn btn-primary p-3 fw-bold' disabled={videoFiles.length === 0} onClick={() => changeStep('2')}>Next</button>
         </div>
     </div>
   )

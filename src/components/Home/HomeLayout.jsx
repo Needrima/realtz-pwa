@@ -54,8 +54,7 @@ const HomeLayout = () => {
                 trendingProductsData ? "" : "product-loading-center"
               }`}
             >
-              <div className="text-light fw-bold fs-3 me-3">Loading</div>
-              <CustomSpin color={'white'} />
+              <CustomSpin />
             </div>
           } // triggers if hasMore={true}
           endMessage={

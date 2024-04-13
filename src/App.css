@@ -18,6 +18,10 @@
   width: max-content;
 }
 
+.mt-6 {
+  margin-top: 15rem;
+}
+
 .mt-8 {
   margin-top: 17.5rem;
 }
