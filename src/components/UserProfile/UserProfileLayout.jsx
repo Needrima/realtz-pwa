@@ -69,11 +69,11 @@ const UserProfileLayout = () => {
       ) : (
         <>
           <div className="mt-5 d-flex justify-content-end">
-            <img
+            {user?.reference === userData?.reference && <img
               src={settingsIcon}
               alt="settings-icon"
               onClick={() => navigate("/settings")}
-            />
+            />}
           </div>
 
           <div className="mt-3 d-flex justify-content-center">

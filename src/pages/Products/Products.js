@@ -128,7 +128,7 @@ useEffect(() => {
 
   return (
     <Layout>
-      <div className='px-3 py-2 vh-100'>
+      <div className='p-2 vh-100'>
         <Catalogue
           products={products}
           productsData={productsData}
