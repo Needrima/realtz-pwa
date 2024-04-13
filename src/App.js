@@ -20,6 +20,7 @@ import Terms from './pages/Terms/Terms';
 import Privacy from './pages/PrivacyPolicy/Privacy';
 import Settings from './pages/Settings/Settings';
 import Account from './pages/Settings/Account/Account';
+import UserInformation from './pages/Settings/Account/UserInformation';
 
 function App() {
   const dispatch = useDispatch();
@@ -107,6 +108,7 @@ function App() {
         <Route path='/privacy' element={<Privacy />} />
         <Route path='/settings' element={<Settings />} />
         <Route path='/settings/account' element={<Account />} />
+        <Route path='/settings/account/user-information' element={<UserInformation />} />
       </Routes>
     </div>
   );

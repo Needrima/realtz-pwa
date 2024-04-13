@@ -32,7 +32,7 @@ import { useSelector } from 'react-redux'
 const SettingsLayout = () => {
     const navigate = useNavigate()
     const {user} = useSelector(state => state.authReducer)
-    const {openShareProfileBox, shareProfileBoxOpen} = useContext(settingsContext)
+    const {openShareProfileBox, shareProfileBoxOpen, logoutUser} = useContext(settingsContext)
   return (
     <div className='p-2'>
         <h1 className='fw-bold text-primary mt-3 text-center mb-5'>Settings</h1>
@@ -62,10 +62,18 @@ const SettingsLayout = () => {
                 <img src={proceedIcon} alt="" />
             </div>
 
-            <div className='d-flex justify-content-between align-items-center' onClick={() => openShareProfileBox(true)}>
+            <div className='d-flex justify-content-between align-items-center mb-4' onClick={() => openShareProfileBox(true)}>
                 <div className='d-flex '>
                     <img src={shareIcon} alt="user icon" className='me-2' />
                     <span className='fw-bold fs-4'>Share Profile</span>
+                </div>
+                <img src={proceedIcon} alt="" />
+            </div>
+
+            <div className='d-flex justify-content-between align-items-center' onClick={logoutUser}>
+                <div className='d-flex align-items-center'>
+                    <i className="bi bi-box-arrow-left me-2 text-primary fw-bold"></i>
+                    <span className='fw-bold fs-4'>Logout</span>
                 </div>
                 <img src={proceedIcon} alt="" />
             </div>
