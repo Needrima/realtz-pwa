@@ -15,7 +15,7 @@ const AddProduct = () => {
     // const {token} = useSelector(state => state.authReducer)
     const navigate = useNavigate();
     const [state, setState] = useState({
-        step: '3',
+        step: '1',
         videoFiles: [],
         listingInfo: {
             properties: [],
