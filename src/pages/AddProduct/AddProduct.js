@@ -35,8 +35,9 @@ const AddProduct = () => {
         createProductBoxOpen: false,
         creatingProduct: false,
         confirmInfo: false,
+        addListingConsentFrom: Form.useForm(),
     })
-    const {step2Form, step3Form, step, videoFiles, listingInfo, createProductBoxOpen, creatingProduct, confirmInfo} = state;
+    const {step2Form, step3Form, step, videoFiles, listingInfo, createProductBoxOpen, creatingProduct, confirmInfo, addListingConsentFrom} = state;
 
     const changeStep = (step) => {
         setState(state => ({
@@ -165,6 +166,7 @@ const AddProduct = () => {
             createProductBoxOpen: show,
             confirmInfo: false,
         }))
+        addListingConsentFrom[0].resetFields()
     }
 
     const setConfirmInfo = (confirm) => {
@@ -222,6 +224,7 @@ const AddProduct = () => {
         createProductBoxOpen,
         creatingProduct,
         confirmInfo,
+        addListingConsentFrom,
         changeStep,
         beforeVideoUpload,
         onChangeVideosUpload,

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { addProductContext } from '../../pages/AddProduct/AddProduct'
 import { FLOAT_ONLY_REGEX } from '../../misc/regex';
 import { Checkbox, Drawer, Form, Input } from 'antd';
@@ -6,7 +6,7 @@ import CustomSpin from '../UI/CustomSpin/CustomSpin';
 
 const Step3 = () => {
     const {step3Form, changeStep, addPricing, listingInfo:{for_rent, for_shortlet}, createProduct, createProductBoxOpen,
-    openCreateProductBox, creatingProduct, confirmInfo, setConfirmInfo} = useContext(addProductContext);
+    openCreateProductBox, creatingProduct, confirmInfo, setConfirmInfo, addListingConsentFrom} = useContext(addProductContext);
   return (
     <div className='my-5'>
         <h1 className='fw-bold mb-3'>Pricing <span className='text-primary'>information</span></h1>
@@ -213,6 +213,7 @@ const Step3 = () => {
             onClose={() => openCreateProductBox(false)}
         >
             <Form 
+             form={addListingConsentFrom[0]}
              onFinish={() => createProduct()}
              autoComplete="off"
              >
@@ -236,7 +237,6 @@ const Step3 = () => {
             <div className='text-center'>
                 <button className="btn btn-primary me-2"
                 type='submit'
-                //  onClick={() => createProduct()}
                  disabled={creatingProduct || !confirmInfo}
                 >{creatingProduct ? <CustomSpin color={'white'} /> : 'Add Lisitng'}</button>
 
