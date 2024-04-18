@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import { addProductContext } from '../../pages/AddProduct/AddProduct'
 import { FLOAT_ONLY_REGEX } from '../../misc/regex';
-import { Drawer, Form, Input } from 'antd';
+import { Checkbox, Drawer, Form, Input } from 'antd';
 import CustomSpin from '../UI/CustomSpin/CustomSpin';
 
 const Step3 = () => {
     const {step3Form, changeStep, addPricing, listingInfo:{for_rent, for_shortlet}, createProduct, createProductBoxOpen,
-    openCreateProductBox, creatingProduct} = useContext(addProductContext);
+    openCreateProductBox, creatingProduct, confirmInfo, setConfirmInfo, addListingConsentFrom} = useContext(addProductContext);
   return (
     <div className='my-5'>
         <h1 className='fw-bold mb-3'>Pricing <span className='text-primary'>information</span></h1>
@@ -212,14 +212,40 @@ const Step3 = () => {
             maskClosable={!creatingProduct}
             onClose={() => openCreateProductBox(false)}
         >
-            <div className='text-danger fw-bold fs-4 mb-3'>
-                NB: Ensure that all the listing information and pricing information entered are correct and accurate.
-            </div>
+            <Form 
+             form={addListingConsentFrom[0]}
+             onFinish={() => createProduct()}
+             autoComplete="off"
+             >
+
+            <Form.Item
+              name="information_agreement"
+              valuePropName="checked"
+              rules={[
+                {required: true, message: "you must confirm information accuracy"},
+              ]}
+            >
+              <Checkbox
+                onChange={(e) => setConfirmInfo(e.target.checked)}
+                defaultChecked={confirmInfo}
+                value={confirmInfo}
+              >
+                All the listing information and pricing information I entered are correct and accurate.
+              </Checkbox>
+            </Form.Item>
+
             <div className='text-center'>
-                <button className="btn btn-primary me-2" onClick={() => createProduct()} disabled={creatingProduct}
+                <button className="btn btn-primary me-2"
+                type='submit'
+                 disabled={creatingProduct || !confirmInfo}
                 >{creatingProduct ? <CustomSpin color={'white'} /> : 'Add Lisitng'}</button>
-                <button className="btn btn-primary" onClick={() => openCreateProductBox(false)} disabled={creatingProduct}>Cancel</button>
+
+                <button className="btn btn-primary"
+                type='button'
+                 onClick={() => openCreateProductBox(false)} 
+                 disabled={creatingProduct}>Cancel</button>
             </div>
+          </Form>
         </Drawer>
     </div>
   )

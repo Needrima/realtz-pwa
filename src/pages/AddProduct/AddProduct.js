@@ -34,8 +34,10 @@ const AddProduct = () => {
         step3Form: Form.useForm(),
         createProductBoxOpen: false,
         creatingProduct: false,
+        confirmInfo: false,
+        addListingConsentFrom: Form.useForm(),
     })
-    const {step2Form, step3Form, step, videoFiles, listingInfo, createProductBoxOpen, creatingProduct} = state;
+    const {step2Form, step3Form, step, videoFiles, listingInfo, createProductBoxOpen, creatingProduct, confirmInfo, addListingConsentFrom} = state;
 
     const changeStep = (step) => {
         setState(state => ({
@@ -162,6 +164,15 @@ const AddProduct = () => {
         setState(state => ({
             ...state,
             createProductBoxOpen: show,
+            confirmInfo: false,
+        }))
+        addListingConsentFrom[0].resetFields()
+    }
+
+    const setConfirmInfo = (confirm) => {
+        setState(state => ({
+            ...state,
+            confirmInfo: confirm,
         }))
     }
 
@@ -195,7 +206,7 @@ const AddProduct = () => {
             }))
             navigate("/home", {replace: true})
         }catch(error) {
-            message.error(error?.response?.data?.error || 'could not add listing added successfully', process.env.REACT_APP_POPUP_TIMEOUT)
+            message.error(error?.response?.data?.error || 'could not add listing', process.env.REACT_APP_POPUP_TIMEOUT)
             setState(state => ({
                 ...state,
                 creatingProduct: false,
@@ -212,6 +223,8 @@ const AddProduct = () => {
         step3Form,
         createProductBoxOpen,
         creatingProduct,
+        confirmInfo,
+        addListingConsentFrom,
         changeStep,
         beforeVideoUpload,
         onChangeVideosUpload,
@@ -222,7 +235,8 @@ const AddProduct = () => {
         addProductInfo,
         addPricing,
         createProduct,
-        openCreateProductBox
+        openCreateProductBox,
+        setConfirmInfo,
     }}>
         <Layout>
             <AddProductLayout>

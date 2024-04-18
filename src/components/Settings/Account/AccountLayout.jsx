@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Account.scss'
 import proceedIcon from '../../../assets/icons/proceed-icon.svg'
 import { useNavigate } from 'react-router-dom'
+import { Checkbox, Drawer, Form } from 'antd'
+import { accountContext } from '../../../pages/Settings/Account/Account'
+import CustomSpin from '../../UI/CustomSpin/CustomSpin'
 
 const AccountLayout = () => {
     const navigate = useNavigate()
+    const {deleteAccountBoxOpen, openDeleteAccountBox, deleteAccountConsent, onDeleteAccountConsent, deleteAccountConsentForm, deletingAccount, deleteAccount} = useContext(accountContext);
   return (
     <div className='p-2'>
         <h1 className='fw-bold text-primary mt-3 text-center mb-5'>Account</h1>
@@ -30,11 +34,58 @@ const AccountLayout = () => {
                 <img src={proceedIcon} alt="" />
             </div> */}
 
-            <div className='d-flex justify-content-between align-items-center'>
+            <div className='d-flex justify-content-between align-items-center' onClick={() => openDeleteAccountBox(true)}>
                 <span className='fs-4'>Delete Account</span>
                 <img src={proceedIcon} alt="" />
             </div>
         </div>
+
+        <Drawer
+            open={deleteAccountBoxOpen}
+            title={<div className='text-primary fw-bold'>Delete Account</div>}
+            // footer={} // react node
+            placement="bottom"
+            height={"auto"}
+            closable={!deletingAccount}
+            maskClosable={!deletingAccount}
+            onClose={() => openDeleteAccountBox(false)}
+        >
+            <Form 
+            form={deleteAccountConsentForm[0]}
+             onFinish={() => deleteAccount()}
+             autoComplete="off"
+             >
+
+            <Form.Item
+              name="delete_Account_agreement"
+              valuePropName="checked"
+              rules={[
+                {required: true, message: "you must confirm information accuracy"},
+              ]}
+            >
+              <Checkbox
+                onChange={(e) => onDeleteAccountConsent(e.target.checked)}
+                defaultChecked={deleteAccountConsent}
+                value={deleteAccountConsent}
+              >
+                I agree that all my information, activities and records will be deleted and this action is not reversible
+              </Checkbox>
+            </Form.Item>
+
+            <div className='text-center'>
+                <button className="btn btn-primary me-2"
+                 type='submit'
+                 disabled={!deleteAccountConsent || deletingAccount}
+                >{deletingAccount ? <CustomSpin color={'white'} /> : 'Delete Account'}</button>
+                
+                <button className="btn btn-primary"
+                type='button'
+                 onClick={() => openDeleteAccountBox(false)} 
+                 disabled={deletingAccount}
+                >Cancel</button>
+            </div>
+          </Form>
+        </Drawer>
     </div>
   )
 }
