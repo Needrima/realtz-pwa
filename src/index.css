@@ -14,3 +14,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#large-screen-error-msg {
+  display: none;
+}
+
+@media(min-width: 576px) {
+
+  #large-screen-error-msg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 0 2rem;
+    font-weight: bold;
+  }
+
+  #root {
+    display: none;
+  }
+}

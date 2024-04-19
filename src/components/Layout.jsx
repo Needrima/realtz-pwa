@@ -65,11 +65,11 @@ const Layout = ({ children }) => {
           <span>Profile</span>
         </div>
 
-        <div className={`mb-3 fw-bold fs-2 d-flex alig-items-end ${window.location.pathname === '/settings' ? 'text-primary' : 'text-muted'}`} onClick={() => {
+        <div className={`mb-3 fw-bold fs-2 d-flex alig-items-end ${window.location.pathname.split('/')[1] === 'settings' ? 'text-primary' : 'text-muted'}`} onClick={() => {
            setNavbar(false)
            navigate('/settings')
         }}>
-          <img src={window.location.pathname === '/settings' ? settingsIconNavBlue : settingsIconNav} alt="" className="me-2" />
+          <img src={window.location.pathname.split('/')[1] === 'settings' ? settingsIconNavBlue : settingsIconNav} alt="" className="me-2" />
           <span>Settings</span>
         </div>
       </Drawer>
