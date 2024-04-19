@@ -85,7 +85,7 @@ const HomeLayout = () => {
       >
         <div
           onClick={() => changeTab("home")}
-          className={`text-light me-3 fw-bold fs-3 ${
+          className={`text-light me-3 fw-bold fs-5 ${
             tab === "home" ? "active-tab" : ""
           } position-relative`}
         >
@@ -93,7 +93,7 @@ const HomeLayout = () => {
         </div>
         <div
           onClick={() => changeTab("trending")}
-          className={`text-light fw-bold fs-3 ${
+          className={`text-light fw-bold fs-5 ${
             tab === "trending" ? "active-tab" : ""
           } position-relative`}
         >

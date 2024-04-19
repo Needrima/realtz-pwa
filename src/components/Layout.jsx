@@ -12,7 +12,11 @@ const Layout = ({ children }) => {
     }
   }, [isLoggedIn]);
 
-  return <div id="layout">{children}</div>;
+  return (
+    <div id="layout">
+      {children}
+    </div>
+  )
 };
 
 export default Layout;
