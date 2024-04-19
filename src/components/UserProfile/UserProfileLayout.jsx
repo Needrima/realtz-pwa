@@ -68,15 +68,15 @@ const UserProfileLayout = () => {
         </div>
       ) : (
         <>
-          <div className="mt-3 d-flex justify-content-end">
+          {/* <div className="mt-3 d-flex justify-content-end">
             {user?.reference === userData?.reference && <img
               src={settingsIcon}
               alt="settings-icon"
               onClick={() => navigate("/settings")}
             />}
-          </div>
+          </div> */}
 
-          <div className="mt-3 d-flex justify-content-center">
+          <div className="mt-5 d-flex justify-content-center">
             <div
               className="position-relative"
               onClick={() => openViewImageBox(true)}

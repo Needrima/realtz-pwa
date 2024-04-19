@@ -81,7 +81,7 @@ const HomeLayout = () => {
 
       <div
         className="position-fixed w-100 d-flex justify-content-center"
-        style={{ top: "5%" }}
+        style={{ top: "2%" }}
       >
         <div
           onClick={() => changeTab("home")}
