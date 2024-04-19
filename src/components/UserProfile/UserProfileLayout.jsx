@@ -68,7 +68,7 @@ const UserProfileLayout = () => {
         </div>
       ) : (
         <>
-          <div className="mt-5 d-flex justify-content-end">
+          <div className="mt-3 d-flex justify-content-end">
             {user?.reference === userData?.reference && <img
               src={settingsIcon}
               alt="settings-icon"
@@ -128,7 +128,7 @@ const UserProfileLayout = () => {
               <div className='fw-bold text-primary'>{FormatNumber(userData?.num_likes)}</div>
               <div>Likes</div>
           </div>
-          <div  className='text-center border border-primary p-3 rounded'>
+          <div  className='text-center border border-primary p-3 rounded' onClick={() => navigate(`/products?type=user&reference=${userData?.reference}`)}>
               <div className='fw-bold text-primary'>{FormatNumber(userData?.num_products)}</div>
               <div>Listings</div>
           </div>
@@ -153,7 +153,7 @@ const UserProfileLayout = () => {
             </div> */}
         </div>}
 
-        <div className={`mt-3 px-2 text-center`}>
+        <div className={`mt-3 px-2`}>
           
           <div className={`bio ${fullBio && 'full-bio'}`}>
             {userData?.bio ? userData?.bio : (userData?.reference === user?.reference) 
@@ -161,20 +161,20 @@ const UserProfileLayout = () => {
             : `${userData?.username} has not added a bio yet` 
             }
           </div> 
-          {userData?.bio && <span className='fw-bold text-primary' onClick={() => showFullbio(shown => !shown)}>{fullBio ? 'show less' : 'show more'}</span>}
+          {userData?.bio && <div className='fw-bold text-primary text-center' onClick={() => showFullbio(shown => !shown)}>{fullBio ? 'show less' : 'show more'}</div>}
         </div>
 
           <div className="mt-3 d-flex justify-content-center">
             {user?.reference === userData?.reference && (
               <button
-                className="btn btn-primary btn-lg me-2 fw-bold"
+                className="btn btn-primary me-2 fw-bold"
                 onClick={() => openEditProfileBox(true)}
               >
                 Edit Profile
               </button>
             )}
             <button
-              className="btn btn-primary btn-lg fw-bold"
+              className="btn btn-primary fw-bold"
               onClick={() => openShareProfileBox(true)}
             >
               Share Profile
@@ -207,8 +207,8 @@ const UserProfileLayout = () => {
                                 <source src={product.videos[0]} type="video/mp4" />
                             </video>
                             <div className='position-absolute status-badge'>
-                              <span className={`badge ${product?.is_on_rent ? 'bg-danger' : 'bg-primary'} me-2`}>{product?.is_on_rent ? 'On Rent' : 'For rent'}</span>
-                              <span className={`badge ${product?.is_on_shortlet ? 'bg-danger' : 'bg-primary'}`}>{product?.is_on_shortlet ? 'On Shortlet' : 'For Shortlet'}</span>
+                              {product?.for_rent && <span className={`badge ${product?.is_on_rent ? 'bg-danger' : 'bg-primary'} me-2`}>{product?.is_on_rent ? 'On Rent' : 'For rent'}</span>}
+                              {product?.for_shortlet && <span className={`badge ${product?.is_on_shortlet ? 'bg-danger' : 'bg-primary'}`}>{product?.is_on_shortlet ? 'On Shortlet' : 'For Shortlet'}</span>}
                           </div>
                         </div>
 
