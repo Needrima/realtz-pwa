@@ -39,7 +39,6 @@ import CustomSpin from '../UI/CustomSpin/CustomSpin';
 import { token } from '../../api/token';
 
 const Product = ({product}) => {
-  console.log(product)
   const {user} = useSelector(state => state.authReducer)
   const navigate = useNavigate();
   const [form] = Form.useForm();

@@ -54,6 +54,7 @@ const Account = () => {
         ...state,
         deletingAccount: false,
       }))
+      // add a message
       dispatch(logout())
       deleteAccountConsentForm[0].resetFields()
       navigate('/', {replace: true})

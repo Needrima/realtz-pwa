@@ -55,7 +55,7 @@ const Explore = () => {
         ...state,
         loading: true
       }))
-      console.log('seaching for:', value)
+      // console.log('seaching for:', value)
     }
 
     useEffect(() => {
@@ -66,7 +66,8 @@ const Explore = () => {
     <Layout>
         <div className='p-2 vh-100'>
             {!loading && <Input 
-                className='mb-2 search-input py-2 border border-1 border-secondary'
+                className='mb-2 mt-1 search-input py-2 border border-1 border-secondary border-0 rounded-3'
+                style={{width: '87%'}}
                 suffix={<i className="bi bi-search"></i>}
                 onKeyUp={isTyping}
                 onKeyDown={stoppedTyping}
