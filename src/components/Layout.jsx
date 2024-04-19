@@ -16,8 +16,16 @@ import settingsIconNavBlue from '../assets/icons/settings-icon-nav-blue.svg'
 const Layout = ({ children }) => {
   const navigate = useNavigate();
   const { isLoggedIn } = useSelector((state) => state.authReducer);
-
   const [navBar, setNavbar] = useState(false)
+  const [largeScreen, setLargeScreen] = useState(window.screen.width > 470);
+
+  window.addEventListener('resize', () => {
+    if (window.screen.width > 470) {
+      setLargeScreen(true)
+    } else {
+      setLargeScreen(false)
+    }
+  })
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -25,9 +33,15 @@ const Layout = ({ children }) => {
     }
   }, [isLoggedIn]);
 
+  if (largeScreen) {
+    return <div className="fw-bold vh-100 d-flex align-items-center justify-content-center p-3">Sorry we are currently available on mobile screens only. Please switch to a mobile device</div>
+  }
+
   return (
     <div id="layout position-relative">
       {children}
+      
+      {/* navigation menu drawer */}
       <Drawer
         open={navBar}
         closable={true}
@@ -74,9 +88,10 @@ const Layout = ({ children }) => {
         </div>
       </Drawer>
       
+      {/* navigation menu hamburger  */}
       <i 
-      className={`bi bi-list ${window.location.pathname === '/home' ? 'text-white border-white' : 'text-dark border-dark'} border px-2 rounded fw-bold fs-4`}
-      style={{position: 'absolute', top: '2%', right: '2%'}}
+      className={`bi bi-list ${window.location.pathname === '/home' ? 'text-white border-white' : 'text-dark border-dark'} border px-2 rounded fw-bold fs-4 position-absolute`}
+      style={{top: '2%', right: '2%'}}
       onClick={() => setNavbar(true)}
       ></i>
     </div>
