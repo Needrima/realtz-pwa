@@ -77,7 +77,7 @@ const Layout = ({ children }) => {
       
       {/* navigation menu hamburger  */}
       <i 
-      className={`bi bi-list ${window.location.pathname === '/home' ? 'text-white border-white' : 'text-dark border-dark'} border px-2 rounded fw-bold fs-4 position-absolute`}
+      className={`bi bi-list ${window.location.pathname === '/home' ? 'text-white border-white' : 'text-dark border-dark'} border px-2 rounded fw-bold fs-4 position-fixed`}
       style={{top: '2%', right: '2%'}}
       onClick={() => setNavbar(true)}
       ></i>
