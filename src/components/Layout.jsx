@@ -17,25 +17,12 @@ const Layout = ({ children }) => {
   const navigate = useNavigate();
   const { isLoggedIn } = useSelector((state) => state.authReducer);
   const [navBar, setNavbar] = useState(false)
-  const [largeScreen, setLargeScreen] = useState(window.screen.width > 470);
-
-  window.addEventListener('resize', () => {
-    if (window.screen.width > 470) {
-      setLargeScreen(true)
-    } else {
-      setLargeScreen(false)
-    }
-  })
 
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/login");
     }
   }, [isLoggedIn]);
-
-  if (largeScreen) {
-    return <div className="fw-bold vh-100 d-flex align-items-center justify-content-center p-3">Sorry we are currently available on mobile screens only. Please switch to a mobile device</div>
-  }
 
   return (
     <div id="layout position-relative">

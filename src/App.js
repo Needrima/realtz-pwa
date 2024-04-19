@@ -8,7 +8,7 @@ import Notification from './pages/Notification/Notification';
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import { Provider, useDispatch } from 'react-redux';
 import { syncSession } from './redux/Actions';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Store from './redux/Store';
 import UserProfile from './pages/UserProfile/UserProfile';
 import SingleProduct from './pages/SingleProduct/SingleProduct';
@@ -24,6 +24,8 @@ import UserInformation from './pages/Settings/Account/UserInformation/UserInform
 
 function App() {
   const dispatch = useDispatch();
+
+  const [largeScreen, setLargeScreen] = useState(window.screen.width > 470);
 
   useEffect(() => {
       const data = {};
@@ -85,6 +87,18 @@ function App() {
     } else {
       return <Navigate replace={true} to="/login" />;
     }
+  }
+
+  window.addEventListener('resize', () => {
+    if (window.screen.width > 470) {
+      setLargeScreen(true)
+    } else {
+      setLargeScreen(false)
+    }
+  })
+
+  if (largeScreen) {
+    return <div className="fw-bold vh-100 d-flex align-items-center justify-content-center p-3">Sorry we are currently available on mobile screens only. Please switch to a mobile device</div>
   }
 
   return (
