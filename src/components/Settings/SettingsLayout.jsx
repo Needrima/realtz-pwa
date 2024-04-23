@@ -3,8 +3,8 @@ import './Settings.scss'
 import userIcon from '../../assets/icons/user.svg'
 import bellIcon from '../../assets/icons/bell.svg'
 import shareIcon from '../../assets/icons/share-icon.svg'
-import shieldIcon from '../../assets/icons/shield-icon.svg'
 import proceedIcon from '../../assets/icons/proceed-icon.svg'
+import logoutIcon from '../../assets/icons/logout.svg'
 import { useNavigate } from 'react-router-dom'
 import defaultImage from '../../assets/images/default.jpg'
 import {
@@ -72,7 +72,7 @@ const SettingsLayout = () => {
 
             <div className='d-flex justify-content-between align-items-center' onClick={logoutUser}>
                 <div className='d-flex align-items-center'>
-                    <i className="bi bi-box-arrow-left me-2 text-primary fw-bold"></i>
+                    <img src={logoutIcon} alt="user icon" className='me-2' />
                     <span className='fw-bold fs-4'>Logout</span>
                 </div>
                 <img src={proceedIcon} alt="" />
@@ -154,7 +154,7 @@ const SettingsLayout = () => {
             >
               <WhatsappIcon round={true} />
             </WhatsappShareButton>
-          </Drawer>
+        </Drawer>
     </div>
   )
 }
