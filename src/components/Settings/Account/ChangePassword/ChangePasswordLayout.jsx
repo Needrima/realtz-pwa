@@ -1,20 +1,15 @@
 import { Form, Input } from 'antd'
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import passwordIcon from "../../../../assets/icons/password.svg";
 import { PASSWORD_LOWERCASE_REGEX, PASSWORD_NUM_REGEX, PASSWORD_SYMBOLS_REGEX, PASSWORD_UPPERCASE_REGEX } from '../../../../misc/regex';
-import CustomSpin from '../../../../components/UI/CustomSpin/CustomSpin';
+import CustomSpin from '../../../UI/CustomSpin/CustomSpin';
+import { changePasswordContext } from '../../../../pages/Settings/Account/ChangePassword/ChangePassword';
 
-const Password = () => {
-    const [state, setState] = useState({
-        loading: false,
-    })
-    const {loading} = state;
-    const onFinish = (values) => {
-        console.log(values);
-    }
+const ChangePasswordLayout = () => {
+    const {loading, onFinish} = useContext(changePasswordContext);
   return (
     <div className='px-2 pt-5 pb-3'>
-    <h1 className='fw-bold text-primary mt-3 text-center mb-5'>Change password</h1>
+    <h1 className='fw-bold text-primary mt-3 text-center mb-5'>Change Layout</h1>
 
      <Form onFinish={onFinish}>
         <Form.Item
@@ -100,4 +95,4 @@ const Password = () => {
   )
 }
 
-export default Password
+export default ChangePasswordLayout
