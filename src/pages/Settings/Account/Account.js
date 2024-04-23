@@ -17,8 +17,13 @@ const Account = () => {
     deleteAccountConsent: false,
     deleteAccountConsentForm: Form.useForm(),
     deletingAccount: false,
+    switchAccountBoxOpen: false,
+    switchAccountConsent: false,
+    switchAccountConsentForm: Form.useForm(),
+    switchingAccount: false,
   })
-  const {deleteAccountBoxOpen, deleteAccountConsent, deleteAccountConsentForm, deletingAccount} = state;
+  const {deleteAccountBoxOpen, deleteAccountConsent, deleteAccountConsentForm, deletingAccount, switchAccountBoxOpen, switchAccountConsent,
+    switchAccountConsentForm, switchingAccount} = state;
 
   const openDeleteAccountBox = (show) => {
     setState(state => ({
@@ -68,15 +73,72 @@ const Account = () => {
     }
   }
 
+  const openSwitchAccountBox = (show) => {
+    setState(state => ({
+      ...state,
+      switchAccountBoxOpen: show,
+      switchAccountConsent: false
+    }))
+    switchAccountConsentForm[0].resetFields()
+  }
+
+  const onSwitchAccountConsent = (consent) => {
+    setState(state => ({
+      ...state,
+      switchAccountConsent: consent,
+    }))
+  }
+
+  const switchAccount = async (values) => {
+    setState(state => ({
+      ...state,
+      switchingAccount: true,
+    }))
+
+    console.log('switching account with values:', values)
+
+    const reqData = {
+      bvn: values.bvn
+    }
+
+    try {
+      const {data} = await axiosUserInstance.post('auth/switch-to-agent-account', reqData, {
+        headers: {
+          token: token(),
+        }
+      })
+      setState(state => ({
+        ...state,
+        switchingAccount: false,
+        switchAccountConsent: false
+      }))
+      switchAccountConsentForm[0].resetFields()
+      message.success(data?.message || 'successfully switched to agent account', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
+    }catch(error) {
+      setState(state => ({
+        ...state,
+        switchingAccount: false,
+      }))
+      message.error(error?.response?.data?.error || 'could not switch account', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
+    }
+  }
+
   return (
     <accountContext.Provider value={{
       deleteAccountBoxOpen,
       deleteAccountConsent,
       deleteAccountConsentForm,
       deletingAccount,
+      switchAccountBoxOpen,
+      switchAccountConsent,
+      switchAccountConsentForm, 
+      switchingAccount,
       openDeleteAccountBox,
       onDeleteAccountConsent,
       deleteAccount,
+      openSwitchAccountBox,
+      onSwitchAccountConsent,
+      switchAccount,
     }}>
       <Layout>
           <AccountLayout />

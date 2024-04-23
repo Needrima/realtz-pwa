@@ -12,6 +12,8 @@ import profileIcon from '../assets/icons/profile-icon.svg'
 import profileIconBlue from '../assets/icons/profile-icon-blue.svg'
 import settingsIconNav from '../assets/icons/settings-icon-nav.svg'
 import settingsIconNavBlue from '../assets/icons/settings-icon-nav-blue.svg'
+import navIconBlack from '../assets/icons/nav-icon-black.svg'
+import navIconWhite from '../assets/icons/nav-icon-white.svg'
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
@@ -76,11 +78,17 @@ const Layout = ({ children }) => {
       </Drawer>
       
       {/* navigation menu hamburger  */}
-      <i 
+      {/* <i 
       className={`bi bi-list ${window.location.pathname === '/home' ? 'text-white border-white' : 'text-dark border-dark'} border px-2 rounded fw-bold fs-4 position-fixed`}
       style={{top: '2%', right: '2%'}}
       onClick={() => setNavbar(true)}
-      ></i>
+      ></i> */}
+      <img 
+      src={window.location.pathname === '/home' ? navIconWhite : navIconBlack} alt=""
+      className="position-fixed"
+      style={{top: '2%', right: '2%'}}
+      onClick={() => setNavbar(true)}
+      />
     </div>
   )
 };
