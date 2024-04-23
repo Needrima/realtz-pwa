@@ -22,8 +22,8 @@ const AccountLayout = () => {
                 <img src={proceedIcon} alt="" />
             </div>
 
-            <div className='d-flex justify-content-between align-items-center mb-4'>
-                <span className='fs-4'>Password</span>
+            <div className='d-flex justify-content-between align-items-center mb-4' onClick={() => navigate("/settings/account/password")}>
+                <span className='fs-4'>Change password</span>
                 <img src={proceedIcon} alt="" />
             </div>
 
