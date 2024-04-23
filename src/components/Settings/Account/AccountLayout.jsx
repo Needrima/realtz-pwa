@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import './Account.scss'
 import proceedIcon from '../../../assets/icons/proceed-icon.svg'
 import { useNavigate } from 'react-router-dom'
-import { Checkbox, Drawer, Form } from 'antd'
+import { Checkbox, Drawer, Form, Input, InputNumber } from 'antd'
 import { accountContext } from '../../../pages/Settings/Account/Account'
 import CustomSpin from '../../UI/CustomSpin/CustomSpin'
 import { BVN_REGEX } from '../../../misc/regex'
@@ -56,7 +56,7 @@ const AccountLayout = () => {
         >
             <Form 
              form={switchAccountConsentForm[0]}
-             onFinish={() => switchAccount()}
+             onFinish={switchAccount}
              autoComplete="off"
              >
 

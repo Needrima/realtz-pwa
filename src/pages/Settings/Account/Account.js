@@ -89,36 +89,38 @@ const Account = () => {
     }))
   }
 
-  const switchAccount = async () => {
+  const switchAccount = async (values) => {
     setState(state => ({
       ...state,
       switchingAccount: true,
     }))
 
-    console.log('deleting account')
+    console.log('switching account with values:', values)
 
-    // try {
-    //   const {data} = await axiosUserInstance.get('auth/delete-account', {
-    //     headers: {
-    //       token: token(),
-    //     }
-    //   })
-    //   setState(state => ({
-    //     ...state,
-    //     deletingAccount: false,
-    //   }))
-    //   // add a message
-    //   dispatch(logout())
-    //   deleteAccountConsentForm[0].resetFields()
-    //   navigate('/', {replace: true})
-    // }catch(error) {
-    //   console.log(error)
-    //   setState(state => ({
-    //     ...state,
-    //     deletingAccount: false,
-    //   }))
-    //   message.error(error?.response?.data?.error || 'could not delete account', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
-    // }
+    const reqData = {
+      bvn: values.bvn
+    }
+
+    try {
+      const {data} = await axiosUserInstance.post('auth/switch-to-agent-account', reqData, {
+        headers: {
+          token: token(),
+        }
+      })
+      setState(state => ({
+        ...state,
+        switchingAccount: false,
+        switchAccountConsent: false
+      }))
+      switchAccountConsentForm[0].resetFields()
+      message.success(data?.message || 'successfully switched to agent account', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
+    }catch(error) {
+      setState(state => ({
+        ...state,
+        switchingAccount: false,
+      }))
+      message.error(error?.response?.data?.error || 'could not switch account', parseInt(process.env.REACT_APP_POPUP_TIMEOUT))
+    }
   }
 
   return (
