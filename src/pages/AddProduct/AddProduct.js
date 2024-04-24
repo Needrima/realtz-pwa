@@ -36,8 +36,9 @@ const AddProduct = () => {
         creatingProduct: false,
         confirmInfo: false,
         addListingConsentFrom: Form.useForm(),
+        creatingProductProgress: 0,
     })
-    const {step2Form, step3Form, step, videoFiles, listingInfo, createProductBoxOpen, creatingProduct, confirmInfo, addListingConsentFrom} = state;
+    const {step2Form, step3Form, step, videoFiles, listingInfo, createProductBoxOpen, creatingProduct, confirmInfo, addListingConsentFrom, creatingProductProgress} = state;
 
     const changeStep = (step) => {
         setState(state => ({
@@ -196,6 +197,14 @@ const AddProduct = () => {
                 headers: {
                     token: token(),
                     "Content-Type": "multipart/form-data"
+                },
+                onUploadProgress: (progressEvent) => {
+                    const { loaded, total } = progressEvent;
+                    const creatingProductProgress = Math.round((loaded * 100) / total);
+                    setState(state => ({
+                        ...state,
+                        creatingProductProgress: creatingProductProgress,
+                    }))
                 }
             })
             message.success(data?.message || 'lisitng added successfully', process.env.REACT_APP_POPUP_TIMEOUT)
@@ -225,6 +234,7 @@ const AddProduct = () => {
         creatingProduct,
         confirmInfo,
         addListingConsentFrom,
+        creatingProductProgress,
         changeStep,
         beforeVideoUpload,
         onChangeVideosUpload,
