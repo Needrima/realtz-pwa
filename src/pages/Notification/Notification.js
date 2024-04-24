@@ -3,6 +3,7 @@ import React, { createContext, useEffect, useState } from 'react'
 import NotificationLayout from '../../components/Notification/NotificationLayout'
 import { axiosNotificationInstance } from '../../api/axoios';
 import { token } from '../../api/token';
+import autoLogout from '../../components/Hoc/AutoLogout/AutoLogout';
 
 export const NotificationContext = createContext(null);
 const Notification = () => {
@@ -49,4 +50,4 @@ const Notification = () => {
   )
 }
 
-export default Notification
+export default autoLogout(Notification)

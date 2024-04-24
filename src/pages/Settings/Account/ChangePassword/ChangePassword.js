@@ -4,6 +4,7 @@ import ChangePasswordLayout from '../../../../components/Settings/Account/Change
 import { message } from 'antd';
 import { axiosUserInstance } from '../../../../api/axoios';
 import { token } from '../../../../api/token';
+import autoLogout from '../../../../components/Hoc/AutoLogout/AutoLogout';
 
 export const changePasswordContext = createContext()
 const ChangePassword = () => {
@@ -56,4 +57,4 @@ const ChangePassword = () => {
   )
 }
 
-export default ChangePassword
+export default autoLogout(ChangePassword)

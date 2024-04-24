@@ -4,6 +4,7 @@ import HomeLayout from "../../components/Home/HomeLayout";
 import { axiosProductInstance } from "../../api/axoios";
 import { useSelector } from "react-redux";
 import { token } from "../../api/token";
+import autoLogout from "../../components/Hoc/AutoLogout/AutoLogout";
 
 export const HomeContext = createContext(null);
 const Home = () => {
@@ -94,4 +95,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default autoLogout(Home);

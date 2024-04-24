@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import Layout from "../../components/Layout";
 import { message } from "antd";
 import { token } from "../../api/token";
+import autoLogout from "../../components/Hoc/AutoLogout/AutoLogout";
 
 export const UserProfileContext = createContext();
 const UserProfile = () => {
@@ -293,4 +294,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default autoLogout(UserProfile);

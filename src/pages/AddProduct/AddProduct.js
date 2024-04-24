@@ -9,6 +9,7 @@ import {axiosProductInstance} from '../../api/axoios'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { token } from '../../api/token';
+import autoLogout from '../../components/Hoc/AutoLogout/AutoLogout';
 
 export const addProductContext = createContext();
 const AddProduct = () => {
@@ -257,4 +258,4 @@ const AddProduct = () => {
   )
 }
 
-export default AddProduct
+export default autoLogout(AddProduct)

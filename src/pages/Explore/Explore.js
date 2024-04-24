@@ -6,6 +6,7 @@ import Layout from '../../components/Layout'
 import { Input } from 'antd'
 import './explore.scss'
 import { token } from '../../api/token'
+import autoLogout from '../../components/Hoc/AutoLogout/AutoLogout'
 
 export const exploreContext = createContext()
 const Explore = () => {
@@ -84,4 +85,4 @@ const Explore = () => {
   )
 }
 
-export default Explore
+export default autoLogout(Explore)

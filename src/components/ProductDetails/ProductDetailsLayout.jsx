@@ -36,7 +36,7 @@ const ProductDetailsLayout = () => {
   };
 
   return (
-    <div className='p-2'>
+    <div className='p-2 product-details-layout'>
       {loading ? 
         <div className='text-primary fw-bold vh-100 d-flex align-items-center justify-content-center'>
           <span className='me-2'>Loading</span> <CustomSpin spinning={loading} />
@@ -95,7 +95,7 @@ const ProductDetailsLayout = () => {
                 <img src={owner.image || defaultImage} alt="" className='rounded-circle me-2' width={45} height={45}/>
                 <div>
                   <div className='fw-bold'>{owner.fullname}</div>
-                  <div className='owner-prof'>Agent</div>
+                  <div className='owner-prof'>Owner</div>
                 </div>
               </>
               }
