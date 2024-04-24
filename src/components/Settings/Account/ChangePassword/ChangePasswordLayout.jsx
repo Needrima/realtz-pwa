@@ -9,7 +9,7 @@ const ChangePasswordLayout = () => {
     const {loading, onFinish} = useContext(changePasswordContext);
   return (
     <div className='px-2 pt-5 pb-3'>
-    <h1 className='fw-bold text-primary mt-3 text-center mb-5'>Change Layout</h1>
+    <h1 className='fw-bold text-primary mt-3 text-center mb-5'>Change password</h1>
 
      <Form onFinish={onFinish}>
         <Form.Item
