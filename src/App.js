@@ -3,12 +3,11 @@ import {Routes, Route, Navigate} from 'react-router-dom'
 import LandingPage from './pages/LandingPage/LandingPage';
 import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
-import Home from './pages/Home/Home';
 import Notification from './pages/Notification/Notification';
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import { Provider, useDispatch } from 'react-redux';
 import { syncSession } from './redux/Actions';
-import { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import Store from './redux/Store';
 import UserProfile from './pages/UserProfile/UserProfile';
 import SingleProduct from './pages/SingleProduct/SingleProduct';
@@ -22,6 +21,8 @@ import Settings from './pages/Settings/Settings';
 import Account from './pages/Settings/Account/Account';
 import UserInformation from './pages/Settings/Account/UserInformation/UserInformation';
 import ChangePassword from './pages/Settings/Account/ChangePassword/ChangePassword';
+import CustomSpin from './components/UI/CustomSpin/CustomSpin';
+const LazyHome = React.lazy(() => import ('./pages/Home/Home'))
 
 function App() {
   const dispatch = useDispatch();
@@ -109,7 +110,11 @@ function App() {
         <Route path='/login' element={handleRedirectToLogin()} />
         <Route path='/signup' element={handleRedirectToSignup()} />
         <Route path="/forgot-password" element={handleRedirectToForgotPassword()} />
-        <Route path='/home' element={<Home />} />
+        <Route path='/home' element={
+          <Suspense fallback={<CustomSpin color={'blue'} spinning={true} />}>
+            <LazyHome />
+          </Suspense>}  
+        />
         <Route path='/profile/:reference' element={<UserProfile />} />
         <Route path='/product/:reference' element={<SingleProduct />} />
         <Route path='/product-details/:reference' element={<ProductDetails />} />

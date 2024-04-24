@@ -10,7 +10,7 @@ const NotificationLayout = () => {
   const {loading, notificationData, notifications, getNotifications} = useContext(NotificationContext);
 
   return (
-    <div className='px-2 mt-5'>
+    <div className='px-2 mt-5 notifications-layout'>
         <div className='text-primary fw-bold h1 text-center mb-5'>Notifications</div>
         
         {loading ? <div className='product-loading-center'><CustomSpin spinning={loading} /> </div>: 

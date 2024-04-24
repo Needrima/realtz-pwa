@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { axiosProductInstance, axiosUserInstance } from '../../api/axoios';
 import { useSelector } from 'react-redux';
 import { token } from '../../api/token';
+import autoLogout from '../../components/Hoc/AutoLogout/AutoLogout';
 
 export const productDetailsContext = createContext();
 const ProductDetails = () => {
@@ -73,4 +74,4 @@ const ProductDetails = () => {
   )
 }
 
-export default ProductDetails
+export default autoLogout(ProductDetails)

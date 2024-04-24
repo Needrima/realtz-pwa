@@ -12,7 +12,7 @@ const UserInformationLayout = () => {
         sendOTP,} = useContext(userInformationContext);
 
   return (
-    <div className='p-2'>
+    <div className='p-2 user-information-layout'>
         <h1 className='fw-bold text-primary mt-3 text-center mb-5'>User Information</h1>
 
         {loading ?

@@ -3,6 +3,7 @@ import Layout from '../../components/Layout'
 import SettingsLayout from '../../components/Settings/SettingsLayout'
 import { useDispatch } from 'react-redux';
 import {logout} from '../../redux/Actions'
+import autoLogout from '../../components/Hoc/AutoLogout/AutoLogout';
 
 export const settingsContext = createContext();
 const Settings = () => {
@@ -37,4 +38,4 @@ const Settings = () => {
   )
 }
 
-export default Settings
+export default autoLogout(Settings)

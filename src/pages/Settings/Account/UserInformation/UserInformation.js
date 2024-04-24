@@ -6,6 +6,7 @@ import { axiosUserInstance } from '../../../../api/axoios'
 import { token } from '../../../../api/token'
 import { message } from 'antd'
 import { useSelector } from 'react-redux'
+import autoLogout from '../../../../components/Hoc/AutoLogout/AutoLogout'
 
 export const userInformationContext = createContext()
 const UserInformation = () => {
@@ -171,4 +172,4 @@ const UserInformation = () => {
   )
 }
 
-export default UserInformation
+export default autoLogout(UserInformation)

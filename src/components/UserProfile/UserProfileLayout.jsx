@@ -61,7 +61,7 @@ const UserProfileLayout = () => {
   const [fullBio, showFullbio] = useState(false)
 
   return (
-    <div className="px-3 bg-white vh-100">
+    <div className="px-3 bg-white h-100 user-profile-layout">
       {loading ? (
         <div className="text-center text-primary fw-bold product-loading-center">
           <CustomSpin className="user-profile-spin" spinning={loading} />
@@ -226,7 +226,7 @@ const UserProfileLayout = () => {
                   </div>
                   )
                   : 
-                  <div>
+                  <div className='text-center fw-bold text-primary'>
                     {userData?.user_type === `agent`
                       ? userData?.reference === user?.reference
                         ? `You have not added any listing`

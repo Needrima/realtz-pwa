@@ -19,7 +19,7 @@ const HomeLayout = () => {
   } = useContext(HomeContext);
 
   return (
-    <div className='bg-dark h-100'>
+    <div className='bg-dark h-100 home-layout'>
       {tab === 'home' && <InfiniteScroll
         dataLength={homeProducts.length} //This is important field to render the next data
         hasMore={!homeProductsData ? true : homeProductsData?.has_next} 

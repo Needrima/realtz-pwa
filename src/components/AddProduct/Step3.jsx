@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import { addProductContext } from '../../pages/AddProduct/AddProduct'
 import { FLOAT_ONLY_REGEX } from '../../misc/regex';
-import { Checkbox, Drawer, Form, Input } from 'antd';
+import { Checkbox, Drawer, Form, Input, Progress } from 'antd';
 import CustomSpin from '../UI/CustomSpin/CustomSpin';
 
 const Step3 = () => {
     const {step3Form, changeStep, addPricing, listingInfo:{for_rent, for_shortlet}, createProduct, createProductBoxOpen,
-    openCreateProductBox, creatingProduct, confirmInfo, setConfirmInfo, addListingConsentFrom} = useContext(addProductContext);
+    openCreateProductBox, creatingProduct, confirmInfo, setConfirmInfo, addListingConsentFrom, creatingProductProgress} = useContext(addProductContext);
   return (
     <div className='my-5'>
         <h1 className='fw-bold mb-3'>Pricing <span className='text-primary'>information</span></h1>
@@ -246,6 +246,10 @@ const Step3 = () => {
                  disabled={creatingProduct}>Cancel</button>
             </div>
           </Form>
+
+          <div className='text-center mt-3' >
+            {creatingProduct && <Progress percent={creatingProductProgress} type='circle' size={50} strokeWidth={10}/>}
+          </div>
         </Drawer>
     </div>
   )

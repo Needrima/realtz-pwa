@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom'
 import { axiosProductInstance } from '../../api/axoios'
 import { useSelector } from 'react-redux'
 import { token } from '../../api/token'
+import autoLogout from '../../components/Hoc/AutoLogout/AutoLogout'
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -140,4 +141,4 @@ useEffect(() => {
   )
 }
 
-export default Products
+export default autoLogout(Products)

@@ -7,6 +7,7 @@ import { Form, message } from 'antd';
 import { useDispatch } from 'react-redux'
 import { logout } from '../../../redux/Actions'
 import { useNavigate } from 'react-router-dom'
+import autoLogout from '../../../components/Hoc/AutoLogout/AutoLogout'
 
 export const accountContext = createContext();
 const Account = () => {
@@ -147,4 +148,4 @@ const Account = () => {
   )
 }
 
-export default Account
+export default autoLogout(Account)
