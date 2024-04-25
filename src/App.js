@@ -119,7 +119,7 @@ function App() {
         <Route path='/product/:reference' element={<SingleProduct />} />
         <Route path='/product-details/:reference' element={<ProductDetails />} />
         <Route path='/notifications' element={<Notification />} />
-        <Route path='/profile' element={handleRedirectToProfile()} />
+        <Route path='profile' element={handleRedirectToProfile()} />
         <Route path='/saved' element={handleRedirectToSavedProduct()} />
         <Route path='/products' element={<Products />} />
         <Route path='/explore' element={<Explore />} />

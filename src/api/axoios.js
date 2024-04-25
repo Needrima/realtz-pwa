@@ -15,6 +15,7 @@ axiosUserInstance.interceptors.response.use(
     (error) => {
       // Handle response error
       if (error?.response?.status === 401) {
+        console.log('anauthorized user', error)
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         window.location.href = "/login"
@@ -38,6 +39,7 @@ axiosProductInstance.interceptors.response.use(
     (error) => {
       // Handle response error
       if (error?.response?.status === 401) {
+        console.log('anauthorized user', error)
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         window.location.href = "/login"
@@ -61,6 +63,7 @@ axiosProductInstance.interceptors.response.use(
       (error) => {
         // Handle response error
         if (error?.response?.status === 401) {
+          console.log('anauthorized user', error)
           localStorage.removeItem('token')
           localStorage.removeItem('user')
           window.location.href = "/login"
