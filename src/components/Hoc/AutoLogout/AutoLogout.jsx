@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import React, { useEffect } from 'react'
 
-const inactivityTimeOut = 1000 * 60 // 3 minutes timeout
+const inactivityTimeOut = 1000 * 60 * 3 // 3 minutes timeout
 
 const autoLogout = (WrappedComponent) => {
 
