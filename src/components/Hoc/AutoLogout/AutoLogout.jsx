@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import React, { useEffect } from 'react'
 
-const inactivityTimeOut = 1000 * 60 * 3 // 3 minutes timeout
+const inactivityTime = 1000 * 60 * 3 // 3 minutes timeout
 
 const autoLogout = (WrappedComponent) => {
 
@@ -21,8 +21,7 @@ const autoLogout = (WrappedComponent) => {
     }
     
     const startTimeoutFunc = () =>{
-      console.log('timeout reset')
-        inactivityTimeout = setTimeout(signout, inactivityTimeOut)
+      inactivityTimeout = setTimeout(signout, inactivityTime)
     }
   
     const resetTimeoutFunc = () => {

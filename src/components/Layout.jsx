@@ -86,6 +86,7 @@ const Layout = ({ children }) => {
         onClick={() => setNavbar(true)}
         /> */}
       </div>
+      
       <div className="position-fixed bottom-0 w-100 bg-white d-flex justify-content-around align-items-center py-3 border-top border-secondary border-2">
         <div className="text-center" onClick={() => navigate('/home')} >
           <img  src={window.location.pathname === '/home' ? homeIconBlue : homeIcon} alt="home nav icon" />
@@ -117,7 +118,7 @@ const Layout = ({ children }) => {
           <div className={`fw-bold ${window.location.pathname.split('/')[1] === 'settings' && 'text-primary'}`}>Settings</div>
         </div>
 
-        <div className="text-center" onClick={() => navigate('/profile')} >
+        <div className="text-center" onClick={() => window.location.href='/profile'} >
           {user?.image
            ? <img src={user?.image} width={32} height={32} alt="profile nav icon" className="rounded-circle" />
            : <img src={window.location.pathname.split('/')[1] === 'profile' ? profileIconBlue : profileIcon} alt="profile nav icon" />
