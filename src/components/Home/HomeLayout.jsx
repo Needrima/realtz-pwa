@@ -63,7 +63,7 @@ const HomeLayout = () => {
                 trendingProductsData ? "" : "product-loading-center"
               }`}
             >
-              <b>no more {tab} feeds</b>
+              <b className="text-light">no more {tab} feeds</b>
             </p>
           } // triggers if hasMore={false}
           // below props only if you need pull down functionality

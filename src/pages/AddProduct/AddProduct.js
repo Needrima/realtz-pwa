@@ -194,7 +194,7 @@ const AddProduct = () => {
         reqData.append('jsonBody', jsonBody)
 
         try {
-            const {data} = await axiosProductInstance.post('auth/create-product', reqData, {
+            const {data} = await axiosProductInstance.post('auth/create-video-product', reqData, {
                 headers: {
                     token: token(),
                     "Content-Type": "multipart/form-data"
